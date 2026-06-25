@@ -74,7 +74,7 @@ export function Quiz() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ClaimCard data={level.images[imgIdx]} compact />
+                  <ClaimCard data={level.images[imgIdx]} imageUrl={level.images[imgIdx].imageUrl} compact />
                 </motion.div>
               </AnimatePresence>
             </div>

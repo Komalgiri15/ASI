@@ -60,7 +60,7 @@ export function ImageStudy() {
               transition={{ duration: 0.25 }}
               style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}
             >
-              <ClaimCard data={level.images[idx]} />
+              <ClaimCard data={level.images[idx]} imageUrl={level.images[idx].imageUrl} />
             </motion.div>
           </AnimatePresence>
         </div>

@@ -1,3 +1,8 @@
+import lvl1Img1 from "@/assets/lvl1-img1.png";
+import lvl1Img2 from "@/assets/lvl1-img2.png";
+import lvl2Img1 from "@/assets/lvl2-img1.png";
+import lvl2Img2 from "@/assets/lvl2-img2.png";
+
 export type DataField = {
   key: string;
   label: string;
@@ -11,6 +16,7 @@ export type ClaimCardData = {
   patientName: string;
   claimType: string;
   fields: DataField[];
+  imageUrl?: string;
 };
 
 export type Question = {
@@ -69,6 +75,7 @@ export const LEVELS: LevelDef[] = [
         subtitle: "Professional Claim Summary",
         patientName: "GRIEGO, DAVID L",
         claimType: "CMS — Professional",
+        imageUrl: lvl1Img1,
         fields: [
           { key: "dob", label: "Date of Birth", value: "08/22/1959", icon: "Calendar" },
           { key: "umid", label: "Member UMID", value: "H67409890", icon: "IdCard" },
@@ -85,6 +92,7 @@ export const LEVELS: LevelDef[] = [
         subtitle: "Professional",
         patientName: "GRIEGO, DAVID L",
         claimType: "Provider Block",
+        imageUrl: lvl1Img2,
         fields: [
           { key: "billing", label: "Billing Provider", value: "PARK AVE OCULOPLASTIC SURGEONS PAOS", icon: "Hospital" },
           { key: "rendering", label: "Rendering Provider", value: "Yash, Vaishnav", icon: "UserRound" },
@@ -174,6 +182,7 @@ export const LEVELS: LevelDef[] = [
         subtitle: "Professional Claim Summary",
         patientName: "GOAD, JAMES DAVID",
         claimType: "CMS — Professional",
+        imageUrl: lvl2Img1,
         fields: [
           { key: "umid", label: "Member UMID", value: "H04052170", icon: "IdCard" },
           { key: "rcv", label: "Received Date", value: "01/27/2025", icon: "Inbox" },
@@ -190,6 +199,7 @@ export const LEVELS: LevelDef[] = [
         subtitle: "Professional",
         patientName: "GOAD, JAMES DAVID",
         claimType: "Provider Block",
+        imageUrl: lvl2Img2,
         fields: [
           { key: "billing", label: "Billing Provider", value: "TIM LONG MD PSC", icon: "Hospital" },
           { key: "rendering", label: "Rendering Provider", value: "Timothy, Long", icon: "UserRound" },
