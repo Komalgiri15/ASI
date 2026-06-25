@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, BookOpen, Check, ZoomIn, ZoomOut } from "lucide-react";
 import { useGame } from "@/state/gameContext";
@@ -14,6 +14,12 @@ export function ImageStudy() {
   const viewed = state.imageStudyProgress[level.id] ?? [];
   const isStudied = viewed.includes(idx);
   const allStudied = level.images.every((_, i) => viewed.includes(i));
+
+  // Automatically mark the current image as studied when it is viewed
+  useEffect(() => {
+    dispatch({ type: "MARK_IMAGE_STUDIED", levelId: level.id, imageIndex: idx });
+  }, [idx, level.id, dispatch]);
+
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden bg-ink text-white">

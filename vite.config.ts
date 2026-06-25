@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Force-enable Nitro for Vercel deployment (skipped by default outside Lovable context)
+  nitro: {
+    preset: "vercel",
+  },
 });
+

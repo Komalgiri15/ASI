@@ -8,6 +8,7 @@ import introVideo from "@/assets/intro.mp4";
 export function Landing() {
   const { dispatch } = useGame();
   const [videoEnded, setVideoEnded] = useState(false);
+  const [showTitleOverlay, setShowTitleOverlay] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -36,11 +37,47 @@ export function Landing() {
         muted
         playsInline
         onEnded={() => setVideoEnded(true)}
+        onTimeUpdate={(e) => {
+          // Show overlay starting from 6.0 seconds (approx. turn-to-camera beat)
+          if (e.currentTarget.currentTime >= 6.0) {
+            setShowTitleOverlay(true);
+          } else {
+            setShowTitleOverlay(false);
+          }
+        }}
         className="absolute inset-0 h-full w-full object-cover transition-all duration-700"
         style={{
           filter: videoEnded ? "blur(8px) brightness(0.4)" : "none",
         }}
       />
+
+      {/* Overlay title during the final turn-to-camera beat */}
+      <AnimatePresence>
+        {showTitleOverlay && !videoEnded && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute bottom-[28%] left-1/2 z-10 -translate-x-1/2 text-center pointer-events-none select-none"
+          >
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-[#25BB64] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                Humana.
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]">
+                eHUB <span className="text-[#E9F8F0]">Challenge</span>
+              </h2>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: 120 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="h-[2.5px] rounded-full bg-[#FFD700] shadow-[0_0_10px_#FFD700,0_1px_3px_rgba(0,0,0,0.5)]"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Skip Button during video playback */}
       {!videoEnded && (
