@@ -1,121 +1,103 @@
-import { motion } from "framer-motion";
-import { Play, Trophy, Sparkles, Target } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play } from "lucide-react";
 import { useGame } from "@/state/gameContext";
 import { HumanaWordmark } from "@/components/HumanaWordmark";
-import { LEVELS } from "@/data/levels";
+import { useEffect, useRef, useState } from "react";
+import introVideo from "@/assets/intro.mp4";
 
 export function Landing() {
   const { dispatch } = useGame();
+  const [videoEnded, setVideoEnded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay was prevented. Waiting for user interaction or playing muted.", err);
+      });
+    }
+  }, []);
+
+  const handleSkip = () => {
+    setVideoEnded(true);
+  };
+
+  const handleStart = () => {
+    dispatch({ type: "GOTO", screen: "journey" });
+  };
+
   return (
-    <div className="hero-bg relative flex h-full w-full items-center justify-center overflow-hidden text-white">
-      {/* particles */}
-      <div className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <motion.span
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-white/40"
-            style={{
-              left: `${(i * 53) % 100}%`,
-              top: `${(i * 29) % 100}%`,
-            }}
-            animate={{ opacity: [0.1, 0.7, 0.1], y: [0, -10, 0] }}
-            transition={{ duration: 3 + (i % 4), repeat: Infinity, delay: i * 0.1 }}
-          />
-        ))}
-      </div>
+    <div className="relative h-full w-full overflow-hidden bg-[#0a0a18]">
+      {/* Video Element */}
+      <video
+        ref={videoRef}
+        src={introVideo}
+        autoPlay
+        muted
+        playsInline
+        onEnded={() => setVideoEnded(true)}
+        className="absolute inset-0 h-full w-full object-cover transition-all duration-700"
+        style={{
+          filter: videoEnded ? "blur(8px) brightness(0.4)" : "none",
+        }}
+      />
 
-      {/* floating badges */}
-      <motion.div
-        className="absolute top-[18%] left-[10%] hidden md:block"
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        <Badge icon={<Trophy className="h-5 w-5" />} label="Claim Navigator" />
-      </motion.div>
-      <motion.div
-        className="absolute top-[22%] right-[12%] hidden md:block"
-        animate={{ y: [0, -16, 0] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 0.6 }}
-      >
-        <Badge icon={<Sparkles className="h-5 w-5" />} label="Perfect Score" />
-      </motion.div>
-      <motion.div
-        className="absolute bottom-[18%] left-[14%] hidden md:block"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, delay: 1.2 }}
-      >
-        <Badge icon={<Target className="h-5 w-5" />} label="Speed Learner" />
-      </motion.div>
-
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+      {/* Skip Button during video playback */}
+      {!videoEnded && (
+        <button
+          onClick={handleSkip}
+          className="absolute top-6 right-6 z-20 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 px-4 py-2 font-display text-xs font-semibold uppercase tracking-wider text-white/80 backdrop-blur transition-all duration-200 hover:bg-black/60 hover:text-white cursor-pointer"
         >
-          <HumanaWordmark glow className="text-5xl sm:text-6xl" />
-        </motion.div>
+          Skip Intro
+        </button>
+      )}
 
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-4 font-display text-4xl sm:text-6xl font-bold leading-tight"
-        >
-          eHUB <span style={{ color: "var(--brand)" }}>Challenge</span>
-        </motion.h1>
+      {/* Pop up of Game Name with Start Button */}
+      <AnimatePresence>
+        {videoEnded && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/40 px-6 backdrop-blur-[2px]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
+              className="w-full max-w-md rounded-3xl border border-white/10 bg-black/60 p-8 text-center text-white shadow-2xl backdrop-blur-md"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-col items-center"
+              >
+                <HumanaWordmark glow className="text-4xl" />
+                
+                <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-tight">
+                  eHUB <span style={{ color: "var(--brand)" }}>Challenge</span>
+                </h1>
+                
+                <p className="mt-4 text-white/70 text-sm max-w-xs leading-relaxed">
+                  Master claims processing through gamified case studies. Study real claim screens, answer rapid-fire questions, and earn XP.
+                </p>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-4 max-w-xl text-base sm:text-lg text-white/70"
-        >
-          Master claims processing through gamified case studies. Study real claim
-          screens, answer rapid-fire questions, earn XP.
-        </motion.p>
-
-        {/* level preview dots */}
-        <div className="mt-8 flex items-center gap-3">
-          {LEVELS.map((l, i) => (
-            <div key={l.id} className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/5 font-display font-bold backdrop-blur">
-                {l.number}
-              </div>
-              {i < LEVELS.length - 1 && (
-                <div className="h-px w-10 border-t border-dashed border-white/30" />
-              )}
-            </div>
-          ))}
-        </div>
-
-        <motion.button
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.5 }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => dispatch({ type: "GOTO", screen: "journey" })}
-          className="pulse-glow mt-10 inline-flex items-center gap-2 rounded-full px-8 py-4 font-display text-lg font-semibold text-white"
-          style={{ backgroundColor: "var(--brand)" }}
-        >
-          <Play className="h-5 w-5 fill-white" />
-          Start Game
-        </motion.button>
-
-        <p className="mt-4 text-xs uppercase tracking-[0.2em] text-white/40">
-          {LEVELS.length} Levels · {LEVELS.reduce((a, l) => a + l.questions.length, 0)} Questions
-        </p>
-      </div>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleStart}
+                  className="pulse-glow mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-4 font-display text-lg font-semibold text-white transition-shadow cursor-pointer"
+                  style={{ backgroundColor: "var(--brand)" }}
+                >
+                  <Play className="h-5 w-5 fill-white" />
+                  Start Game
+                </motion.button>
+              </motion.div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-function Badge({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 backdrop-blur">
-      <span style={{ color: "var(--gold)" }}>{icon}</span>
-      <span className="text-xs font-medium tracking-wide text-white/90">{label}</span>
-    </div>
-  );
-}
