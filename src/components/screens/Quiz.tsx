@@ -110,6 +110,9 @@ export function Quiz() {
               className={`font-display text-xl sm:text-2xl font-bold leading-snug ${isWrong ? "shake" : ""}`}
             >
               {q.prompt}
+{q.imageUrl && (
+  <img src={q.imageUrl} alt="Question illustration" className="my-4 rounded-lg shadow" />
+)}
             </motion.h2>
 
             <div className="mt-6 grid gap-3">

@@ -1,161 +1,147 @@
 import { createContext, useContext, useMemo, useReducer, type ReactNode } from "react";
-import { LEVELS } from "@/data/levels";
+import { CASES, type CaseDef } from "@/data/levels";
 
 export type Screen =
+  | "intro"
+  | "levelSelect"
   | "landing"
   | "journey"
   | "levelIntro"
-  | "imageStudy"
-  | "quiz"
+  | "gameplay"
   | "levelComplete"
   | "finalResults";
 
-export type LevelState = {
+export type CaseState = {
   id: string;
   unlocked: boolean;
   completed: boolean;
-  score: number; // correct count
-  userAnswers: number[]; // selected index per question
 };
 
 export type GameState = {
   currentScreen: Screen;
-  currentLevelIndex: number;
-  levels: LevelState[];
+  currentCaseIndex: number;
+  currentStepIndex: number;
+  cases: CaseState[];
   totalXP: number;
-  achievements: string[];
-  imageStudyProgress: Record<string, number[]>; // levelId -> imageIndexes viewed
-  quizState: {
-    currentQuestionIndex: number;
-    selectedAnswer: number | null;
-    locked: boolean; // after answering, before next
-    answers: number[];
-  };
+  streak: number;
+  achievements: string[]; // Badge names
+  errors: number; // Errors in the current step
+  showHint: boolean;
+  playerName: string;
 };
 
-const initialLevels: LevelState[] = LEVELS.map((l, i) => ({
-  id: l.id,
+const initialCases: CaseState[] = CASES.map((c, i) => ({
+  id: c.id,
   unlocked: i === 0,
   completed: false,
-  score: 0,
-  userAnswers: [],
 }));
 
 const initialState: GameState = {
-  currentScreen: "landing",
-  currentLevelIndex: 0,
-  levels: initialLevels,
+  currentScreen: "intro",
+  currentCaseIndex: 0,
+  currentStepIndex: 0,
+  cases: initialCases,
   totalXP: 0,
+  streak: 0,
   achievements: [],
-  imageStudyProgress: {},
-  quizState: {
-    currentQuestionIndex: 0,
-    selectedAnswer: null,
-    locked: false,
-    answers: [],
-  },
+  errors: 0,
+  showHint: false,
+  playerName: "",
 };
 
 type Action =
   | { type: "GOTO"; screen: Screen }
-  | { type: "SELECT_LEVEL"; index: number }
-  | { type: "MARK_IMAGE_STUDIED"; levelId: string; imageIndex: number }
-  | { type: "START_QUIZZ" }
-  | { type: "SELECT_ANSWER"; answer: number }
-  | { type: "NEXT_QUESTION" }
-  | { type: "COMPLETE_LEVEL" }
-  | { type: "RETRY_LEVEL" }
+  | { type: "SELECT_CASE"; index: number }
+  | { type: "START_CASE"; index: number }
+  | { type: "START_GAMEPLAY" }
+  | { type: "RECORD_ERROR" }
+  | { type: "RECORD_SUCCESS" }
+  | { type: "CLOSE_HINT" }
+  | { type: "RETRY_CASE" }
+  | { type: "SET_PLAYER_NAME"; name: string }
   | { type: "RESET" };
 
 function reducer(state: GameState, action: Action): GameState {
   switch (action.type) {
     case "GOTO":
       return { ...state, currentScreen: action.screen };
-    case "SELECT_LEVEL":
-      return { ...state, currentLevelIndex: action.index };
-    case "MARK_IMAGE_STUDIED": {
-      const arr = state.imageStudyProgress[action.levelId] ?? [];
-      if (arr.includes(action.imageIndex)) return state;
+    case "SELECT_CASE":
+      return { ...state, currentCaseIndex: action.index };
+    case "START_CASE":
       return {
         ...state,
-        imageStudyProgress: {
-          ...state.imageStudyProgress,
-          [action.levelId]: [...arr, action.imageIndex],
-        },
+        currentCaseIndex: action.index,
+        currentScreen: "levelIntro",
+        currentStepIndex: 0,
+        errors: 0,
+        showHint: false,
       };
-    }
-    case "START_QUIZZ":
+    case "START_GAMEPLAY":
       return {
         ...state,
-        currentScreen: "quiz",
-        quizState: { currentQuestionIndex: 0, selectedAnswer: null, locked: false, answers: [] },
+        currentScreen: "gameplay",
+        currentStepIndex: 0,
+        errors: 0,
+        showHint: false,
       };
-    case "SELECT_ANSWER":
-      if (state.quizState.locked) return state;
+    case "RECORD_ERROR":
       return {
         ...state,
-        quizState: { ...state.quizState, selectedAnswer: action.answer, locked: true },
+        errors: state.errors + 1,
+        showHint: true,
+        streak: 0, // Reset streak on mistake
       };
-    case "NEXT_QUESTION": {
-      const level = LEVELS[state.currentLevelIndex];
-      const answers = [...state.quizState.answers, state.quizState.selectedAnswer ?? -1];
-      const nextIdx = state.quizState.currentQuestionIndex + 1;
-      if (nextIdx >= level.questions.length) {
-        // finalize
+    case "RECORD_SUCCESS": {
+      const activeCase = CASES[state.currentCaseIndex];
+      const isLastStep = state.currentStepIndex >= activeCase.steps.length - 1;
+      const newStreak = state.streak + 1;
+
+      if (isLastStep) {
+        const caseIdx = state.currentCaseIndex;
+        const xpEarned = activeCase.xpValue;
+
+        const updatedCases = state.cases.map((c, i) => {
+          if (i === caseIdx) return { ...c, completed: true };
+          if (i === caseIdx + 1) return { ...c, unlocked: true };
+          return c;
+        });
+
+        const achievements = new Set(state.achievements);
+        achievements.add(activeCase.badge); // "Search Specialist", etc.
+        const allCompleted = updatedCases.every((c) => c.completed);
+        if (allCompleted) {
+          achievements.add("ASI Certified Navigator");
+        }
+
         return {
           ...state,
-          quizState: { ...state.quizState, answers, selectedAnswer: null, locked: false },
+          cases: updatedCases,
+          totalXP: state.totalXP + xpEarned,
+          achievements: Array.from(achievements),
+          currentScreen: "levelComplete",
+          streak: newStreak,
+        };
+      } else {
+        return {
+          ...state,
+          currentStepIndex: state.currentStepIndex + 1,
+          errors: 0,
+          showHint: false,
+          streak: newStreak,
         };
       }
-      return {
-        ...state,
-        quizState: {
-          currentQuestionIndex: nextIdx,
-          selectedAnswer: null,
-          locked: false,
-          answers,
-        },
-      };
     }
-    case "COMPLETE_LEVEL": {
-      const idx = state.currentLevelIndex;
-      const level = LEVELS[idx];
-      const answers = state.quizState.answers;
-      let correct = 0;
-      level.questions.forEach((q, i) => {
-        if (answers[i] === q.correctIndex) correct++;
-      });
-      const accuracy = correct / level.questions.length;
-      const xpFromAnswers = correct * 10;
-      const xpBonus = accuracy >= 0.8 ? 50 : 0;
-      const xpEarned = xpFromAnswers + xpBonus;
-
-      const levels = state.levels.map((l, i) => {
-        if (i === idx) return { ...l, completed: true, score: correct, userAnswers: answers };
-        if (i === idx + 1) return { ...l, unlocked: true };
-        return l;
-      });
-
-      const achievements = new Set(state.achievements);
-      if (idx === 0) achievements.add("First Steps");
-      if (accuracy === 1) achievements.add("Perfect Score");
-      if (level.number === 2) achievements.add("Claims Expert");
-      const allDone = levels.every((l) => l.completed);
-      if (allDone) achievements.add("Speed Learner");
-
+    case "CLOSE_HINT":
+      return { ...state, showHint: false };
+    case "SET_PLAYER_NAME":
+      return { ...state, playerName: action.name };
+    case "RETRY_CASE":
       return {
         ...state,
-        levels,
-        totalXP: state.totalXP + xpEarned,
-        achievements: Array.from(achievements),
-        currentScreen: "levelComplete",
-      };
-    }
-    case "RETRY_LEVEL":
-      return {
-        ...state,
-        currentScreen: "levelIntro",
-        quizState: { currentQuestionIndex: 0, selectedAnswer: null, locked: false, answers: [] },
+        currentScreen: "gameplay",
+        currentStepIndex: 0,
+        errors: 0,
+        showHint: false,
       };
     case "RESET":
       return initialState;

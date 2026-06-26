@@ -3,31 +3,33 @@ import { GameProvider, useGame } from "@/state/gameContext";
 import { Landing } from "@/components/screens/Landing";
 import { Journey } from "@/components/screens/Journey";
 import { LevelIntro } from "@/components/screens/LevelIntro";
-import { ImageStudy } from "@/components/screens/ImageStudy";
-import { Quiz } from "@/components/screens/Quiz";
+import { Gameplay } from "@/components/screens/Gameplay";
 import { LevelComplete } from "@/components/screens/LevelComplete";
 import { FinalResults } from "@/components/screens/FinalResults";
+import { IntroFlow } from "@/components/screens/IntroFlow";
+import { LevelSelect } from "@/components/screens/LevelSelect";
 
 function Router() {
   const { state } = useGame();
   const screen = state.currentScreen;
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden bg-[#E9F8F0]">
       <AnimatePresence mode="wait">
         <motion.div
           key={screen}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
           className="h-full w-full"
         >
+          {screen === "intro" && <IntroFlow />}
+          {screen === "levelSelect" && <LevelSelect />}
           {screen === "landing" && <Landing />}
           {screen === "journey" && <Journey />}
           {screen === "levelIntro" && <LevelIntro />}
-          {screen === "imageStudy" && <ImageStudy />}
-          {screen === "quiz" && <Quiz />}
+          {screen === "gameplay" && <Gameplay />}
           {screen === "levelComplete" && <LevelComplete />}
           {screen === "finalResults" && <FinalResults />}
         </motion.div>

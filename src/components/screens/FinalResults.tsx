@@ -1,83 +1,196 @@
 import { motion } from "framer-motion";
-import { Trophy, Sparkles, Target, Award, RefreshCw, Check, X } from "lucide-react";
+import { Trophy, Sparkles, Award, RotateCcw, ShieldCheck, Terminal, MapPin } from "lucide-react";
 import { useGame } from "@/state/gameContext";
-import { LEVELS } from "@/data/levels";
-import { CountUp } from "@/components/CountUp";
-import { useState } from "react";
-
-const ALL_ACHIEVEMENTS: { id: string; name: string; how: string; icon: React.ReactNode }[] = [
-  { id: "First Steps", name: "First Steps", how: "Complete Level 1.", icon: <Sparkles className="h-5 w-5" /> },
-  { id: "Claims Expert", name: "Claims Expert", how: "Complete Level 2.", icon: <Award className="h-5 w-5" /> },
-  { id: "Perfect Score", name: "Perfect Score", how: "Get 100% accuracy on any level.", icon: <Trophy className="h-5 w-5" /> },
-  { id: "Speed Learner", name: "Speed Learner", how: "Complete every level in one run.", icon: <Target className="h-5 w-5" /> },
-];
+import { CASES } from "@/data/levels";
+import { Scout } from "@/components/Scout";
+import { HumanaWordmark } from "@/components/HumanaWordmark";
 
 export function FinalResults() {
   const { state, dispatch } = useGame();
-  const totalCorrect = state.levels.reduce((a, l) => a + l.score, 0);
-  const totalQs = LEVELS.reduce((a, l) => a + l.questions.length, 0);
-  const accuracy = Math.round((totalCorrect / Math.max(1, totalQs)) * 100);
+
+  const handleRestart = () => {
+    dispatch({ type: "RESET" });
+  };
+
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-brand-soft">
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-border bg-card px-6 py-4 sm:flex sm:justify-between">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-gradient-to-b from-[#E9F8F0] to-[#dbf5e7]">
+      {/* Header bar */}
+      <header className="flex items-center justify-between border-b border-emerald-100 bg-white/95 px-6 py-4 shadow-sm z-10 shrink-0">
         <div className="min-w-0">
-          <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
-            Mission Report
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            Training Report
           </p>
-          <h2 className="font-display text-xl font-bold truncate">eHUB Challenge — Final Results</h2>
+          <h2 className="font-display text-sm font-extrabold text-slate-800 truncate">
+            ASI Quest — Final Summary
+          </h2>
         </div>
         <button
-          onClick={() => dispatch({ type: "RESET" })}
-          className="shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-2 font-semibold text-white"
-          style={{ backgroundColor: "var(--brand)" }}
+          onClick={handleRestart}
+          className="inline-flex items-center gap-1.5 rounded-full bg-slate-800 hover:bg-slate-900 border border-slate-950 px-4 py-2 text-xs font-bold text-white shadow-sm cursor-pointer transition"
         >
-          <RefreshCw className="h-4 w-4" />
+          <RotateCcw className="h-3.5 w-3.5" />
           Play Again
         </button>
       </header>
 
-      <div className="flex-1 overflow-auto px-6 py-8">
-        <div className="mx-auto max-w-4xl space-y-8">
-          {/* Hero stats */}
+      {/* Main content scroll area */}
+      <div className="flex-grow overflow-y-auto px-6 py-8">
+        <div className="mx-auto max-w-2xl space-y-8 pb-10">
+          {/* Certificate Container */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 gap-4 sm:grid-cols-3"
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", duration: 0.6 }}
+            className="bg-white border-8 border-double border-yellow-400/60 rounded-3xl p-6 sm:p-10 shadow-lg relative overflow-hidden"
           >
-            <HeroStat label="Total XP" value={state.totalXP} color="var(--gold)" />
-            <HeroStat label="Accuracy" value={accuracy} suffix="%" color="var(--brand)" />
-            <HeroStat label="Answered" value={totalCorrect} suffix={`/${totalQs}`} color="var(--claim-header)" />
+            {/* Corner Decorative Borders */}
+            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-yellow-500/40" />
+            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-yellow-500/40" />
+            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-yellow-500/40" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-yellow-500/40" />
+
+            <div className="text-center flex flex-col items-center select-none">
+              {/* Humana Wordmark */}
+              <HumanaWordmark className="text-2xl text-emerald-800" />
+
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#25BB64] mt-6 block">
+                Certificate of Completion
+              </span>
+
+              <h1 className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight leading-tight">
+                ASI Certified Navigator
+              </h1>
+
+              <div className="h-[2px] w-32 bg-yellow-400 my-4" />
+
+              <p className="text-xs text-slate-500 max-w-sm leading-relaxed">
+                This certifies that the training participant has successfully audited claims files, navigated regional systems, and mastered the
+              </p>
+              <h3 className="font-mono text-xs font-bold text-emerald-900 bg-emerald-50 px-3 py-1 rounded border border-emerald-100 mt-2">
+                ASI-3270 MAINFRAME SEARCH SYSTEM
+              </h3>
+
+              {/* Recipient details */}
+              <div className="mt-6">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                  Designation Achieved
+                </span>
+                <span className="font-display text-lg font-extrabold text-[#25BB64] block mt-0.5">
+                  Mainframe Search Specialist
+                </span>
+              </div>
+
+              {/* Badge & Mascot Row */}
+              <div className="mt-8 flex items-center justify-center gap-6 pb-6 border-b border-slate-100 w-full max-w-md">
+                <Scout mood="celebrate" size={100} />
+                <div className="text-left font-mono text-[10px] space-y-1.5 text-slate-650">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#25BB64]" />
+                    <span>Total XP: <strong className="text-slate-800">{state.totalXP} XP</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Trophy className="w-3.5 h-3.5 text-yellow-500 fill-yellow-50" />
+                    <span>Badges: <strong className="text-slate-800">{state.achievements.length} Earned</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Terminal className="w-3.5 h-3.5 text-emerald-700" />
+                    <span>Cases: <strong className="text-slate-800">3/3 Solved</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer signatures */}
+              <div className="mt-6 flex justify-between w-full max-w-md text-xs font-sans text-slate-500 pt-2 px-2">
+                <div className="text-left">
+                  <span className="text-[9px] uppercase font-bold block text-slate-400">Date</span>
+                  <span className="font-semibold text-slate-700">{currentDate}</span>
+                </div>
+                <div className="text-right">
+                  <span className="text-[9px] uppercase font-bold block text-slate-400">Authorized Guide</span>
+                  <span className="font-semibold text-emerald-850 font-display flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-yellow-500" /> Scout Mascot
+                  </span>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Level breakdown */}
-          <section className="rounded-3xl bg-card p-6 shadow-card border border-border">
-            <h3 className="font-display text-lg font-bold">Level Breakdown</h3>
+          {/* Badges Breakdown */}
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm text-left"
+          >
+            <h3 className="font-display text-base font-extrabold text-slate-800 flex items-center gap-2">
+              <Award className="w-5 h-5 text-yellow-500 fill-yellow-100" />
+              <span>Earned Badge Log</span>
+            </h3>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {CASES.map((c) => {
+                const earned = state.achievements.includes(c.badge);
+                return (
+                  <div
+                    key={c.id}
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition ${
+                      earned
+                        ? "bg-emerald-500/5 border-emerald-250 text-emerald-950"
+                        : "border-dashed border-slate-200 bg-slate-50/50 opacity-60"
+                    }`}
+                  >
+                    <div
+                      className={`h-11 w-11 rounded-full flex items-center justify-center text-white ${
+                        earned ? "bg-emerald-500 border border-emerald-600 shadow-sm" : "bg-slate-350"
+                      }`}
+                    >
+                      <Trophy className="h-5 w-5" />
+                    </div>
+                    <span className="text-xs font-bold mt-2 truncate max-w-full">{c.badge}</span>
+                    <span className="text-[9px] text-slate-400 uppercase font-mono mt-0.5">
+                      {earned ? "UNLOCKED" : "LOCKED"}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.section>
+
+          {/* Case Audit Summary */}
+          <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm text-left font-mono"
+          >
+            <h3 className="font-display text-base font-extrabold text-slate-800 flex items-center gap-2 font-sans">
+              <Terminal className="w-5 h-5 text-[#25BB64]" />
+              <span>Case Log Details</span>
+            </h3>
             <div className="mt-4 overflow-x-auto">
-              <table className="min-w-full text-sm">
+              <table className="w-full text-xs text-left border-collapse">
                 <thead>
-                  <tr className="text-left text-xs uppercase tracking-wider text-muted-foreground">
-                    <th className="pb-2">Level</th>
-                    <th className="pb-2">Case</th>
-                    <th className="pb-2 text-right">Score</th>
-                    <th className="pb-2 text-right">Accuracy</th>
+                  <tr className="text-slate-400 border-b border-slate-100 pb-2 text-[10px] uppercase font-bold">
+                    <th className="pb-3">Case</th>
+                    <th className="pb-3">Mainframe Target</th>
+                    <th className="pb-3 text-right">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {LEVELS.map((l, i) => {
-                    const st = state.levels[i];
-                    const acc = st.completed
-                      ? Math.round((st.score / l.questions.length) * 100)
-                      : 0;
+                  {CASES.map((c) => {
                     return (
-                      <tr key={l.id} className="border-t border-border">
-                        <td className="py-3 font-display font-bold">L{l.number}</td>
-                        <td className="py-3 text-mono text-xs">{l.caseName}</td>
-                        <td className="py-3 text-right text-mono">
-                          {st.completed ? `${st.score}/${l.questions.length}` : "—"}
-                        </td>
-                        <td className="py-3 text-right text-mono">
-                          {st.completed ? `${acc}%` : "—"}
+                      <tr key={c.id} className="border-b border-slate-50">
+                        <td className="py-3 font-bold text-slate-800">Case 0{c.number}</td>
+                        <td className="py-3 text-slate-500">{c.caseName}</td>
+                        <td className="py-3 text-right">
+                          <span className="px-2 py-0.5 rounded bg-emerald-50 border border-emerald-250 text-emerald-800 font-bold text-[9px] uppercase">
+                            RESOLVED
+                          </span>
                         </td>
                       </tr>
                     );
@@ -85,142 +198,9 @@ export function FinalResults() {
                 </tbody>
               </table>
             </div>
-          </section>
-
-          {/* Achievements */}
-          <section className="rounded-3xl bg-card p-6 shadow-card border border-border">
-            <h3 className="font-display text-lg font-bold">Achievements</h3>
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {ALL_ACHIEVEMENTS.map((a) => {
-                const earned = state.achievements.includes(a.id);
-                return <AchievementBadge key={a.id} a={a} earned={earned} />;
-              })}
-            </div>
-          </section>
-
-          {/* Question review */}
-          <section className="rounded-3xl bg-card p-6 shadow-card border border-border">
-            <h3 className="font-display text-lg font-bold">Question Review</h3>
-            <div className="mt-4 space-y-6">
-              {LEVELS.map((l, li) => {
-                const st = state.levels[li];
-                if (!st.completed) return null;
-                return (
-                  <div key={l.id}>
-                    <h4 className="font-display text-sm uppercase tracking-wider text-muted-foreground">
-                      Level {l.number} — {l.caseName}
-                    </h4>
-                    <ul className="mt-2 space-y-2">
-                      {l.questions.map((q, qi) => {
-                        const userIdx = st.userAnswers[qi];
-                        const isCorrect = userIdx === q.correctIndex;
-                        return (
-                          <li
-                            key={q.id}
-                            className="rounded-xl border border-border bg-brand-soft/40 p-3"
-                          >
-                            <div className="flex items-start gap-3">
-                              <span
-                                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
-                                  isCorrect ? "" : ""
-                                }`}
-                                style={{
-                                  backgroundColor: isCorrect ? "var(--success)" : "var(--danger)",
-                                  color: "white",
-                                }}
-                              >
-                                {isCorrect ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5" />}
-                              </span>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-sm font-medium">{q.prompt}</p>
-                                <div className="mt-1 grid gap-1 text-xs sm:grid-cols-2">
-                                  <div className="text-mono">
-                                    <span className="text-muted-foreground">Your answer: </span>
-                                    {userIdx >= 0 ? q.options[userIdx] : "—"}
-                                  </div>
-                                  {!isCorrect && (
-                                    <div className="text-mono">
-                                      <span className="text-muted-foreground">Correct: </span>
-                                      {q.options[q.correctIndex]}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+          </motion.section>
         </div>
       </div>
-    </div>
-  );
-}
-
-function HeroStat({
-  label,
-  value,
-  suffix,
-  color,
-}: {
-  label: string;
-  value: number;
-  suffix?: string;
-  color: string;
-}) {
-  return (
-    <div className="rounded-3xl bg-card p-6 shadow-card border border-border">
-      <div className="text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className="mt-2 font-display text-4xl font-bold" style={{ color }}>
-        <CountUp to={value} />
-        {suffix && <span className="text-xl text-muted-foreground ml-0.5">{suffix}</span>}
-      </div>
-    </div>
-  );
-}
-
-function AchievementBadge({
-  a,
-  earned,
-}: {
-  a: { id: string; name: string; how: string; icon: React.ReactNode };
-  earned: boolean;
-}) {
-  const [hover, setHover] = useState(false);
-  return (
-    <div className="relative">
-      <button
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onFocus={() => setHover(true)}
-        onBlur={() => setHover(false)}
-        className={`group flex w-full flex-col items-center gap-2 rounded-2xl border-2 p-4 transition ${
-          earned
-            ? "border-transparent bg-[color-mix(in_oklab,var(--gold)_18%,white)]"
-            : "border-dashed border-border bg-secondary/30 opacity-60"
-        }`}
-      >
-        <span
-          className="flex h-12 w-12 items-center justify-center rounded-full text-white"
-          style={{
-            backgroundColor: earned ? "var(--gold)" : "var(--muted)",
-            color: earned ? "#3a2a00" : undefined,
-          }}
-        >
-          {a.icon}
-        </span>
-        <span className="text-center font-display text-sm font-bold">{a.name}</span>
-      </button>
-      {hover && (
-        <div className="absolute left-1/2 z-20 mt-2 w-48 -translate-x-1/2 rounded-lg bg-ink px-3 py-2 text-xs text-white shadow-card">
-          {a.how}
-        </div>
-      )}
     </div>
   );
 }

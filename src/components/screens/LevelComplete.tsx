@@ -1,128 +1,139 @@
 import { motion } from "framer-motion";
-import { Trophy, Zap, Target, RefreshCw, ArrowRight } from "lucide-react";
+import { Trophy, Sparkles, Flame, RefreshCw, ArrowRight } from "lucide-react";
 import { useGame } from "@/state/gameContext";
-import { LEVELS } from "@/data/levels";
+import { CASES } from "@/data/levels";
+import { Scout } from "@/components/Scout";
 import { CountUp } from "@/components/CountUp";
 
 export function LevelComplete() {
   const { state, dispatch } = useGame();
-  const idx = state.currentLevelIndex;
-  const level = LEVELS[idx];
-  const st = state.levels[idx];
-  const correct = st.score;
-  const total = level.questions.length;
-  const incorrect = total - correct;
-  const accuracy = Math.round((correct / total) * 100);
-  const xpEarned = correct * 10 + (accuracy >= 80 ? 50 : 0);
-
-  const badge =
-    accuracy === 100 ? "Perfect Score" : level.number === 1 ? "Claim Navigator" : "Claims Expert";
-
-  const isLast = idx === LEVELS.length - 1;
+  const caseIdx = state.currentCaseIndex;
+  const caseDef = CASES[caseIdx];
+  const isLast = caseIdx === CASES.length - 1;
 
   return (
-    <div className="hero-bg relative flex h-full w-full items-center justify-center overflow-hidden text-white">
-      {/* confetti */}
+    <div className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-b from-[#E9F8F0] to-[#e6faf0] px-6 py-8">
+      {/* Confetti Animation Layer (Mint & Gold Palette) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {Array.from({ length: 60 }).map((_, i) => {
-          const colors = ["#25BB64", "#FFD700", "#ffffff", "#7df0a8"];
+        {Array.from({ length: 50 }).map((_, i) => {
+          const colors = ["#25BB64", "#FFD700", "#10B981", "#6EE7B7"];
           return (
             <motion.span
               key={i}
-              className="absolute h-2 w-2 rounded-sm"
-              style={{ left: `${(i * 17) % 100}%`, top: "-5%", backgroundColor: colors[i % 4] }}
-              animate={{ y: ["0%", "120vh"], rotate: [0, 360], opacity: [1, 1, 0] }}
-              transition={{ duration: 4 + (i % 5) * 0.5, repeat: Infinity, delay: i * 0.05, ease: "linear" }}
+              className="absolute h-2.5 w-2.5 rounded-sm"
+              style={{
+                left: `${(i * 23) % 100}%`,
+                top: "-5%",
+                backgroundColor: colors[i % 4],
+              }}
+              animate={{
+                y: ["0%", "120vh"],
+                rotate: [0, 360],
+                opacity: [1, 1, 0],
+              }}
+              transition={{
+                duration: 3.5 + (i % 4) * 0.6,
+                repeat: Infinity,
+                delay: i * 0.06,
+                ease: "linear",
+              }}
             />
           );
         })}
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 mx-auto w-full max-w-lg px-6"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        className="relative z-10 w-full max-w-md bg-white rounded-3xl border border-emerald-100 p-8 text-center shadow-card"
       >
-        <div className="text-center">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 240, damping: 14 }}
-            className="mx-auto flex h-24 w-24 items-center justify-center rounded-full shadow-gold"
-            style={{ backgroundColor: "var(--gold)" }}
-          >
-            <Trophy className="h-12 w-12" style={{ color: "#3a2a00" }} />
-          </motion.div>
-          <h1 className="mt-6 font-display text-4xl font-bold">Level Complete!</h1>
-          <p className="mt-2 text-white/70">
-            Level {level.number} — {level.name}
+        {/* Animated Celebration Scout */}
+        <div className="relative mb-6 flex justify-center">
+          <div className="absolute inset-0 bg-yellow-100/50 rounded-full blur-xl animate-pulse" />
+          <Scout mood="celebrate" size={130} className="relative z-10" />
+        </div>
+
+        {/* Celebratory message bubble */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-sm text-emerald-900 leading-relaxed text-left"
+        >
+          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-50 border-t border-l border-emerald-100 rotate-45" />
+          <p className="relative z-10 text-center font-medium">
+            &quot;Case Closed, Detective! You successfully scanned the mainframe records and decrypted the target claimant data. Stellar work!&quot;
           </p>
+        </motion.div>
+
+        {/* Heading titles */}
+        <div>
+          <span className="text-[10px] uppercase font-bold tracking-widest text-[#25BB64]">
+            Investigation Completed
+          </span>
+          <h1 className="mt-1 font-display text-3xl font-extrabold text-slate-800 leading-tight">
+            Case Closed!
+          </h1>
+          <p className="mt-1 text-xs text-slate-500 font-mono">
+            {caseDef.name}
+          </p>
+
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4 }}
-            className="bounce-in mt-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wide"
           >
-            <Trophy className="h-3.5 w-3.5" style={{ color: "var(--gold)" }} />
-            {badge} earned
+            <Trophy className="h-4.5 w-4.5 text-yellow-500 fill-yellow-100 animate-bounce" />
+            <span>Badge Earned: {caseDef.badge}</span>
           </motion.div>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3">
-          <Stat label="Correct" value={correct} suffix={`/${total}`} color="var(--brand)" />
-          <Stat label="Incorrect" value={incorrect} suffix={`/${total}`} color="#ff6b6b" />
-          <Stat label="Accuracy" value={accuracy} suffix="%" color="var(--gold)" />
-          <Stat label="XP Earned" value={xpEarned} icon={<Zap className="h-4 w-4" />} color="var(--gold)" />
+        {/* Stats display panel */}
+        <div className="mt-6 grid grid-cols-2 gap-3 text-left">
+          <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3.5">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <Sparkles className="h-3.5 w-3.5 text-yellow-500 fill-yellow-100" />
+              XP Earned
+            </div>
+            <div className="mt-1 font-display text-2xl font-extrabold text-slate-800">
+              +<CountUp to={caseDef.xpValue} /> XP
+            </div>
+          </div>
+          <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3.5">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <Flame className="h-3.5 w-3.5 text-orange-500 fill-orange-100" />
+              Active Streak
+            </div>
+            <div className="mt-1 font-display text-2xl font-extrabold text-slate-800">
+              <CountUp to={state.streak} />
+            </div>
+          </div>
         </div>
 
+        {/* Navigation Action CTA buttons */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
-            onClick={() => dispatch({ type: "RETRY_LEVEL" })}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 font-semibold text-white hover:bg-white/10"
+            onClick={() => dispatch({ type: "RETRY_CASE" })}
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 hover:border-slate-350 bg-white text-slate-700 py-3.5 text-sm font-bold transition shadow-sm cursor-pointer"
           >
             <RefreshCw className="h-4 w-4" />
-            Retry Level
+            Replay Case
           </button>
           <button
             onClick={() => {
               if (isLast) dispatch({ type: "GOTO", screen: "finalResults" });
               else dispatch({ type: "GOTO", screen: "journey" });
             }}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full px-6 py-3 font-display font-semibold text-white"
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full text-white py-3.5 text-sm font-bold transition shadow-md cursor-pointer"
             style={{ backgroundColor: "var(--brand)" }}
           >
-            {isLast ? "See Final Results" : "Continue Journey"}
-            <ArrowRight className="h-4 w-4" />
+            <span>{isLast ? "View Certificate" : "Continue Journey"}</span>
+            <ArrowRight className="h-4 w-4 text-white" />
           </button>
         </div>
       </motion.div>
-    </div>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  suffix,
-  color,
-  icon,
-}: {
-  label: string;
-  value: number;
-  suffix?: string;
-  color?: string;
-  icon?: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-      <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/60">
-        {icon ?? <Target className="h-3.5 w-3.5" />}
-        {label}
-      </div>
-      <div className="mt-2 font-display text-3xl font-bold" style={{ color }}>
-        <CountUp to={value} />
-        {suffix && <span className="text-base text-white/50 ml-0.5">{suffix}</span>}
-      </div>
     </div>
   );
 }

@@ -1,276 +1,300 @@
-import lvl1Img1 from "@/assets/lvl1-img1.png";
-import lvl1Img2 from "@/assets/lvl1-img2.png";
-import lvl2Img1 from "@/assets/lvl2-img1.png";
-import lvl2Img2 from "@/assets/lvl2-img2.png";
+import img1 from "@/assets/ASI Practice 1.png";
+import img2 from "@/assets/ASI Practice 2.png";
+import img3 from "@/assets/ASI Practice 3.png";
 
-export type DataField = {
-  key: string;
-  label: string;
-  value: string;
-  icon: string; // lucide icon name
-};
+export type CaseStepMechanic =
+  | "command-builder"
+  | "spot-tag"
+  | "hotspot-tally"
+  | "field-detective"
+  | "match-code"
+  | "decision-swipe"
+  | "tally-tap"
+  | "hotspot-tap"
+  | "multi-select"
+  | "map-pin"
+  | "sequence-builder";
 
-export type ClaimCardData = {
-  title: string;
-  subtitle: string;
-  patientName: string;
-  claimType: string;
-  fields: DataField[];
-  imageUrl?: string;
-};
-
-export type Question = {
+export type CaseStep = {
   id: string;
+  qNum: string;
+  imageUrl?: string;
   prompt: string;
-  options: string[];
-  correctIndex: number;
+  mechanic: CaseStepMechanic;
+  scoutIntro: string;
+  scoutHint: string;
+  correctAnswer: any;
+  data: any; // step-specific data
 };
 
-export type LevelDef = {
+export type CaseDef = {
   id: string;
   number: number;
   name: string;
   caseName: string;
+  description: string;
+  badge: string;
+  xpValue: number;
   outcomes: string[];
-  images: ClaimCardData[];
-  questions: Question[];
+  steps: CaseStep[];
 };
 
-// Helper: shuffle but keep correctIndex tracking
-function makeQ(
-  id: string,
-  prompt: string,
-  correct: string,
-  distractors: string[]
-): Question {
-  const opts = [correct, ...distractors];
-  // deterministic shuffle by id hash so it's stable
-  const seed = id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-  const shuffled = [...opts]
-    .map((o, i) => ({ o, k: (seed * 9301 + i * 49297) % 233280 }))
-    .sort((a, b) => a.k - b.k)
-    .map((x) => x.o);
-  return {
-    id,
-    prompt,
-    options: shuffled,
-    correctIndex: shuffled.indexOf(correct),
-  };
-}
-
-export const LEVELS: LevelDef[] = [
+export const CASES: CaseDef[] = [
   {
-    id: "lvl-1",
+    id: "case-1",
     number: 1,
-    name: "Professional Claim — Case 1",
-    caseName: "GRIEGO, DAVID L",
+    name: "The Texas Trail",
+    caseName: "Markus Jones Search",
+    description: "Locate Markus Jones in Texas, check his group configuration, and identify his correct member file.",
+    badge: "Search Specialist",
+    xpValue: 120,
     outcomes: [
-      "Identify CMS vs UB claim from Place of Service",
-      "Locate key claim header data (UMID, dates, charges)",
-      "Read billing & rendering provider blocks",
+      "Assemble TN3270 ASI command syntax",
+      "Scan screen content for 'END OF DATA' and verify page counts",
+      "Filter groups and locate specific member attributes (M-GRP, DOB)",
+      "Map relationship codes and resolve member card discrepancies",
     ],
-    images: [
+    steps: [
       {
-        title: "eHUB Transaction Viewer",
-        subtitle: "Professional Claim Summary",
-        patientName: "GRIEGO, DAVID L",
-        claimType: "CMS — Professional",
-        imageUrl: lvl1Img1,
-        fields: [
-          { key: "dob", label: "Date of Birth", value: "08/22/1959", icon: "Calendar" },
-          { key: "umid", label: "Member UMID", value: "H67409890", icon: "IdCard" },
-          { key: "rcv", label: "Received Date", value: "01/29/2025", icon: "Inbox" },
-          { key: "dos", label: "Date of Service", value: "01/16/2025", icon: "CalendarDays" },
-          { key: "pos", label: "Place of Service", value: "24 — Ambulatory Surgical Center", icon: "Building2" },
-          { key: "lines", label: "Service Lines", value: "1 Line", icon: "ListOrdered" },
-          { key: "charge", label: "Total Charge", value: "$1,746.00", icon: "DollarSign" },
-          { key: "dx", label: "Diagnosis Code", value: "H02135", icon: "Stethoscope" },
-        ],
+        id: "c1-s1",
+        qNum: "Q1",
+        prompt: "A claim has arrived for Markus Jones in Texas. Read the search control line at the top of the image and drag the tiles to build it.",
+        imageUrl: img1,
+        mechanic: "command-builder",
+        scoutIntro: "Welcome, Search Specialist! Read the control line at the top of the screen and drag the tiles in that exact order.",
+        scoutHint: "Look at the top left of the mainframe screen. Drag the tiles: ASI, JONES, MARKUS, TX.",
+        correctAnswer: ["ASI", "JONES", "MARKUS", "TX"],
+        data: {
+          slots: ["Command", "Last Name", "First Name", "State"],
+          tiles: ["JONES", "ASI", "TX", "MARKUS", "CLAIM", "56", "SELECT"],
+        },
       },
       {
-        title: "837 — Provider Information",
-        subtitle: "Professional",
-        patientName: "GRIEGO, DAVID L",
-        claimType: "Provider Block",
-        imageUrl: lvl1Img2,
-        fields: [
-          { key: "billing", label: "Billing Provider", value: "PARK AVE OCULOPLASTIC SURGEONS PAOS", icon: "Hospital" },
-          { key: "rendering", label: "Rendering Provider", value: "Yash, Vaishnav", icon: "UserRound" },
-          { key: "tax", label: "Tax ID (TIN)", value: "201418623", icon: "Hash" },
-          { key: "addr", label: "Billing Address", value: "1800 Emerson Street, Suite 200, Denver, CO 802181080", icon: "MapPin" },
-          { key: "npi", label: "NPI", value: "1700XXXXXX", icon: "ShieldCheck" },
-          { key: "taxonomy", label: "Taxonomy", value: "207W00000X — Ophthalmology", icon: "Briefcase" },
-        ],
+        id: "c1-s2",
+        qNum: "Q2",
+        prompt: "Confirm the page count. Tap directly on the 'END OF DATA' text where it already appears on the image, then confirm the page count.",
+        imageUrl: img1,
+        mechanic: "spot-tag",
+        scoutIntro: "Search complete! Let's check how long the results list is. Tap the 'END OF DATA' line directly on the image, then confirm the page count.",
+        scoutHint: "Look at the top left of the mainframe image under the search query. Tap 'END OF DATA.' then click Submit.",
+        correctAnswer: { tagTapped: true, pageCount: 1 },
+        data: {
+          totalPages: 1,
+          mainframeLines: [
+            "ASI QUERY RESULTS - CLIENT SEARCH",
+            "PAGE 1 OF 1",
+            "---------------------------------------",
+            "*** END OF DATA ***",
+          ],
+        },
       },
-    ],
-    questions: [
-      makeQ("l1q1", "Is this a CMS or UB hospital claim?", "CMS claim (Place of Service 24)", [
-        "UB hospital claim (inpatient)",
-        "UB hospital claim (outpatient)",
-        "Dental claim",
-      ]),
-      makeQ("l1q2", "When did Humana receive the claim?", "01/29/2025", [
-        "01/16/2025",
-        "01/27/2025",
-        "02/01/2025",
-      ]),
-      makeQ("l1q3", "What are the Dates of Service?", "01/16/2025", [
-        "01/29/2025",
-        "01/13/2025",
-        "08/22/1959",
-      ]),
-      makeQ("l1q4", "What is the Member's ID / UMID?", "H67409890", [
-        "H04052170",
-        "H67049980",
-        "H67400989",
-      ]),
-      makeQ("l1q5", "What is the Place of Service?", "24 — Ambulatory Surgical Center", [
-        "11 — Office",
-        "22 — Outpatient Hospital",
-        "21 — Inpatient Hospital",
-      ]),
-      makeQ("l1q6", "Who is the billing provider?", "PARK AVE OCULOPLASTIC SURGEONS PAOS", [
-        "TIM LONG MD PSC",
-        "DENVER EYE SURGEONS LLC",
-        "EMERSON OPHTHALMOLOGY PC",
-      ]),
-      makeQ("l1q7", "Who is the rendering provider?", "Yash, Vaishnav", [
-        "Timothy, Long",
-        "Vaishnav, Park",
-        "David, Griego",
-      ]),
-      makeQ("l1q8", "What is the tax ID number?", "201418623", [
-        "371420890",
-        "210148623",
-        "204118623",
-      ]),
-      makeQ("l1q9", "What is the billing provider's address?", "1800 Emerson Street, Suite 200, Denver, CO 802181080", [
-        "1320 Andrea St, Bowling Green, KY 421043334",
-        "1800 Emerson Street, Suite 100, Denver, CO 802181080",
-        "200 Park Avenue, New York, NY 100170000",
-      ]),
-      makeQ("l1q10", "How many services were billed?", "1 Line", [
-        "2 Lines",
-        "3 Lines",
-        "4 Lines",
-      ]),
-      makeQ("l1q11", "What is the charge amount of the first line item?", "$1,746.00", [
-        "$1,476.00",
-        "$746.00",
-        "$1,946.00",
-      ]),
-      makeQ("l1q12", "What is the diagnosis code?", "H02135", [
-        "Z23",
-        "H02315",
-        "H21035",
-      ]),
+      {
+        id: "c1-s3",
+        qNum: "Q3",
+        prompt: "Spot client 56. Visually scan the D-GRP column on the image and tap the row where it reads 56.",
+        imageUrl: img1,
+        mechanic: "hotspot-tally",
+        scoutIntro: "Audit time! Scan the D-GRP column on the real image. Tap the row that shows '56' to highlight it.",
+        scoutHint: "Look at Row 1 (first row). Its D-GRP value (below the names) is 56. Tap anywhere on Row 1.",
+        correctAnswer: 0, // Row 1 (index 0)
+        data: {
+          headers: ["ROW", "CLIENT", "NAME", "D-GRP", "M-GRP", "REL"],
+          rows: [
+            { rowNum: "01", client: "56", name: "JONES, MARKUS", dgrp: "56", mgrp: "0E2045", rel: "EE" },
+          ],
+        },
+      },
+      {
+        id: "c1-s4",
+        qNum: "Q4",
+        prompt: "Pull the group number. Tap the client-58 row (Row 2) on the image to zoom into it, then drag the correct M-GRP value from the tiles.",
+        imageUrl: img1,
+        mechanic: "field-detective",
+        scoutIntro: "Let's investigate Client 58's medical plan. Tap Row 2 on the image to zoom in, then drag the correct M-GRP value tile.",
+        scoutHint: "Row 2 (Client 58) has M-GRP = 0N2312. Drag the '0N2312' tile into the slot.",
+        correctAnswer: "0N2312",
+        data: {
+          targetRowIndex: 1, // row 02
+          targetColKey: "mgrp",
+          zoomLabel: "M-GRP for Client 58",
+          tiles: ["0E2045", "0N2312", "0N2311", "0E2046"],
+        },
+      },
+      {
+        id: "c1-s5",
+        qNum: "Q5",
+        prompt: "Pull the DOB. Tap the client-56 row (Row 1) on the image to zoom into it, then drag the correct DOB value from the tiles.",
+        imageUrl: img1,
+        mechanic: "field-detective",
+        scoutIntro: "We need the DOB for Client 56 to verify their age. Tap Row 1 on the image to zoom, then drag the correct DOB tile.",
+        scoutHint: "Look at Row 1 (Client 56) in the image. The DOB is 12/30/96. Drag the '12/30/96' tile.",
+        correctAnswer: "12/30/96",
+        data: {
+          targetRowIndex: 0, // row 01
+          targetColKey: "dob",
+          zoomLabel: "DOB for Client 56",
+          tiles: ["12/30/96", "03/16/95", "12/30/95", "03/16/96"],
+        },
+      },
+      {
+        id: "c1-s6",
+        qNum: "Q6",
+        prompt: "Match the relationship code. Scan the RL column for 'EE', then drag the 'EE' key chip onto Row 1 to decrypt and zoom its address.",
+        imageUrl: img1,
+        mechanic: "match-code",
+        scoutIntro: "Now let's check the primary cardholder. Drag the 'EE' relationship chip onto Row 1 to unlock the address clip from the image.",
+        scoutHint: "Drag or tap the 'EE' chip onto Row 1 (the first row) to decrypt and zoom into the address.",
+        correctAnswer: 0, // row 01
+        data: {
+          chipLabel: "EE",
+          unlockedAddress: "1404 MARCUS PL., AUSTIN TX 78721",
+        },
+      },
+      {
+        id: "c1-s7",
+        qNum: "Q7",
+        prompt: "Pick the right record. Compare both DOBs visible on the image, then swipe right (approve) on the card matching DOB 12/30/96.",
+        imageUrl: img1,
+        mechanic: "decision-swipe",
+        scoutIntro: "Almost there! Compare both DOBs on the image. Swipe RIGHT to approve the correct record (DOB 12/30/96), and swipe LEFT on the other.",
+        scoutHint: "Card A has DOB 12/30/96 (Markus L Jones). Swipe Card A RIGHT (Approve) and Card B LEFT (Reject).",
+        correctAnswer: "card-a",
+        data: {
+          cards: [
+            {
+              id: "card-a",
+              title: "Record A - Match Candidate",
+              name: "JONES, MARKUS L",
+              dob: "12/30/96",
+              umid: "999 97 4520",
+              address: "1404 MARCUS PL., AUSTIN TX 78721",
+            },
+            {
+              id: "card-b",
+              title: "Record B - Match Candidate",
+              name: "JONES, MARKUS S",
+              dob: "03/16/95",
+              umid: "437 17 6084",
+              address: "2715 DEER CREEK, ARLINGTON TX 760100702",
+            },
+          ],
+        },
+      },
     ],
   },
   {
-    id: "lvl-2",
+    id: "case-2",
     number: 2,
-    name: "Professional Claim — Case 2",
-    caseName: "GOAD, JAMES DAVID",
+    name: "Kentucky Keys",
+    caseName: "Kentucky Record Discernment",
+    description: "Search Kentucky member databases and audit suffixes and locations to locate a key regional claim.",
+    badge: "Record Detective",
+    xpValue: 150,
     outcomes: [
-      "Recognize an office-based (POS 11) professional claim",
-      "Distinguish total claim charge vs. first-line charge",
-      "Map provider info to TIN and address fields",
+      "Discern multiple record details under Kentucky regional codes",
+      "Pinpoint and verify Unique Member IDs (UMID)",
+      "Audit record suffixes (S) and identify blanks",
+      "Match regional geographical data to specific record cards",
     ],
-    images: [
+    steps: [
       {
-        title: "eHUB Transaction Viewer",
-        subtitle: "Professional Claim Summary",
-        patientName: "GOAD, JAMES DAVID",
-        claimType: "CMS — Professional",
-        imageUrl: lvl2Img1,
-        fields: [
-          { key: "umid", label: "Member UMID", value: "H04052170", icon: "IdCard" },
-          { key: "rcv", label: "Received Date", value: "01/27/2025", icon: "Inbox" },
-          { key: "dos", label: "Date of Service", value: "01/13/2025", icon: "CalendarDays" },
-          { key: "pos", label: "Place of Service", value: "11 — Office", icon: "Building2" },
-          { key: "lines", label: "Service Lines", value: "2 Lines", icon: "ListOrdered" },
-          { key: "line1", label: "Line 1 Charge", value: "$40.00", icon: "DollarSign" },
-          { key: "charge", label: "Total Charge", value: "$75.00", icon: "Wallet" },
-          { key: "dx", label: "Diagnosis Code", value: "Z23", icon: "Stethoscope" },
-        ],
+        id: "c2-s1",
+        qNum: "Q8",
+        imageUrl: img2,
+        prompt: "Tally the records. Count the 3 visible records on the image and tap each row as you count, then tap 'END OF DATA' to confirm.",
+        mechanic: "tally-tap",
+        scoutIntro: "Welcome to Kentucky! We have retrieved Markus Jones's regional records. Tap each of the 3 rows on the image to count them, then tap the 'END OF DATA.' text to confirm your tally.",
+        scoutHint: "Tap all three member rows on the mainframe image (Row 1, Row 2, Row 3). When the count is 3/3, tap 'END OF DATA.' at the top left.",
+        correctAnswer: 3,
+        data: {
+          targetTally: 3,
+        },
       },
       {
-        title: "837 — Provider Information",
-        subtitle: "Professional",
-        patientName: "GOAD, JAMES DAVID",
-        claimType: "Provider Block",
-        imageUrl: lvl2Img2,
-        fields: [
-          { key: "billing", label: "Billing Provider", value: "TIM LONG MD PSC", icon: "Hospital" },
-          { key: "rendering", label: "Rendering Provider", value: "Timothy, Long", icon: "UserRound" },
-          { key: "tax", label: "Tax ID (TIN)", value: "371420890", icon: "Hash" },
-          { key: "addr", label: "Billing Address", value: "1320 Andrea St, Bowling Green, KY 421043334", icon: "MapPin" },
-          { key: "npi", label: "NPI", value: "1234XXXXXX", icon: "ShieldCheck" },
-          { key: "taxonomy", label: "Taxonomy", value: "207R00000X — Internal Medicine", icon: "Briefcase" },
-        ],
+        id: "c2-s2",
+        qNum: "Q9",
+        imageUrl: img2,
+        prompt: "Find the UMID. Scan all 3 records for a UMID field on the image and tap the UMID where it appears.",
+        mechanic: "hotspot-tap",
+        scoutIntro: "One of the records contains a Unique Member ID (UMID) starting with 'H'. Locate the record containing it and tap on the UMID value directly on the image.",
+        scoutHint: "Look at the 3rd record (Row 3, Erlanger record). Under zip code/D-GRP on its 3rd line, there is the UMID 'H43303654'. Tap it.",
+        correctAnswer: "ky-3-umid",
+        data: {},
+      },
+      {
+        id: "c2-s3",
+        qNum: "Q10",
+        imageUrl: img2,
+        prompt: "Spot suffix 1. Scan the S (Suffix) column across the 3 rows on the image and tap the one showing '1'.",
+        mechanic: "hotspot-tap",
+        scoutIntro: "Let's check the suffixes. Find the suffix column 'S' and tap the row value that shows a suffix '1' on the image.",
+        scoutHint: "Look under the 'S' column header on Row 1. Tap the '1' showing right next to relationship 'CH'.",
+        correctAnswer: "ky-1-suffix",
+        data: {},
+      },
+      {
+        id: "c2-s4",
+        qNum: "Q11",
+        imageUrl: img2,
+        prompt: "Count blank suffixes. Tap every row on the image where the S column is empty (blank suffix), then click 'Confirm Suffix Count'.",
+        mechanic: "multi-select",
+        scoutIntro: "Now let's find the primary records that do NOT have a suffix. Tap all rows on the image where the suffix column 'S' is empty.",
+        scoutHint: "Row 2 (Winchester) and Row 3 (Erlanger) have empty suffix columns. Tap both on the image, then click 'Confirm Suffix Count'.",
+        correctAnswer: ["ky-2-suffix-blank", "ky-3-suffix-blank"],
+        data: {},
+      },
+      {
+        id: "c2-s5",
+        qNum: "Q12",
+        imageUrl: img2,
+        prompt: "Locate Erlanger. Read the 3 addresses on the image and drag the map-pin onto the one that says Erlanger, KY.",
+        mechanic: "map-pin",
+        scoutIntro: "A local claim has surfaced in Erlanger, Kentucky. Select and drop/tap the location dispatch pin onto the address showing Erlanger, KY on the image.",
+        scoutHint: "Look at Row 3. The city listed is ERLANGER. Tap the map pin below the image and drop/tap it on Row 3's address.",
+        correctAnswer: "ky-3",
+        data: {},
       },
     ],
-    questions: [
-      makeQ("l2q1", "Is this a CMS or UB hospital claim?", "CMS claim (Place of Service 11)", [
-        "UB hospital claim (inpatient)",
-        "UB hospital claim (outpatient)",
-        "Dental claim",
-      ]),
-      makeQ("l2q2", "When did Humana receive the claim?", "01/27/2025", [
-        "01/13/2025",
-        "01/29/2025",
-        "02/03/2025",
-      ]),
-      makeQ("l2q3", "What are the Dates of Service?", "01/13/2025", [
-        "01/27/2025",
-        "01/16/2025",
-        "01/30/2025",
-      ]),
-      makeQ("l2q4", "What is the Member's ID / UMID?", "H04052170", [
-        "H67409890",
-        "H40052170",
-        "H04025710",
-      ]),
-      makeQ("l2q5", "What is the Place of Service?", "11 — Office", [
-        "24 — Ambulatory Surgical Center",
-        "22 — Outpatient Hospital",
-        "21 — Inpatient Hospital",
-      ]),
-      makeQ("l2q6", "Who is the billing provider?", "TIM LONG MD PSC", [
-        "PARK AVE OCULOPLASTIC SURGEONS PAOS",
-        "BOWLING GREEN MEDICAL GROUP",
-        "ANDREA STREET CLINIC PSC",
-      ]),
-      makeQ("l2q7", "Who is the rendering provider?", "Timothy, Long", [
-        "Yash, Vaishnav",
-        "Long, Tim",
-        "James, Goad",
-      ]),
-      makeQ("l2q8", "What is the tax ID number?", "371420890", [
-        "201418623",
-        "317420890",
-        "371402890",
-      ]),
-      makeQ("l2q9", "What is the billing provider's address?", "1320 Andrea St, Bowling Green, KY 421043334", [
-        "1800 Emerson Street, Suite 200, Denver, CO 802181080",
-        "1320 Andrea St, Bowling Green, KY 421040000",
-        "1230 Andrea St, Bowling Green, KY 421043334",
-      ]),
-      makeQ("l2q10", "How many services were billed?", "2", [
-        "1",
-        "3",
-        "4",
-      ]),
-      makeQ("l2q11", "What is the charge amount of the first line item?", "$40.00", [
-        "$75.00",
-        "$35.00",
-        "$40.50",
-      ]),
-      makeQ("l2q12", "What is the diagnosis code?", "Z23", [
-        "H02135",
-        "Z32",
-        "Z03",
-      ]),
+  },
+  {
+    id: "case-3",
+    number: 3,
+    name: "The MRI Mission",
+    caseName: "MR Screen Navigation",
+    description: "Re-confirm the Erlanger record, then navigate to the Member Referral screen by ordering the correct steps and tapping the SELECT field.",
+    badge: "MRI Master",
+    xpValue: 180,
+    outcomes: [
+      "Re-identify the tracked Erlanger record (UMID H43303654)",
+      "Order the two navigation steps correctly",
+      "Read SELECT = 'MR' directly off the mainframe image",
+      "Tap the SELECT field on Image 3 to confirm navigation",
+    ],
+    steps: [
+      {
+        id: "c3-s1",
+        qNum: "Q13",
+        imageUrl: img3,
+        prompt: "Reach the MRI screen. First re-confirm the Erlanger record on Image 2, then order the navigation steps and tap the SELECT field on Image 3.",
+        mechanic: "mri-mission" as any,
+        scoutIntro: "Final mission! We tracked Markus Jones to Erlanger, KY. Let's re-confirm that record, then navigate to the MR screen.",
+        scoutHint: "Phase 1: Tap the Erlanger row on Image 2. Phase 2: Drag 'CAS Client' to Step 1 and 'MR Selection' to Step 2. Phase 3: Tap the SELECT field on Image 3 that reads 'MR'.",
+        correctAnswer: {
+          confirmRowId: "ky-3",
+          sequence: ["cas-client", "select-mr"],
+          selectField: "MR",
+        },
+        data: {
+          img2: img2,
+          img3: img3,
+          sequenceSteps: [
+            { id: "cas-client",   text: "Go to the appropriate CAS client" },
+            { id: "select-mr",    text: "Do the MR selection" },
+            { id: "view-claims",  text: "Review open claims list" },
+          ],
+        },
+      },
     ],
   },
 ];
+
