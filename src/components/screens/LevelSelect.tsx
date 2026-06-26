@@ -25,10 +25,10 @@ export function LevelSelect() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+    <div className="h-full w-full bg-black/30 flex items-center justify-center p-4 overflow-y-auto">
       <AnimatePresence>
         <motion.div
-          className="relative w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden flex"
+          className="relative w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col sm:flex-row my-auto"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
@@ -36,7 +36,7 @@ export function LevelSelect() {
         >
           {/* Left panel – Scout avatar */}
           <motion.div
-            className="w-48 bg-[#E9F8F0] flex items-center justify-center p-4"
+            className="sm:w-48 bg-[#E9F8F0] flex items-center justify-center p-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}

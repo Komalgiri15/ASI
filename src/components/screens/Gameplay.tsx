@@ -308,7 +308,7 @@ function Case1InteractiveBoard({
           {/* Viewport */}
           <div
             ref={containerRef}
-            className="relative w-full aspect-video bg-black overflow-hidden cursor-grab active:cursor-grabbing"
+            className="relative w-full aspect-video min-h-[200px] bg-black overflow-hidden cursor-grab active:cursor-grabbing"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -512,110 +512,169 @@ function Case1InteractiveBoard({
               </div>
             )}
 
-            {/* Q2 */}
+            {/* Q2 — rendered terminal lines, click END OF DATA */}
             {step.id === "c1-s2" && (
               <div className="flex flex-col gap-3">
-                {!spotTagTapped ? (
-                  <div className="flex flex-col items-center gap-3 text-center py-4">
-                    <div className="text-4xl">🔍</div>
-                    <p className="text-sm text-emerald-200 font-medium">Tap the <strong className="text-yellow-300">*** END OF DATA ***</strong> text highlighted on the image.</p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col gap-3">
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the END OF DATA line below:</p>
+                <div className="bg-black/60 border border-emerald-500/20 rounded-xl p-3 font-mono text-xs flex flex-col gap-1">
+                  {step.data.mainframeLines.map((line: string, i: number) => {
+                    const isTarget = line.includes("END OF DATA");
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => isTarget && setSpotTagTapped(true)}
+                        className={`text-left px-2 py-1.5 rounded transition w-full ${
+                          isTarget
+                            ? spotTagTapped
+                              ? "bg-emerald-500/30 text-emerald-300 border border-emerald-500/50"
+                              : "text-yellow-300 hover:bg-yellow-400/10 border border-dashed border-yellow-400/40 cursor-pointer animate-pulse"
+                            : "text-emerald-400/60 cursor-default"
+                        }`}
+                      >
+                        {line}
+                      </button>
+                    );
+                  })}
+                </div>
+                {spotTagTapped && (
+                  <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3">
                     <div className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-3">
-                      <Check className="w-5 h-5 text-emerald-400 shrink-0" />
-                      <span className="text-sm font-bold text-emerald-200">END OF DATA found!</span>
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="text-sm font-bold text-emerald-200">END OF DATA tagged!</span>
                     </div>
-                    <div className="bg-black/30 border border-white/10 rounded-xl p-3 text-center">
-                      <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Pages Counted</div>
-                      <div className="text-4xl font-black text-white font-mono">1</div>
+                    <div className="bg-black/30 border border-white/10 rounded-xl p-3 flex items-center justify-between">
+                      <span className="text-xs text-white/50 uppercase tracking-wider">Total Pages</span>
+                      <span className="text-2xl font-black text-white font-mono">1</span>
                     </div>
-                    <button onClick={handleSpotTagSubmit} className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer transition">Confirm & Submit</button>
-                  </div>
+                    <button onClick={handleSpotTagSubmit} className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer transition">
+                      Confirm Page Count
+                    </button>
+                  </motion.div>
                 )}
               </div>
             )}
 
-            {/* Q3 */}
+            {/* Q3 — interactive scannable table, click the correct row */}
             {step.id === "c1-s3" && (
-              <div className="flex flex-col gap-3 py-4 text-center">
-                <div className="text-4xl">🖱️</div>
-                <p className="text-sm text-emerald-200 font-medium">Scan the <strong className="text-yellow-300">D-GRP column</strong> on the image.</p>
-                <p className="text-sm text-white/70">Tap the row where <strong className="text-white">D-GRP = 56</strong>.</p>
+              <div className="flex flex-col gap-3">
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the row where D-GRP = 56:</p>
+                <div className="rounded-xl overflow-hidden border border-white/10">
+                  {/* Header */}
+                  <div className="grid grid-cols-5 bg-emerald-900/60 text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
+                    {["ROW", "CLIENT", "NAME", "D-GRP", "M-GRP"].map(h => <span key={h}>{h}</span>)}
+                  </div>
+                  {/* Row 1 — correct */}
+                  <button onClick={() => dispatch({ type: "RECORD_SUCCESS" })}
+                    className="w-full grid grid-cols-5 items-center px-3 py-3 bg-white/5 hover:bg-emerald-500/15 border-t border-white/5 text-left transition cursor-pointer group">
+                    <span className="text-white/50 font-mono text-xs">01</span>
+                    <span className="text-white font-mono text-xs font-bold">56</span>
+                    <span className="text-emerald-200 font-mono text-xs truncate">JONES, M</span>
+                    <span className="text-yellow-300 font-mono text-sm font-black">56</span>
+                    <span className="text-white/40 font-mono text-xs">0E2045</span>
+                  </button>
+                  {/* Row 2 — wrong */}
+                  <button onClick={() => dispatch({ type: "RECORD_ERROR" })}
+                    className="w-full grid grid-cols-5 items-center px-3 py-3 bg-white/5 hover:bg-red-500/10 border-t border-white/5 text-left transition cursor-pointer">
+                    <span className="text-white/50 font-mono text-xs">02</span>
+                    <span className="text-white font-mono text-xs font-bold">58</span>
+                    <span className="text-emerald-200 font-mono text-xs truncate">JONES, M</span>
+                    <span className="text-white/40 font-mono text-sm font-black">58</span>
+                    <span className="text-white/40 font-mono text-xs">0N2312</span>
+                  </button>
+                </div>
+                <p className="text-xs text-white/40 text-center">Select the row matching the claim</p>
               </div>
             )}
 
-            {/* Q4 */}
+            {/* Q4 — record card direct pick, no zoom gate */}
             {step.id === "c1-s4" && (
               <div className="flex flex-col gap-3">
-                {rowZoomed !== 2 ? (
-                  <div className="flex flex-col items-center gap-3 text-center py-4">
-                    <div className="text-4xl">🔎</div>
-                    <p className="text-sm text-emerald-200 font-medium">Tap <strong className="text-yellow-300">Row 2</strong> on the image to zoom into Client 58.</p>
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
+                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 58 — Row 02</div>
+                  <div className="flex justify-between"><span className="text-white/50">CLIENT</span><span className="text-white font-bold">58</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">D-GRP</span><span className="text-white font-bold">58</span></div>
+                  <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
+                    <span className="text-yellow-300 font-bold">M-GRP</span>
+                    <span className="text-white/30 italic text-[11px]">← select below</span>
                   </div>
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    <p className="text-sm text-emerald-200 font-medium">Select the correct <strong className="text-yellow-300">M-GRP</strong> for Client 58:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {step.data.tiles.map((tile: string) => (
-                        <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
-                          className="bg-white/10 hover:bg-emerald-600/40 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3.5 text-sm font-bold transition font-mono cursor-pointer">
-                          {tile}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                </div>
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the correct M-GRP:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {step.data.tiles.map((tile: string) => (
+                    <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
+                      className="bg-white/10 hover:bg-emerald-600/40 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3 text-sm font-bold font-mono transition cursor-pointer">
+                      {tile}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
-            {/* Q5 */}
+            {/* Q5 — record card direct pick, no zoom gate */}
             {step.id === "c1-s5" && (
               <div className="flex flex-col gap-3">
-                {rowZoomed !== 1 ? (
-                  <div className="flex flex-col items-center gap-3 text-center py-4">
-                    <div className="text-4xl">🔎</div>
-                    <p className="text-sm text-emerald-200 font-medium">Tap <strong className="text-yellow-300">Row 1</strong> on the image to zoom into Client 56.</p>
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
+                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 56 — Row 01</div>
+                  <div className="flex justify-between"><span className="text-white/50">CLIENT</span><span className="text-white font-bold">56</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS L</span></div>
+                  <div className="flex justify-between"><span className="text-white/50">M-GRP</span><span className="text-white font-bold">0E2045</span></div>
+                  <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
+                    <span className="text-yellow-300 font-bold">DOB</span>
+                    <span className="text-white/30 italic text-[11px]">← select below</span>
                   </div>
-                ) : (
-                  <div className="flex flex-col gap-3">
-                    <p className="text-sm text-emerald-200 font-medium">Select the correct <strong className="text-yellow-300">DOB</strong> for Client 56:</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {step.data.tiles.map((tile: string) => (
-                        <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
-                          className="bg-white/10 hover:bg-emerald-600/40 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3.5 text-sm font-bold transition font-mono cursor-pointer">
-                          {tile}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                </div>
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the correct DOB:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {step.data.tiles.map((tile: string) => (
+                    <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
+                      className="bg-white/10 hover:bg-emerald-600/40 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3 text-sm font-bold font-mono transition cursor-pointer">
+                      {tile}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
-            {/* Q6 */}
+            {/* Q6 — row card with blank RL field + relationship code buttons */}
             {step.id === "c1-s6" && (
               <div className="flex flex-col gap-3">
                 {codeChipMatched ? (
-                  <div className="flex flex-col gap-2">
+                  <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-2">
                     <div className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-3">
-                      <Check className="w-5 h-5 text-emerald-400 shrink-0" />
-                      <span className="text-sm font-bold text-emerald-200">Address unlocked!</span>
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="text-sm font-bold text-emerald-200">Relationship matched!</span>
                     </div>
-                    <div className="bg-black/30 border border-emerald-500/30 rounded-xl p-3 text-xs text-emerald-300 font-mono">{step.data.unlockedAddress}</div>
-                  </div>
+                    <div className="bg-black/40 border border-emerald-500/20 rounded-xl p-3 font-mono text-xs space-y-1">
+                      <div className="flex justify-between"><span className="text-white/50">RL CODE</span><span className="text-emerald-300 font-bold">EE — Employee</span></div>
+                      <div className="flex justify-between"><span className="text-white/50">ADDRESS</span><span className="text-emerald-200 font-bold text-[11px]">{step.data.unlockedAddress}</span></div>
+                    </div>
+                  </motion.div>
                 ) : (
-                  <div className="flex flex-col gap-3">
-                    <p className="text-sm text-emerald-200 font-medium">
-                      1. Select the <strong className="text-yellow-300">EE chip</strong> below<br/>
-                      2. Tap the <strong className="text-yellow-300">RL cell</strong> on Row 1 of the image.
-                    </p>
-                    <button onClick={() => { setActiveChipSelected(true); autoZoomTo(0.5, 0.35, 1.8); }}
-                      className={`w-full flex items-center justify-center gap-2 rounded-xl font-mono text-xl font-extrabold py-4 border cursor-pointer transition ${activeChipSelected ? "bg-emerald-600 border-emerald-500 text-white ring-2 ring-emerald-400" : "bg-[#25BB64] border-emerald-500 text-white animate-bounce"}`}>
-                      {step.data.chipLabel}
-                      {activeChipSelected && <span className="text-xs font-normal opacity-80">→ tap RL on image</span>}
-                    </button>
-                  </div>
+                  <>
+                    {/* Record card with blank RL slot */}
+                    <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
+                      <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 56 — Row 01</div>
+                      <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS L</span></div>
+                      <div className="flex justify-between"><span className="text-white/50">D-GRP</span><span className="text-white font-bold">56</span></div>
+                      <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
+                        <span className="text-yellow-300 font-bold">RL (Relationship)</span>
+                        <span className="border border-dashed border-yellow-400/60 text-yellow-300 px-2 py-0.5 rounded text-[11px] animate-pulse">?</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the relationship code:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {["EE", "SP", "CH", "DP"].map(code => (
+                        <button key={code} onClick={() => code === "EE" ? handleMatchCodeRowClick(0) : dispatch({ type: "RECORD_ERROR" })}
+                          className="bg-white/10 hover:bg-emerald-600/30 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3 text-sm font-bold font-mono transition cursor-pointer flex flex-col items-center gap-0.5">
+                          <span className="text-base">{code}</span>
+                          <span className="text-[9px] text-white/40 uppercase tracking-wider">
+                            {code === "EE" ? "Employee" : code === "SP" ? "Spouse" : code === "CH" ? "Child" : "Domestic"}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             )}
@@ -745,26 +804,25 @@ function Case2InteractiveBoard({
   const allRowsTallied = tallyTapCount.length >= 3;
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none relative flex flex-col">
+    <div className="flex flex-col gap-0">
+      <div className="flex flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
-        {/* Title bar */}
-        <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-            <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD VIEW — KENTUCKY PORTAL</span>
+        {/* ── LEFT: image viewport ── */}
+        <div className="flex flex-col lg:flex-[3] min-w-0">
+          <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
+              <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD — KENTUCKY PORTAL</span>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
-          <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
-        </div>
-
-        {/* Viewport */}
-        <div
-          ref={containerRef}
-          className="relative w-full aspect-[16/9] bg-black overflow-hidden cursor-grab active:cursor-grabbing shrink-0"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        >
+           <div
+            ref={containerRef}
+            className="relative w-full aspect-[16/9] min-h-[200px] bg-black overflow-hidden cursor-grab active:cursor-grabbing shrink-0"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          >
           {/* Zoomable wrapper */}
           <div
             className="w-full h-full relative"
@@ -1012,144 +1070,216 @@ function Case2InteractiveBoard({
           </div>
 
           {/* Zoom controls */}
-          <div className="absolute top-3 right-3 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 hover:bg-black/90 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-7 h-7">
-              <Minus className="w-3.5 h-3.5" />
-            </button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 hover:bg-black/90 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-7 h-7">
-              <Plus className="w-3.5 h-3.5" />
-            </button>
-            <button onClick={resetZoom} className="bg-black/70 hover:bg-black/90 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-7 flex items-center justify-center">Reset</button>
+          <div className="absolute top-2 right-2 flex items-center gap-1">
+            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Minus className="w-3 h-3" /></button>
+            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Plus className="w-3 h-3" /></button>
+            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-6 flex items-center">Reset</button>
           </div>
+          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
+        </div>{/* end viewport */}
+        </div>{/* end LEFT col */}
 
-          <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-md text-[9px] font-mono text-emerald-350 border border-white/10">
-            🖱️ Drag to pan • Buttons to zoom
+        {/* ── RIGHT: answer panel ── */}
+        <div className="lg:w-72 xl:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827] flex flex-col">
+          <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">{step.qNum}</span>
+            <span className="text-sm font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
           </div>
-        </div>
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
 
-        {/* Step-specific Controls Drawer */}
-        <div className="bg-emerald-950/20 border-t border-emerald-600/20 p-4 font-sans text-slate-800 text-left shrink-0">
-
-          {/* Q8 */}
-          {step.id === "c2-s1" && (
-            <div className="flex flex-col items-center gap-2">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-sm font-extrabold text-emerald-900">
-                  Tally: <span className="text-emerald-600">{tallyTapCount.length}</span> / 3
-                </span>
-                {[0, 1, 2].map(i => (
-                  <span key={i} className={`h-7 w-7 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all ${
-                    i < tallyTapCount.length
-                      ? "bg-emerald-500 border-emerald-600 text-white"
-                      : "border-emerald-300 text-slate-400"
-                  }`}>
-                    {i < tallyTapCount.length ? "✓" : i + 1}
-                  </span>
-                ))}
-              </div>
-              {allRowsTallied ? (
-                <div className="text-xs font-bold text-emerald-800 animate-pulse text-center">
-                  ✅ All 3 rows counted! Tap <strong>"END OF DATA."</strong> on the image above to confirm.
-                </div>
-              ) : (
-                <div className="text-xs text-slate-500 text-center font-medium">
-                  👆 Tap each of the 3 member rows on the image above to count them.
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Q9 */}
-          {step.id === "c2-s2" && (
-            <div className="flex flex-col items-center gap-2">
-              <div className="text-xs font-medium text-slate-600 text-center">
-                🔍 Scan the 3 records for a <strong>UMID</strong> starting with <code className="bg-emerald-100 px-1 rounded text-emerald-800">H</code>. Tap directly on it in the image.
-              </div>
-              {hotspotTapMatches.includes("ky-3-umid") && (
-                <div className="text-xs text-emerald-800 font-bold">✅ UMID <code className="bg-emerald-100 px-1 rounded">H43303654</code> located on Row 3 (Erlanger record)!</div>
-              )}
-            </div>
-          )}
-
-          {/* Q10 */}
-          {step.id === "c2-s3" && (
-            <div className="flex flex-col items-center gap-2">
-              <div className="text-xs font-medium text-slate-600 text-center">
-                🔍 Look at the <strong>S</strong> (Suffix) column on the image. Tap the row showing <strong>"1"</strong>.
-              </div>
-              {hotspotTapMatches.includes("ky-1-suffix") && (
-                <div className="text-xs text-emerald-800 font-bold">✅ Suffix "1" found on Row 1 (Mount Sterling record)!</div>
-              )}
-            </div>
-          )}
-
-          {/* Q11 */}
-          {step.id === "c2-s4" && (
-            <div className="flex flex-col items-center gap-3">
-              <div className="text-xs font-medium text-slate-600 text-center">
-                👆 Tap all rows with a <strong>blank</strong> S column (no suffix number). Then click Confirm.
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-sm font-extrabold text-emerald-900">
-                  Selected: <span className="text-emerald-600">{multiSelectSelected.length}</span>
-                </span>
-                {["ky-2-suffix-blank", "ky-3-suffix-blank"].map(id => (
-                  <span key={id} className={`text-[10px] font-bold px-2 py-0.5 rounded-full border transition ${
-                    multiSelectSelected.includes(id)
-                      ? "bg-emerald-500 text-white border-emerald-600"
-                      : "border-slate-300 text-slate-400"
-                  }`}>
-                    {id === "ky-2-suffix-blank" ? "Row 2" : "Row 3"}
-                  </span>
-                ))}
-              </div>
-              <button
-                disabled={multiSelectSelected.length < 2}
-                onClick={handleMultiSelectSubmit}
-                className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-8 text-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md"
-              >
-                Confirm Suffix Count ({multiSelectSelected.length})
-              </button>
-            </div>
-          )}
-
-          {/* Q12 */}
-          {step.id === "c2-s5" && (
-            <div className="flex flex-col items-center gap-3">
-              {pinDroppedCardId === "ky-3" ? (
-                <div className="text-xs text-emerald-800 font-bold text-center">
-                  ✅ Map pin placed on Erlanger, KY — Row 3 (Commonwealth of Kentucky record)!
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-2">
-                  <div className="text-xs text-slate-600 font-medium text-center">
-                    Tap the pin to select it, then tap the <strong>Erlanger, KY</strong> address row on the image above.
+            {/* Q8 — checkbox list of 3 records */}
+            {step.id === "c2-s1" && (() => {
+              const records = [
+                { id: "ky-1", city: "Mount Sterling, KY", name: "JONES, MARKUS", client: "56" },
+                { id: "ky-2", city: "Winchester, KY",     name: "JONES, MARKUS", client: "56" },
+                { id: "ky-3", city: "Erlanger, KY",       name: "JONES, MARKUS", client: "56" },
+              ];
+              const allChecked = records.every(r => tallyTapCount.includes(r.id));
+              return (
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Check off each record found:</p>
+                  <div className="flex flex-col gap-2">
+                    {records.map((r, i) => {
+                      const checked = tallyTapCount.includes(r.id);
+                      return (
+                        <button key={r.id}
+                          onClick={() => { if (!checked) { const u = [...tallyTapCount, r.id]; setTallyTapCount(u); } }}
+                          className={`flex items-center gap-3 rounded-xl border p-3 text-left transition cursor-pointer ${checked ? "border-emerald-500/60 bg-emerald-500/15" : "border-white/10 bg-white/5 hover:bg-white/10"}`}>
+                          <div className={`h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 transition ${checked ? "bg-emerald-500 border-emerald-500" : "border-white/30"}`}>
+                            {checked && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                          <div>
+                            <div className="text-xs font-bold text-white font-mono">Record {i + 1}</div>
+                            <div className="text-[11px] text-emerald-300">{r.city}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
-                  <button
-                    onClick={() => {
-                      setPinSelected(true);
-                      autoZoomTo(0.35, 0.62, 1.8);
-                    }}
-                    className={`h-14 w-14 flex flex-col items-center justify-center rounded-xl font-mono text-xs font-extrabold shadow-md border cursor-pointer transition gap-0.5 ${
-                      pinSelected
-                        ? "bg-emerald-600 border-emerald-700 text-white ring-2 ring-emerald-400 scale-105"
-                        : "bg-[#25BB64] border-emerald-600 text-white animate-bounce"
-                    }`}
-                  >
-                    <MapPin className="w-5 h-5" />
-                    <span className="text-[8px]">PIN</span>
-                  </button>
-                  {pinSelected && (
-                    <div className="text-[10px] text-emerald-700 font-bold animate-pulse">
-                      📍 Pin active — tap the Erlanger address on the image!
-                    </div>
+                  <div className="flex items-center justify-between bg-black/30 rounded-xl px-3 py-2">
+                    <span className="text-xs text-white/50 uppercase tracking-wider">Count</span>
+                    <span className="font-mono font-black text-white text-lg">{tallyTapCount.length} / 3</span>
+                  </div>
+                  {allChecked && (
+                    <button onClick={() => { setSpotTagTapped(true); setTimeout(() => dispatch({ type: "RECORD_SUCCESS" }), 500); }}
+                      className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer transition">
+                      Confirm Count (3 Records)
+                    </button>
                   )}
                 </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+              );
+            })()}
+
+            {/* Q9 — scan cards, click UMID on correct card */}
+            {step.id === "c2-s2" && (() => {
+              const cards = [
+                { id: "ky-1", label: "Record 1 — Mount Sterling", umid: null,         suffix: "1", rel: "CH" },
+                { id: "ky-2", label: "Record 2 — Winchester",     umid: null,         suffix: "",  rel: "EE" },
+                { id: "ky-3", label: "Record 3 — Erlanger",       umid: "H43303654",  suffix: "",  rel: "EE" },
+              ];
+              const found = hotspotTapMatches.includes("ky-3-umid");
+              return (
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the UMID starting with "H":</p>
+                  <div className="flex flex-col gap-2">
+                    {cards.map(c => (
+                      <div key={c.id} className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
+                        <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-1">{c.label}</div>
+                        <div className="flex justify-between"><span className="text-white/40">SUFFIX (S)</span><span className="text-white">{c.suffix || "—"}</span></div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-white/40">UMID</span>
+                          {c.umid ? (
+                            <button onClick={() => !found && handleHotspotFieldTap("ky-3-umid")}
+                              className={`px-2 py-0.5 rounded font-bold border transition cursor-pointer text-xs ${found ? "bg-emerald-500/30 border-emerald-500/60 text-emerald-300" : "bg-yellow-400/10 border-yellow-400/50 text-yellow-300 hover:bg-yellow-400/20 animate-pulse"}`}>
+                              {c.umid}
+                            </button>
+                          ) : (
+                            <span className="text-white/20 italic">—</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {found && <div className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-3"><Check className="w-4 h-4 text-emerald-400 shrink-0" /><span className="text-sm font-bold text-emerald-200">UMID H43303654 confirmed!</span></div>}
+                </div>
+              );
+            })()}
+
+            {/* Q10 — suffix column table, click the cell showing "1" */}
+            {step.id === "c2-s3" && (() => {
+              const rows = [
+                { id: "ky-1", label: "Row 1 — Mount Sterling", suffix: "1" },
+                { id: "ky-2", label: "Row 2 — Winchester",     suffix: "" },
+                { id: "ky-3", label: "Row 3 — Erlanger",       suffix: "" },
+              ];
+              const found = hotspotTapMatches.includes("ky-1-suffix");
+              return (
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the suffix value "1":</p>
+                  <div className="rounded-xl overflow-hidden border border-white/10">
+                    <div className="grid grid-cols-3 bg-emerald-900/60 text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
+                      <span>Row</span><span>Location</span><span className="text-center">S (Suffix)</span>
+                    </div>
+                    {rows.map(r => (
+                      <div key={r.id} className="grid grid-cols-3 items-center px-3 py-2.5 border-t border-white/5 bg-white/5">
+                        <span className="text-white/50 font-mono text-xs">{r.id.replace("ky-", "")}</span>
+                        <span className="text-emerald-200 font-mono text-xs">{r.label.split("—")[1].trim()}</span>
+                        <div className="flex justify-center">
+                          {r.suffix ? (
+                            <button onClick={() => !found && handleHotspotFieldTap("ky-1-suffix")}
+                              className={`w-8 h-8 rounded-lg font-mono font-black text-sm border transition cursor-pointer ${found ? "bg-emerald-500/30 border-emerald-500/60 text-emerald-300" : "bg-yellow-400/15 border-yellow-400/50 text-yellow-300 hover:bg-yellow-400/25 animate-pulse"}`}>
+                              {r.suffix}
+                            </button>
+                          ) : (
+                            <span className="text-white/20 font-mono text-xs">—</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {found && <div className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-3"><Check className="w-4 h-4 text-emerald-400 shrink-0" /><span className="text-sm font-bold text-emerald-200">Suffix "1" found on Row 1!</span></div>}
+                </div>
+              );
+            })()}
+
+            {/* Q11 — multi-select checkboxes for blank suffix rows */}
+            {step.id === "c2-s4" && (() => {
+              const rows = [
+                { id: "ky-1-suffix-blank", label: "Row 1 — Mount Sterling", suffix: "1",  isBlank: false },
+                { id: "ky-2-suffix-blank", label: "Row 2 — Winchester",     suffix: "—", isBlank: true  },
+                { id: "ky-3-suffix-blank", label: "Row 3 — Erlanger",       suffix: "—", isBlank: true  },
+              ];
+              return (
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select all rows with a blank suffix:</p>
+                  <div className="flex flex-col gap-2">
+                    {rows.map(r => {
+                      const selected = multiSelectSelected.includes(r.id);
+                      return (
+                        <button key={r.id}
+                          onClick={() => {
+                            if (r.isBlank) {
+                              setMultiSelectSelected(prev => selected ? prev.filter(x => x !== r.id) : [...prev, r.id]);
+                            } else {
+                              dispatch({ type: "RECORD_ERROR" });
+                            }
+                          }}
+                          className={`flex items-center gap-3 rounded-xl border p-3 text-left transition cursor-pointer ${selected ? "border-emerald-500/60 bg-emerald-500/15" : "border-white/10 bg-white/5 hover:bg-white/10"}`}>
+                          <div className={`h-5 w-5 rounded border-2 flex items-center justify-center shrink-0 ${selected ? "bg-emerald-500 border-emerald-500" : "border-white/30"}`}>
+                            {selected && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-xs font-bold text-white">{r.label}</div>
+                            <div className="text-[11px] text-white/40 font-mono">S = {r.suffix}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <button disabled={multiSelectSelected.length < 2} onClick={handleMultiSelectSubmit}
+                    className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition">
+                    Confirm ({multiSelectSelected.length} selected)
+                  </button>
+                </div>
+              );
+            })()}
+
+            {/* Q12 — address card picker */}
+            {step.id === "c2-s5" && (() => {
+              const addresses = [
+                { id: "ky-1", city: "MOUNT STERLING, KY 40353", street: "1248 MAIN ST" },
+                { id: "ky-2", city: "WINCHESTER, KY 40391",     street: "502 BYPASS RD" },
+                { id: "ky-3", city: "ERLANGER, KY 41018",       street: "321 COMMONWEALTH AVE" },
+              ];
+              return (
+                <div className="flex flex-col gap-3">
+                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger, KY address:</p>
+                  <div className="flex flex-col gap-2">
+                    {addresses.map(a => {
+                      const picked = pinDroppedCardId === a.id;
+                      return (
+                        <button key={a.id} onClick={() => handleMapPinDrop(a.id)}
+                          className={`flex items-start gap-3 rounded-xl border p-3 text-left transition cursor-pointer ${
+                            picked
+                              ? a.id === "ky-3" ? "border-emerald-500/60 bg-emerald-500/15" : "border-red-500/40 bg-red-500/10"
+                              : "border-white/10 bg-white/5 hover:bg-white/10"
+                          }`}>
+                          <MapPin className={`w-4 h-4 mt-0.5 shrink-0 ${picked ? a.id === "ky-3" ? "text-emerald-400" : "text-red-400" : "text-white/30"}`} />
+                          <div>
+                            <div className="text-xs font-bold text-white font-mono">{a.street}</div>
+                            <div className="text-[11px] text-emerald-300 font-mono">{a.city}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+          </div>
+        </div>{/* end RIGHT */}
+      </div>{/* end side-by-side */}
     </div>
   );
 }
@@ -1270,57 +1400,38 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Phase badge strip */}
+      {/* Phase strip */}
       <div className="flex items-center gap-2 px-1">
         {([1, 2, 3] as const).map(p => (
           <div key={p} className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border transition-all ${
-            phase === p
-              ? "bg-emerald-600 text-white border-emerald-700 shadow-md"
-              : phase > p
-                ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-                : "bg-white text-slate-400 border-slate-200"
+            phase === p ? "bg-emerald-600 text-white border-emerald-700 shadow-md"
+              : phase > p ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+              : "bg-white text-slate-400 border-slate-200"
           }`}>
             {phase > p ? "✓" : p}
-            <span>{p === 1 ? "Confirm Record" : p === 2 ? "Order Steps" : "Tap SELECT"}</span>
+            <span>{p === 1 ? "Confirm Record" : p === 2 ? "Order Steps" : "Select MR"}</span>
           </div>
         ))}
       </div>
 
-      {/* Image board */}
-      <div className="bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none relative flex flex-col">
+      {/* Side-by-side board */}
+      <div className="flex flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
-        {/* Title bar */}
-        <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-            <span className="text-xs font-bold font-mono tracking-wider">
-              ASI MAINBOARD — {phase === 1 ? "KENTUCKY PORTAL (RECALL)" : "MR NAVIGATION"}
-            </span>
+        {/* LEFT: image */}
+        <div className="flex flex-col lg:flex-[3] min-w-0">
+          <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 border-b border-emerald-800 shrink-0">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
+              <span className="text-xs font-bold font-mono tracking-wider">
+                ASI MAINBOARD — {phase === 1 ? "KENTUCKY RECALL" : "MR NAVIGATION"}
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
-          <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
-        </div>
-
-        {/* Viewport */}
-        <div
-          ref={containerRef}
-          className="relative w-full aspect-[16/9] bg-black overflow-hidden cursor-grab active:cursor-grabbing shrink-0"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        >
-          <div
-            className="w-full h-full relative"
-            style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              transformOrigin: "center center",
-              transition: isDragging ? "none" : "transform 0.15s ease-out",
-            }}
-          >
-            <img
-              src={currentImage}
-              alt={phase === 1 ? "Kentucky Mainframe" : "MR Screen"}
-              className="w-full h-full object-contain pointer-events-none select-none"
-            />
+          <div ref={containerRef} className="relative w-full aspect-video bg-black overflow-hidden cursor-grab active:cursor-grabbing"
+            onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
+            <div className="w-full h-full relative" style={{ transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`, transformOrigin: "center center", transition: isDragging ? "none" : "transform 0.15s ease-out" }}>
+              <img src={currentImage} alt="Mainframe" className="w-full h-full object-contain pointer-events-none select-none" />
 
             {/* Phase 1: Erlanger (Row 3) highlight on Image 2 */}
             {phase === 1 && (
@@ -1415,114 +1526,125 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
           </div>
 
           {/* Zoom controls */}
-          <div className="absolute top-3 right-3 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 hover:bg-black/90 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-7 h-7"><Minus className="w-3.5 h-3.5" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 hover:bg-black/90 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-7 h-7"><Plus className="w-3.5 h-3.5" /></button>
-            <button onClick={resetZoom} className="bg-black/70 hover:bg-black/90 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-7 flex items-center justify-center">Reset</button>
+          <div className="absolute top-2 right-2 flex items-center gap-1">
+            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Minus className="w-3 h-3" /></button>
+            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Plus className="w-3 h-3" /></button>
+            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-6 flex items-center">Reset</button>
           </div>
-          <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-md text-[9px] font-mono text-emerald-350 border border-white/10">
-            🖱️ Drag to pan • Buttons to zoom
+          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
+        </div>{/* end viewport */}
+        </div>{/* end LEFT */}
+
+        {/* RIGHT: answer panel */}
+        <div className="lg:w-72 xl:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827] flex flex-col">
+          <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">{step.qNum}</span>
+            <span className="text-sm font-bold text-emerald-200 uppercase tracking-wide">
+              {phase === 1 ? "Confirm Record" : phase === 2 ? "Order Steps" : "Select Navigation"}
+            </span>
           </div>
-        </div>
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
 
-        {/* Controls drawer */}
-        <div className="bg-emerald-950/20 border-t border-emerald-600/20 p-4 font-sans text-slate-800 text-left shrink-0">
-
-          {/* Phase 1 instructions */}
-          {phase === 1 && (
-            <div className="flex flex-col items-center gap-2 text-center">
-              <p className="text-xs text-slate-600 font-medium max-w-sm">
-                🔍 We tracked Markus Jones to Erlanger, KY with UMID <code className="bg-emerald-100 px-1 rounded text-emerald-800 font-mono">H43303654</code>.<br />
-                Tap the <strong>Erlanger row</strong> (Row 3) on the image above to re-confirm before navigating.
-              </p>
-            </div>
-          )}
-
-          {/* Phase 2: Sequence drag-and-drop */}
-          {phase === 2 && (
-            <div className="flex flex-col items-center gap-4 w-full">
-              <p className="text-xs text-slate-600 font-medium text-center">
-                📋 Drag the steps into the correct order. Then click <strong>Confirm Order</strong>.
-              </p>
-
-              {/* Two numbered drop slots */}
-              <div className="flex flex-col gap-2 w-full max-w-sm">
-                {[0, 1].map(slotIdx => (
-                  <div
-                    key={slotIdx}
-                    onDragOver={e => e.preventDefault()}
-                    onDrop={() => handleSlotDrop(slotIdx)}
-                    className={`flex items-center gap-3 rounded-xl border-2 px-3 py-2.5 transition-all min-h-[44px] ${
-                      seqSlots[slotIdx]
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-dashed border-emerald-300 bg-emerald-50/50 hover:bg-emerald-100/50"
-                    }`}
-                  >
-                    <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-extrabold shrink-0 ${
-                      seqSlots[slotIdx] ? "bg-emerald-500 text-white" : "bg-emerald-200 text-emerald-700"
+            {/* Phase 1 — record confirm cards */}
+            {phase === 1 && (
+              <div className="flex flex-col gap-3">
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger record to re-confirm:</p>
+                {[
+                  { id: "ky-1", city: "Mount Sterling, KY", umid: null },
+                  { id: "ky-2", city: "Winchester, KY",     umid: null },
+                  { id: "ky-3", city: "Erlanger, KY",       umid: "H43303654" },
+                ].map(r => (
+                  <button key={r.id}
+                    onClick={() => r.id === "ky-3" ? handleErlRow() : dispatch({ type: "RECORD_ERROR" })}
+                    className={`flex items-start gap-3 rounded-xl border p-3 text-left transition cursor-pointer ${
+                      erlRowConfirmed && r.id === "ky-3"
+                        ? "border-emerald-500/60 bg-emerald-500/15"
+                        : "border-white/10 bg-white/5 hover:bg-white/10"
                     }`}>
-                      {slotIdx + 1}
+                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 ${erlRowConfirmed && r.id === "ky-3" ? "bg-emerald-500 border-emerald-500" : "border-white/30"}`}>
+                      {erlRowConfirmed && r.id === "ky-3" && <Check className="w-3 h-3 text-white" />}
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white">{r.city}</div>
+                      {r.umid && <div className="text-xs font-mono text-emerald-300 mt-0.5">UMID: {r.umid}</div>}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Phase 2 — drag-to-order (keep existing) */}
+            {phase === 2 && (
+              <div className="flex flex-col gap-4">
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Drag steps into the correct order:</p>
+                <div className="flex flex-col gap-2">
+                  {[0, 1].map(slotIdx => (
+                    <div key={slotIdx} onDragOver={e => e.preventDefault()} onDrop={() => handleSlotDrop(slotIdx)}
+                      className={`flex items-center gap-3 rounded-xl border-2 px-3 py-3 transition-all min-h-[48px] ${seqSlots[slotIdx] ? "border-emerald-500 bg-emerald-500/15" : "border-dashed border-emerald-500/30 bg-white/5 hover:bg-white/10"}`}>
+                      <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${seqSlots[slotIdx] ? "bg-emerald-500 text-white" : "bg-white/10 text-white/50"}`}>{slotIdx + 1}</span>
+                      {seqSlots[slotIdx] ? (
+                        <span className="flex-1 text-sm font-bold text-white">{seqSlots[slotIdx]!.text}</span>
+                      ) : (
+                        <span className="flex-1 text-xs text-white/30 italic">Drop step here…</span>
+                      )}
+                      {seqSlots[slotIdx] && <button onClick={() => removeFromSlot(slotIdx)} className="text-white/30 hover:text-red-400 cursor-pointer transition"><X className="w-3.5 h-3.5" /></button>}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2">
+                  {availableTiles.map(tile => (
+                    <div key={tile.id} draggable onDragStart={() => setDragItem(tile)} onDragEnd={() => setDragItem(null)}
+                      className="px-3 py-2.5 rounded-xl border border-emerald-500/30 bg-white/10 text-sm font-bold text-white cursor-grab hover:bg-white/15 hover:border-emerald-400 transition select-none">
+                      {tile.text}
+                    </div>
+                  ))}
+                </div>
+                <button disabled={!seqSlots[0] || !seqSlots[1]} onClick={handleSeqConfirm}
+                  className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition">
+                  Confirm Order
+                </button>
+              </div>
+            )}
+
+            {/* Phase 3 — SELECT option picker */}
+            {phase === 3 && (
+              <div className="flex flex-col gap-3">
+                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Choose the correct SELECT value:</p>
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
+                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Navigation Screen — Row 3</div>
+                  <div className="flex justify-between"><span className="text-white/40">UMID</span><span className="text-emerald-300">H43303654</span></div>
+                  <div className="flex justify-between"><span className="text-white/40">CITY</span><span className="text-white">ERLANGER, KY</span></div>
+                  <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
+                    <span className="text-yellow-300 font-bold">SELECT</span>
+                    <span className={`px-2 py-0.5 rounded border text-xs font-bold ${selectTapped ? "bg-emerald-500/30 border-emerald-500/60 text-emerald-300" : "border-dashed border-yellow-400/50 text-yellow-300 animate-pulse"}`}>
+                      {selectTapped ? "MR ✓" : "?"}
                     </span>
-                    {seqSlots[slotIdx] ? (
-                      <span className="flex-1 text-xs font-bold text-emerald-900">{seqSlots[slotIdx]!.text}</span>
-                    ) : (
-                      <span className="flex-1 text-[11px] text-slate-400 italic">Drop step here…</span>
-                    )}
-                    {seqSlots[slotIdx] && (
-                      <button onClick={() => removeFromSlot(slotIdx)} className="text-slate-400 hover:text-red-500 transition cursor-pointer">
-                        <X className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                {!selectTapped ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    {["MR", "CL", "PR", "RX"].map(opt => (
+                      <button key={opt} onClick={() => { if (opt === "MR") { setSelectTapped(true); setTimeout(() => dispatch({ type: "RECORD_SUCCESS" }), 800); } else { dispatch({ type: "RECORD_ERROR" }); } }}
+                        className={`rounded-xl border py-3.5 text-lg font-black font-mono transition cursor-pointer ${opt === "MR" ? "bg-white/10 hover:bg-emerald-600/40 border-white/20 hover:border-emerald-400 text-white" : "bg-white/5 border-white/10 hover:bg-red-500/10 hover:border-red-400/30 text-white/50"}`}>
+                        {opt}
+                        <div className="text-[9px] font-normal text-white/40 mt-0.5">
+                          {opt === "MR" ? "Member Referral" : opt === "CL" ? "Claims List" : opt === "PR" ? "Provider" : "Pharmacy"}
+                        </div>
                       </button>
-                    )}
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/40 rounded-xl p-3">
+                    <Check className="w-5 h-5 text-emerald-400 shrink-0" />
+                    <span className="text-sm font-bold text-emerald-200">SELECT = MR confirmed! Navigating…</span>
+                  </motion.div>
+                )}
               </div>
+            )}
 
-              {/* Draggable tile bank */}
-              <div className="flex flex-wrap justify-center gap-2 w-full max-w-sm">
-                {availableTiles.map(tile => (
-                  <div
-                    key={tile.id}
-                    draggable
-                    onDragStart={() => setDragItem(tile)}
-                    onDragEnd={() => setDragItem(null)}
-                    className="px-3 py-2 rounded-xl border border-emerald-400/50 bg-white text-xs font-bold text-emerald-900 cursor-grab active:cursor-grabbing shadow-sm hover:shadow-md hover:border-emerald-600 transition select-none"
-                  >
-                    {tile.text}
-                  </div>
-                ))}
-              </div>
-
-              <button
-                disabled={!seqSlots[0] || !seqSlots[1]}
-                onClick={handleSeqConfirm}
-                className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-8 text-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md"
-              >
-                Confirm Order →
-              </button>
-            </div>
-          )}
-
-          {/* Phase 3 instructions */}
-          {phase === 3 && (
-            <div className="flex flex-col items-center gap-2 text-center">
-              {selectTapped ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-xs font-extrabold text-emerald-800"
-                >
-                  ✅ SELECT = MR confirmed! Navigating to the Member Referral screen…
-                </motion.div>
-              ) : (
-                <p className="text-xs text-slate-600 font-medium max-w-sm">
-                  🖥️ Image 3 now shows Row 3 with <code className="bg-emerald-100 px-1 rounded font-mono text-emerald-800">SELECT = MR</code>.<br />
-                  Tap the <strong>MR</strong> cell highlighted in the SELECT column on the image above.
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </div>{/* end RIGHT */}
+      </div>{/* end side-by-side */}
     </div>
   );
 }
@@ -1852,8 +1974,41 @@ export function Gameplay() {
         </div>
       </header>
 
-      {/* ── Zone 2: Main workspace — fixed height, no outer scroll ──────── */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* ── Zone 2: Main workspace ──────────────────────────────────────── */}
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden md:flex-row">
+
+        {/* Mobile-only prompt bar (shown below md) */}
+        <div className={`md:hidden shrink-0 px-3 py-2 border-b border-emerald-100 bg-white/80 ${state.showHint ? "bg-amber-50/80 border-amber-200" : ""}`}>
+          <div className="flex items-start gap-2">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-mono font-bold shrink-0 mt-0.5">
+              {step.qNum}
+            </span>
+            <p className={`text-xs font-medium leading-relaxed ${state.showHint ? "text-amber-900" : "text-slate-800"}`}>
+              {state.showHint ? (
+                <><span className="font-bold text-amber-800">Hint: </span>{step.scoutHint}</>
+              ) : (
+                step.prompt
+              )}
+            </p>
+            {!state.showHint && (
+              <button
+                onClick={() => dispatch({ type: "RECORD_ERROR" })}
+                className="ml-auto shrink-0 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-emerald-700 p-1.5 transition cursor-pointer"
+                aria-label="Need a hint?"
+              >
+                <HelpCircle className="h-3.5 w-3.5" />
+              </button>
+            )}
+            {state.showHint && (
+              <button
+                onClick={() => dispatch({ type: "CLOSE_HINT" })}
+                className="ml-auto shrink-0 rounded-full bg-slate-800 text-white font-bold px-2 py-1 text-[10px] uppercase tracking-wider transition cursor-pointer whitespace-nowrap"
+              >
+                Got It
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Left panel: Scout + prompt */}
         <div className="hidden md:flex w-64 lg:w-72 shrink-0 flex-col gap-3 p-4 border-r border-emerald-100 bg-white/60 overflow-y-auto">

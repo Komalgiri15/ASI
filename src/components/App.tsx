@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GameProvider, useGame } from "@/state/gameContext";
 import { Landing } from "@/components/screens/Landing";
@@ -14,7 +15,7 @@ function Router() {
   const screen = state.currentScreen;
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-[#E9F8F0]">
+    <div className="fixed inset-0 overflow-auto bg-[#E9F8F0]">
       <AnimatePresence mode="wait">
         <motion.div
           key={screen}
@@ -24,14 +25,16 @@ function Router() {
           transition={{ duration: 0.25, ease: "easeInOut" }}
           className="h-full w-full"
         >
-          {screen === "intro" && <IntroFlow />}
-          {screen === "levelSelect" && <LevelSelect />}
-          {screen === "landing" && <Landing />}
-          {screen === "journey" && <Journey />}
-          {screen === "levelIntro" && <LevelIntro />}
-          {screen === "gameplay" && <Gameplay />}
-          {screen === "levelComplete" && <LevelComplete />}
-          {screen === "finalResults" && <FinalResults />}
+          <div className="h-full w-full" style={{ transform: "translate(0, 0)" }}>
+            {screen === "intro" && <IntroFlow />}
+            {screen === "levelSelect" && <LevelSelect />}
+            {screen === "landing" && <Landing />}
+            {screen === "journey" && <Journey />}
+            {screen === "levelIntro" && <LevelIntro />}
+            {screen === "gameplay" && <Gameplay />}
+            {screen === "levelComplete" && <LevelComplete />}
+            {screen === "finalResults" && <FinalResults />}
+          </div>
         </motion.div>
       </AnimatePresence>
     </div>

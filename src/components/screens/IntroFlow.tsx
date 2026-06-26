@@ -148,7 +148,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
       </motion.div>
 
       {/* Three-column layout */}
-      <div className="flex w-full max-w-4xl items-start justify-center gap-6">
+      <div className="flex w-full max-w-4xl items-start justify-center gap-6 flex-col lg:flex-row">
 
         {/* LEFT — Capabilities */}
         <motion.div
@@ -407,7 +407,7 @@ export function IntroFlow() {
   const handleLevelsEnd = () => dispatch({ type: "GOTO", screen: "levelSelect" });
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden">
       <AnimatePresence mode="wait">
         {phase === "video" && (
           <motion.video
