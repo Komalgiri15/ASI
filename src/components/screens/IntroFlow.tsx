@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/state/gameContext";
 import { Scout } from "@/components/Scout";
 import { HumanaWordmark } from "@/components/HumanaWordmark";
 import introVideo from "@/assets/intro.mp4";
 import levelsVideo from "@/assets/levels.mp4";
+import useTTS from "@/hooks/useTTS";
 import {
   Search,
   Shield,
@@ -116,10 +117,16 @@ function MissionCard({
 
 // ─── Main registration screen ─────────────────────────────────────────────────
 function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
+  const speak = useTTS();
   const [name, setName] = useState("");
   const [focused, setFocused] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Speak registration welcome text when screen loads
+  useEffect(() => {
+    speak("Welcome, Navigator! Enter your name to register as a Search Specialist. Your badge will be issued upon completion!");
+  }, []);
 
   const displayName = name.trim() || "AGENT_001";
   const isReady = name.trim().length >= 2;

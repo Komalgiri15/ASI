@@ -26,6 +26,7 @@ import { CASES } from "@/data/levels";
 import { Scout } from "@/components/Scout";
 import scoutImg from "@/assets/ava.png";
 import { MainframeTerminal } from "@/components/MainframeTerminal";
+import useTTS from "@/hooks/useTTS";
 
 
 // ---------------------------------------------------------------------------
@@ -1660,6 +1661,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
 
 export function Gameplay() {
   const { state, dispatch } = useGame();
+  const speak = useTTS();
   const caseDef = CASES[state.currentCaseIndex];
   const step = caseDef.steps[state.currentStepIndex];
   const isCase1 = caseDef.number === 1;
@@ -1706,6 +1708,23 @@ export function Gameplay() {
     setShowPopupIntro(true);
     setStepKey((prev) => prev + 1);
   }, [state.currentStepIndex, state.currentCaseIndex]);
+
+  // TTS Voiceover for current step or hint
+  const lastSpokenStepRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!step) return;
+
+    const stepId = `${state.currentCaseIndex}-${state.currentStepIndex}`;
+
+    if (state.showHint) {
+      speak(`Hint: ${step.scoutHint}`);
+    } else if (lastSpokenStepRef.current !== stepId) {
+      const speechText = step.scoutIntro ? `${step.scoutIntro} ${step.prompt}` : step.prompt;
+      speak(speechText);
+      lastSpokenStepRef.current = stepId;
+    }
+  }, [state.currentStepIndex, state.currentCaseIndex, state.showHint, step, speak]);
 
   // Command Builder line preview
   const getCommandBuilderLine = () => {
