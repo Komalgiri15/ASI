@@ -46,12 +46,12 @@ export function LevelComplete() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: "spring", duration: 0.5 }}
-        className="relative z-10 w-full max-w-md bg-white rounded-3xl border border-emerald-100 p-8 text-center shadow-card"
+        className="relative z-10 w-full max-w-xl bg-white rounded-3xl border border-emerald-100 p-8 text-center shadow-card"
       >
         {/* Animated Celebration Scout */}
         <div className="relative mb-6 flex justify-center">
           <div className="absolute inset-0 bg-yellow-100/50 rounded-full blur-xl animate-pulse" />
-          <Scout mood="celebrate" size={130} className="relative z-10" />
+          <Scout mood="celebrate" size={160} className="relative z-10" />
         </div>
 
         {/* Celebratory message bubble */}
@@ -59,7 +59,7 @@ export function LevelComplete() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-sm text-emerald-900 leading-relaxed text-left"
+          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-base text-emerald-900 leading-relaxed text-left"
         >
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-50 border-t border-l border-emerald-100 rotate-45" />
           <p className="relative z-10 text-center font-medium">
@@ -69,13 +69,13 @@ export function LevelComplete() {
 
         {/* Heading titles */}
         <div>
-          <span className="text-[10px] uppercase font-bold tracking-widest text-[#25BB64]">
+          <span className="text-sm uppercase font-bold tracking-widest text-[#25BB64]">
             Investigation Completed
           </span>
           <h1 className="mt-1 font-display text-3xl font-extrabold text-slate-800 leading-tight">
             Case Closed!
           </h1>
-          <p className="mt-1 text-xs text-slate-500 font-mono">
+          <p className="mt-1 text-sm text-slate-500 font-mono">
             {caseDef.name}
           </p>
 
@@ -83,7 +83,7 @@ export function LevelComplete() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wide"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 text-sm font-bold text-emerald-700 uppercase tracking-wide"
           >
             <Trophy className="h-4.5 w-4.5 text-yellow-500 fill-yellow-100 animate-bounce" />
             <span>Badge Earned: {caseDef.badge}</span>
@@ -93,7 +93,7 @@ export function LevelComplete() {
         {/* Stats display panel */}
         <div className="mt-6 grid grid-cols-2 gap-3 text-left">
           <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3.5">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-slate-400">
               <Sparkles className="h-3.5 w-3.5 text-yellow-500 fill-yellow-100" />
               XP Earned
             </div>
@@ -102,7 +102,7 @@ export function LevelComplete() {
             </div>
           </div>
           <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3.5">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-wider text-slate-400">
               <Flame className="h-3.5 w-3.5 text-orange-500 fill-orange-100" />
               Active Streak
             </div>

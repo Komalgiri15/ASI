@@ -51,11 +51,11 @@ function CapChip({
         {locked ? <Lock className="h-3.5 w-3.5" /> : icon}
       </div>
       <div className="min-w-0 text-left">
-        <div className="text-[9px] font-bold uppercase tracking-widest text-slate-400">
+        <div className="text-sm font-bold uppercase tracking-widest text-slate-400">
           {sub}
         </div>
         <div
-          className={`truncate text-xs font-bold ${
+          className={`truncate text-sm font-bold ${
             locked ? "text-slate-300" : "text-slate-700"
           }`}
         >
@@ -99,11 +99,11 @@ function MissionCard({
         {locked ? <Lock className="h-3.5 w-3.5" /> : num}
       </div>
       <div className="min-w-0 text-left">
-        <div className="text-[9px] font-bold uppercase tracking-widest text-slate-400">
+        <div className="text-sm font-bold uppercase tracking-widest text-slate-400">
           Case {num}
         </div>
         <div
-          className={`truncate text-xs font-bold ${
+          className={`truncate text-sm font-bold ${
             locked ? "text-slate-300" : "text-slate-700"
           }`}
         >
@@ -142,7 +142,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
         className="mb-6 flex flex-col items-center gap-1"
       >
         <HumanaWordmark className="text-3xl text-emerald-800" />
-        <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-600">
+        <span className="text-sm font-bold uppercase tracking-[0.25em] text-emerald-600">
           Interactive Mainframe Training
         </span>
       </motion.div>
@@ -157,7 +157,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="hidden w-48 flex-col gap-2 lg:flex"
         >
-          <p className="mb-1 text-[9px] font-bold uppercase tracking-widest text-slate-400">
+          <p className="mb-1 text-sm font-bold uppercase tracking-widest text-slate-400">
             Agent Capabilities
           </p>
           <CapChip
@@ -199,7 +199,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
           initial={{ opacity: 0, scale: 0.95, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", duration: 0.55, delay: 0.05 }}
-          className="w-full max-w-sm bg-white/95 rounded-3xl border border-emerald-100 shadow-card p-7 flex flex-col items-center text-center"
+          className="w-full max-w-md bg-white/95 rounded-3xl border border-emerald-100 shadow-card p-7 flex flex-col items-center text-center"
         >
           {/* Live name display — big hero text behind Scout */}
           <div className="relative mb-1 w-full overflow-hidden">
@@ -240,7 +240,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
             <div className="absolute inset-0 rounded-full bg-emerald-100 blur-xl opacity-60 animate-pulse" />
             <Scout
               mood={submitting ? "celebrate" : focused ? "think" : "idle"}
-              size={140}
+              size={180}
               className="relative z-10"
             />
           </motion.div>
@@ -250,7 +250,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="relative mt-4 w-full bg-emerald-50 border border-emerald-100 rounded-2xl p-3.5 text-xs text-emerald-900 leading-relaxed text-left shadow-sm"
+            className="relative mt-4 w-full bg-emerald-50 border border-emerald-100 rounded-2xl p-3.5 text-base text-emerald-900 leading-relaxed text-left shadow-sm"
           >
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 h-4 w-4 rotate-45 bg-emerald-50 border-t border-l border-emerald-100" />
             <p className="relative z-10">
@@ -266,7 +266,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
             className="mt-4 flex items-center gap-2 rounded-full border border-emerald-200 bg-[#E9F8F0] px-4 py-1.5"
           >
             <Terminal className="h-3 w-3 text-[#25BB64]" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+            <span className="font-mono text-sm font-bold uppercase tracking-wider text-emerald-700">
               SUPPORT · Claims Navigator
             </span>
           </motion.div>
@@ -279,7 +279,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
             transition={{ delay: 0.45, duration: 0.35 }}
             className="mt-5 flex w-full flex-col gap-3"
           >
-            <label className="block text-left text-xs font-bold text-slate-500 uppercase tracking-wider">
+            <label className="block text-left text-sm font-bold text-slate-500 uppercase tracking-wider">
               Your Name
             </label>
 
@@ -305,10 +305,10 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 placeholder="Enter your name"
-                className="flex-1 bg-transparent px-3 py-3 font-sans text-sm font-semibold text-slate-800 placeholder-slate-300 outline-none"
+                className="flex-1 bg-transparent px-3 py-3 font-sans text-base font-semibold text-slate-800 placeholder-slate-300 outline-none"
                 autoComplete="off"
               />
-              <span className="pr-4 font-mono text-[10px] text-slate-300">
+              <span className="pr-4 font-mono text-sm text-slate-300">
                 {name.length}/24
               </span>
             </div>
@@ -319,7 +319,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
               disabled={!isReady || submitting}
               whileHover={isReady && !submitting ? { scale: 1.02 } : {}}
               whileTap={isReady && !submitting ? { scale: 0.98 } : {}}
-              className={`group mt-1 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-bold text-sm transition-all shadow-md select-none ${
+              className={`group mt-1 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 font-bold text-base transition-all shadow-md select-none ${
                 isReady && !submitting
                   ? "cursor-pointer text-white"
                   : "cursor-not-allowed bg-slate-100 text-slate-300"
@@ -347,11 +347,36 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
               )}
             </motion.button>
 
-            <p className="text-center text-[10px] text-slate-400">
+            <p className="text-center text-sm text-slate-400">
               Your name will appear on your completion certificate
             </p>
           </motion.form>
         </motion.div>
+
+        {/* Mobile/tablet — stacked capabilities & briefing below form */}
+        <div className="flex w-full max-w-md flex-col gap-4 lg:hidden">
+          <div className="rounded-2xl border border-emerald-100 bg-white/90 p-4 shadow-sm">
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-slate-400">
+              Agent Capabilities
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <CapChip icon={<Search className="h-4 w-4" />} sub="Skill" label="Record Search" delay={0.1} />
+              <CapChip icon={<Shield className="h-4 w-4" />} sub="Role" label="Claims Navigator" delay={0.15} />
+              <CapChip icon={<Zap className="h-4 w-4" />} sub="Clearance" label="Level 1" delay={0.2} />
+              <CapChip icon={<Trophy className="h-4 w-4" />} sub="Badge" label="Unearned" locked delay={0.25} />
+            </div>
+          </div>
+          <div className="rounded-2xl border border-emerald-100 bg-white/90 p-4 shadow-sm">
+            <p className="mb-3 text-sm font-bold uppercase tracking-widest text-slate-400">
+              Mission Briefing
+            </p>
+            <div className="flex flex-col gap-2">
+              <MissionCard num="01" title="The Texas Trail" locked={false} delay={0.1} />
+              <MissionCard num="02" title="Kentucky Keys" locked delay={0.15} />
+              <MissionCard num="03" title="The MRI Mission" locked delay={0.2} />
+            </div>
+          </div>
+        </div>
 
         {/* RIGHT — Mission briefing */}
         <motion.div
@@ -360,7 +385,7 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="hidden w-48 flex-col gap-2 lg:flex"
         >
-          <p className="mb-1 text-[9px] font-bold uppercase tracking-widest text-slate-400 text-right">
+          <p className="mb-1 text-sm font-bold uppercase tracking-widest text-slate-400 text-right">
             Mission Briefing
           </p>
           <MissionCard num="01" title="The Texas Trail" locked={false} delay={0.15} />
@@ -375,10 +400,10 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
             className="mt-1 rounded-2xl border border-emerald-100 bg-[#E9F8F0]/60 px-3.5 py-3"
           >
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400">
+              <span className="text-sm font-bold uppercase tracking-widest text-slate-400">
                 Total XP
               </span>
-              <span className="font-mono text-[10px] font-bold text-emerald-700">
+              <span className="font-mono text-sm font-bold text-emerald-700">
                 0 / 450
               </span>
             </div>

@@ -111,16 +111,16 @@ function SwipeCard({ card, onSwipe }: { card: any; onSwipe: (approve: boolean) =
       className="absolute inset-0 bg-[#0d4a2e] border-2 border-emerald-500 rounded-2xl p-4 shadow-xl flex flex-col justify-between text-left cursor-grab active:cursor-grabbing text-emerald-100 z-10"
     >
       <div>
-        <div className="flex items-center justify-between border-b border-emerald-500/30 pb-1.5 text-xs">
-          <span className="text-[9px] font-bold text-emerald-450 uppercase tracking-wider">
+        <div className="flex items-center justify-between border-b border-emerald-500/30 pb-2 text-sm">
+          <span className="text-sm font-bold text-emerald-450 uppercase tracking-wider">
             {card.title}
           </span>
           <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
         </div>
-        <h4 className="font-mono text-xs font-extrabold text-white mt-2 truncate">
+        <h4 className="font-mono text-base font-extrabold text-white mt-2 truncate">
           {card.name}
         </h4>
-        <div className="mt-2 space-y-1 font-mono text-[9px] text-emerald-200">
+        <div className="mt-2 space-y-1 font-mono text-sm text-emerald-200">
           <div>DOB: <strong className="text-white font-bold">{card.dob}</strong></div>
           <div>UMID: <strong className="text-white font-bold">{card.umid}</strong></div>
           <div className="truncate">ADDR: <strong className="text-white font-bold">{card.address}</strong></div>
@@ -130,13 +130,13 @@ function SwipeCard({ card, onSwipe }: { card: any; onSwipe: (approve: boolean) =
       <div className="flex gap-2 mt-2 border-t border-emerald-500/20 pt-2 shrink-0">
         <button
           onClick={() => onSwipe(false)}
-          className="flex-1 rounded-xl bg-red-950/40 border border-red-500/35 hover:bg-red-900/40 text-red-400 py-1.5 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer"
+          className="flex-1 rounded-xl bg-red-950/40 border border-red-500/35 hover:bg-red-900/40 text-red-400 py-2.5 text-sm font-bold uppercase tracking-wider transition cursor-pointer min-h-[44px]"
         >
           Reject (Left)
         </button>
         <button
           onClick={() => onSwipe(true)}
-          className="flex-1 rounded-xl bg-emerald-500 border border-emerald-600 text-white py-1.5 text-[10px] font-bold uppercase tracking-wider transition hover:bg-emerald-600 shadow-md cursor-pointer"
+          className="flex-1 rounded-xl bg-emerald-500 border border-emerald-600 text-white py-2.5 text-sm font-bold uppercase tracking-wider transition hover:bg-emerald-600 shadow-md cursor-pointer min-h-[44px]"
         >
           Approve (Right)
         </button>
@@ -290,25 +290,25 @@ function Case1InteractiveBoard({
   };
 
   return (
-    <div className="flex flex-col gap-0">
+    <div className="flex h-full min-h-0 flex-col">
       {/* Side-by-side: Image LEFT, Controls RIGHT */}
-      <div className="flex flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
+      <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
         {/* ── LEFT: Mainframe image viewport ── */}
-        <div className="flex flex-col lg:flex-[3] min-w-0">
+        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
           {/* Title bar */}
           <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
               <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD — TEXAS PORTAL</span>
             </div>
-            <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
+            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
 
           {/* Viewport */}
           <div
             ref={containerRef}
-            className="relative w-full aspect-video min-h-[200px] bg-black overflow-hidden cursor-grab active:cursor-grabbing"
+            className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -358,19 +358,17 @@ function Case1InteractiveBoard({
                 {/* Row 1 (Correct) */}
                 <button
                   onClick={handleRow1Tap}
-                  className="absolute border-2 border-dashed border-emerald-500/40 hover:border-emerald-500 hover:bg-emerald-500/10 transition rounded cursor-pointer"
+                  className="absolute border-2 border-dashed border-emerald-500/40 hover:border-emerald-500 hover:bg-emerald-500/10 transition rounded cursor-pointer min-h-[44px]"
                   style={{ top: "30.5%", left: "21%", width: "57%", height: "8.5%" }}
-                >
-                  <span className="absolute top-1 left-2 bg-black/70 text-emerald-300 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Row 1 — tap if D-GRP = 56</span>
-                </button>
+                  aria-label="Row 1 — tap if D-GRP equals 56"
+                />
                 {/* Row 2 (Incorrect) */}
                 <button
                   onClick={handleRow2Tap}
-                  className="absolute border-2 border-dashed border-white/10 hover:border-red-400/40 hover:bg-red-400/5 transition rounded cursor-pointer"
+                  className="absolute border-2 border-dashed border-white/10 hover:border-red-400/40 hover:bg-red-400/5 transition rounded cursor-pointer min-h-[44px]"
                   style={{ top: "42.5%", left: "21%", width: "57%", height: "12%" }}
-                >
-                  <span className="absolute top-1 left-2 bg-black/70 text-white/40 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Row 2</span>
-                </button>
+                  aria-label="Row 2"
+                />
               </>
             )}
 
@@ -380,17 +378,14 @@ function Case1InteractiveBoard({
                 {rowZoomed !== 2 ? (
                   <button
                     onClick={handleRow2Tap}
-                    className="absolute border-2 border-dashed border-yellow-400/60 hover:border-yellow-400 bg-yellow-400/5 hover:bg-yellow-400/10 animate-pulse transition rounded flex items-center justify-center cursor-pointer"
+                    className="absolute border-2 border-dashed border-yellow-400/60 hover:border-yellow-400 bg-yellow-400/5 hover:bg-yellow-400/10 animate-pulse transition rounded flex items-center justify-center cursor-pointer min-h-[44px]"
                     style={{ top: "42.5%", left: "21%", width: "57%", height: "12%" }}
-                  >
-                    <span className="bg-black/85 px-2 py-0.5 rounded text-[8px] text-yellow-450 border border-yellow-400/45 tracking-wider uppercase font-bold">
-                      Tap to Zoom Row 2 (Client 58)
-                    </span>
-                  </button>
+                    aria-label="Tap to zoom Row 2, Client 58"
+                  />
                 ) : (
                   <div
                     onClick={() => handleSlotTap("mgrp")}
-                    className={`absolute rounded border-2 flex items-center justify-center text-[8px] font-bold font-mono transition-all duration-300 ${
+                    className={`absolute rounded border-2 flex items-center justify-center text-sm font-bold font-mono transition-all duration-300 ${
                       zoomValPlaced
                         ? "border-emerald-500 bg-emerald-500/20 text-emerald-300"
                         : "border-dashed border-yellow-400 bg-yellow-400/10 text-yellow-300 animate-pulse cursor-pointer"
@@ -409,17 +404,14 @@ function Case1InteractiveBoard({
                 {rowZoomed !== 1 ? (
                   <button
                     onClick={handleRow1Tap}
-                    className="absolute border-2 border-dashed border-yellow-400/60 hover:border-yellow-400 bg-yellow-400/5 hover:bg-yellow-400/10 animate-pulse transition rounded flex items-center justify-center cursor-pointer"
+                    className="absolute border-2 border-dashed border-yellow-400/60 hover:border-yellow-400 bg-yellow-400/5 hover:bg-yellow-400/10 animate-pulse transition rounded flex items-center justify-center cursor-pointer min-h-[44px]"
                     style={{ top: "30.5%", left: "21%", width: "57%", height: "8.5%" }}
-                  >
-                    <span className="bg-black/85 px-2 py-0.5 rounded text-[8px] text-yellow-450 border border-yellow-400/45 tracking-wider uppercase font-bold">
-                      Tap to Zoom Row 1 (Client 56)
-                    </span>
-                  </button>
+                    aria-label="Tap to zoom Row 1, Client 56"
+                  />
                 ) : (
                   <div
                     onClick={() => handleSlotTap("dob")}
-                    className={`absolute rounded border-2 flex items-center justify-center text-[8px] font-bold font-mono transition-all duration-300 ${
+                    className={`absolute rounded border-2 flex items-center justify-center text-sm font-bold font-mono transition-all duration-300 ${
                       zoomValPlaced
                         ? "border-emerald-500 bg-emerald-500/20 text-emerald-300"
                         : "border-dashed border-yellow-400 bg-yellow-400/10 text-yellow-300 animate-pulse cursor-pointer"
@@ -438,7 +430,7 @@ function Case1InteractiveBoard({
                 {/* Highlight RL Target cell */}
                 <button
                   onClick={() => handleSlotTap("rel")}
-                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer flex items-center justify-center text-[7px] font-bold ${
+                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer flex items-center justify-center text-sm font-bold ${
                     codeChipMatched
                       ? "border-emerald-500 bg-emerald-500/20 text-emerald-300"
                       : activeChipSelected
@@ -455,13 +447,13 @@ function Case1InteractiveBoard({
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="absolute border-2 border-emerald-500 bg-[#14213d]/95 text-emerald-300 rounded p-1.5 font-mono text-[9px] shadow-lg flex items-center gap-1.5 z-10"
+                    className="absolute border-2 border-emerald-500 bg-[#14213d]/95 text-emerald-300 rounded p-1.5 font-mono text-sm shadow-lg flex items-center gap-1.5 z-10"
                     style={{ top: "37.5%", left: "27%", width: "38%", height: "16%" }}
                   >
                     <Unlock className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                     <div>
-                      <div className="text-[7px] text-slate-400 uppercase font-bold tracking-wider">Address Decrypted:</div>
-                      <div className="font-bold text-white text-[9px]">{step.data.unlockedAddress}</div>
+                      <div className="text-sm text-slate-400 uppercase font-bold tracking-wider">Address Decrypted:</div>
+                      <div className="font-bold text-white text-sm">{step.data.unlockedAddress}</div>
                     </div>
                   </motion.div>
                 )}
@@ -471,19 +463,19 @@ function Case1InteractiveBoard({
 
           {/* Zoom controls */}
           <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Minus className="w-3 h-3" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Plus className="w-3 h-3" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-6 flex items-center">Reset</button>
+            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
+            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
+            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
           </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
+          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
         </div>{/* end viewport */}
         </div>{/* end LEFT col */}
 
         {/* ── RIGHT: Answer panel ── */}
-        <div className="lg:w-72 xl:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827] flex flex-col">
+        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">{step.qNum}</span>
-            <span className="text-sm font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
+            <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
             {/* Q1 */}
@@ -515,7 +507,7 @@ function Case1InteractiveBoard({
             {/* Q2 — rendered terminal lines, click END OF DATA */}
             {step.id === "c1-s2" && (
               <div className="flex flex-col gap-3">
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the END OF DATA line below:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Click the END OF DATA line below:</p>
                 <div className="bg-black/60 border border-emerald-500/20 rounded-xl p-3 font-mono text-xs flex flex-col gap-1">
                   {step.data.mainframeLines.map((line: string, i: number) => {
                     const isTarget = line.includes("END OF DATA");
@@ -557,10 +549,15 @@ function Case1InteractiveBoard({
             {/* Q3 — interactive scannable table, click the correct row */}
             {step.id === "c1-s3" && (
               <div className="flex flex-col gap-3">
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the row where D-GRP = 56:</p>
-                <div className="rounded-xl overflow-hidden border border-white/10">
+                <div className="bg-black/30 border border-white/10 rounded-xl p-3 text-sm text-emerald-300 space-y-1">
+                  <p><strong className="text-emerald-200">Row 1</strong> — tap on the board where D-GRP = 56</p>
+                  <p className="text-white/50">Row 2 — incorrect row (do not select)</p>
+                </div>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Click the row where D-GRP = 56:</p>
+                <div className="rounded-xl overflow-hidden border border-white/10 overflow-x-auto -mx-1 px-1">
+                  <div className="min-w-[520px]">
                   {/* Header */}
-                  <div className="grid grid-cols-5 bg-emerald-900/60 text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
+                  <div className="grid grid-cols-5 bg-emerald-900/60 text-sm font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
                     {["ROW", "CLIENT", "NAME", "D-GRP", "M-GRP"].map(h => <span key={h}>{h}</span>)}
                   </div>
                   {/* Row 1 — correct */}
@@ -579,27 +576,31 @@ function Case1InteractiveBoard({
                     <span className="text-white font-mono text-xs font-bold">58</span>
                     <span className="text-emerald-200 font-mono text-xs truncate">JONES, M</span>
                     <span className="text-white/40 font-mono text-sm font-black">58</span>
-                    <span className="text-white/40 font-mono text-xs">0N2312</span>
+                    <span className="text-white/40 font-mono text-sm">0N2312</span>
                   </button>
                 </div>
-                <p className="text-xs text-white/40 text-center">Select the row matching the claim</p>
+                </div>
+                <p className="text-base text-white/40 text-center">Select the row matching the claim</p>
               </div>
             )}
 
             {/* Q4 — record card direct pick, no zoom gate */}
             {step.id === "c1-s4" && (
               <div className="flex flex-col gap-3">
-                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
-                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 58 — Row 02</div>
+                <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-xl p-3 text-sm text-yellow-200">
+                  Tap the highlighted <strong>Row 2 (Client 58)</strong> on the mainframe board to zoom in.
+                </div>
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-base space-y-1">
+                  <div className="text-emerald-400/60 text-sm uppercase tracking-wider mb-2">Client 58 — Row 02</div>
                   <div className="flex justify-between"><span className="text-white/50">CLIENT</span><span className="text-white font-bold">58</span></div>
                   <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS</span></div>
                   <div className="flex justify-between"><span className="text-white/50">D-GRP</span><span className="text-white font-bold">58</span></div>
                   <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
                     <span className="text-yellow-300 font-bold">M-GRP</span>
-                    <span className="text-white/30 italic text-[11px]">← select below</span>
+                    <span className="text-white/30 italic text-sm">← select below</span>
                   </div>
                 </div>
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the correct M-GRP:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select the correct M-GRP:</p>
                 <div className="grid grid-cols-2 gap-2">
                   {step.data.tiles.map((tile: string) => (
                     <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
@@ -614,17 +615,20 @@ function Case1InteractiveBoard({
             {/* Q5 — record card direct pick, no zoom gate */}
             {step.id === "c1-s5" && (
               <div className="flex flex-col gap-3">
-                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
-                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 56 — Row 01</div>
+                <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-xl p-3 text-sm text-yellow-200">
+                  Tap the highlighted <strong>Row 1 (Client 56)</strong> on the mainframe board to zoom in.
+                </div>
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-base space-y-1">
+                  <div className="text-emerald-400/60 text-sm uppercase tracking-wider mb-2">Client 56 — Row 01</div>
                   <div className="flex justify-between"><span className="text-white/50">CLIENT</span><span className="text-white font-bold">56</span></div>
                   <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS L</span></div>
                   <div className="flex justify-between"><span className="text-white/50">M-GRP</span><span className="text-white font-bold">0E2045</span></div>
                   <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
                     <span className="text-yellow-300 font-bold">DOB</span>
-                    <span className="text-white/30 italic text-[11px]">← select below</span>
+                    <span className="text-white/30 italic text-sm">← select below</span>
                   </div>
                 </div>
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the correct DOB:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select the correct DOB:</p>
                 <div className="grid grid-cols-2 gap-2">
                   {step.data.tiles.map((tile: string) => (
                     <button key={tile} onClick={() => handleFieldDetectivePlaceTile(tile)}
@@ -647,28 +651,28 @@ function Case1InteractiveBoard({
                     </div>
                     <div className="bg-black/40 border border-emerald-500/20 rounded-xl p-3 font-mono text-xs space-y-1">
                       <div className="flex justify-between"><span className="text-white/50">RL CODE</span><span className="text-emerald-300 font-bold">EE — Employee</span></div>
-                      <div className="flex justify-between"><span className="text-white/50">ADDRESS</span><span className="text-emerald-200 font-bold text-[11px]">{step.data.unlockedAddress}</span></div>
+                      <div className="flex justify-between"><span className="text-white/50">ADDRESS</span><span className="text-emerald-200 font-bold text-sm">{step.data.unlockedAddress}</span></div>
                     </div>
                   </motion.div>
                 ) : (
                   <>
                     {/* Record card with blank RL slot */}
                     <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
-                      <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Client 56 — Row 01</div>
+                      <div className="text-emerald-400/60 text-sm uppercase tracking-wider mb-2">Client 56 — Row 01</div>
                       <div className="flex justify-between"><span className="text-white/50">NAME</span><span className="text-white font-bold">JONES, MARKUS L</span></div>
                       <div className="flex justify-between"><span className="text-white/50">D-GRP</span><span className="text-white font-bold">56</span></div>
                       <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
                         <span className="text-yellow-300 font-bold">RL (Relationship)</span>
-                        <span className="border border-dashed border-yellow-400/60 text-yellow-300 px-2 py-0.5 rounded text-[11px] animate-pulse">?</span>
+                        <span className="border border-dashed border-yellow-400/60 text-yellow-300 px-2 py-0.5 rounded text-sm animate-pulse">?</span>
                       </div>
                     </div>
-                    <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the relationship code:</p>
+                    <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select the relationship code:</p>
                     <div className="grid grid-cols-2 gap-2">
                       {["EE", "SP", "CH", "DP"].map(code => (
                         <button key={code} onClick={() => code === "EE" ? handleMatchCodeRowClick(0) : dispatch({ type: "RECORD_ERROR" })}
                           className="bg-white/10 hover:bg-emerald-600/30 border border-white/20 hover:border-emerald-400 text-white rounded-xl py-3 text-sm font-bold font-mono transition cursor-pointer flex flex-col items-center gap-0.5">
                           <span className="text-base">{code}</span>
-                          <span className="text-[9px] text-white/40 uppercase tracking-wider">
+                          <span className="text-sm text-white/40 uppercase tracking-wider">
                             {code === "EE" ? "Employee" : code === "SP" ? "Spouse" : code === "CH" ? "Child" : "Domestic"}
                           </span>
                         </button>
@@ -804,21 +808,21 @@ function Case2InteractiveBoard({
   const allRowsTallied = tallyTapCount.length >= 3;
 
   return (
-    <div className="flex flex-col gap-0">
-      <div className="flex flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
         {/* ── LEFT: image viewport ── */}
-        <div className="flex flex-col lg:flex-[3] min-w-0">
+        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
           <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
               <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD — KENTUCKY PORTAL</span>
             </div>
-            <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
+            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
            <div
             ref={containerRef}
-            className="relative w-full aspect-[16/9] min-h-[200px] bg-black overflow-hidden cursor-grab active:cursor-grabbing shrink-0"
+            className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -844,7 +848,7 @@ function Case2InteractiveBoard({
                 {/* Row 1 — Mount Sterling */}
                 <button
                   onClick={() => handleRowTally("ky-1")}
-                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer ${
+                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer min-h-[44px] ${
                     tallyTapCount.includes("ky-1")
                       ? "border-emerald-500 bg-emerald-500/15"
                       : "border-dashed border-yellow-400/60 hover:border-yellow-400 bg-yellow-400/5 hover:bg-yellow-400/10 animate-pulse"
@@ -852,7 +856,7 @@ function Case2InteractiveBoard({
                   style={{ top: "29%", left: "21%", width: "57%", height: "9%" }}
                 >
                   {tallyTapCount.includes("ky-1") && (
-                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-[7px] font-bold rounded px-1">✓ 1</span>
+                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-sm font-bold rounded px-1">✓ 1</span>
                   )}
                 </button>
 
@@ -867,7 +871,7 @@ function Case2InteractiveBoard({
                   style={{ top: "41.5%", left: "21%", width: "57%", height: "9%" }}
                 >
                   {tallyTapCount.includes("ky-2") && (
-                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-[7px] font-bold rounded px-1">✓ 2</span>
+                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-sm font-bold rounded px-1">✓ 2</span>
                   )}
                 </button>
 
@@ -882,7 +886,7 @@ function Case2InteractiveBoard({
                   style={{ top: "54%", left: "21%", width: "57%", height: "10%" }}
                 >
                   {tallyTapCount.includes("ky-3") && (
-                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-[7px] font-bold rounded px-1">✓ 3</span>
+                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-sm font-bold rounded px-1">✓ 3</span>
                   )}
                 </button>
 
@@ -939,7 +943,7 @@ function Case2InteractiveBoard({
                 {/* Row 1 S column — correct "1" */}
                 <button
                   onClick={() => handleHotspotFieldTap("ky-1-suffix")}
-                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer flex items-center justify-center text-[8px] font-bold ${
+                  className={`absolute rounded border-2 transition-all duration-300 cursor-pointer flex items-center justify-center text-sm font-bold ${
                     hotspotTapMatches.includes("ky-1-suffix")
                       ? "border-emerald-500 bg-emerald-500/20 text-emerald-300"
                       : "border-dashed border-yellow-400/70 animate-pulse hover:bg-yellow-400/10"
@@ -971,11 +975,10 @@ function Case2InteractiveBoard({
                       dispatch({ type: "RECORD_ERROR" });
                     }
                   }}
-                  className="absolute rounded border-2 border-dashed border-white/15 hover:border-red-400/40 bg-transparent hover:bg-red-400/5 cursor-pointer transition"
+                  className="absolute rounded border-2 border-dashed border-white/15 hover:border-red-400/40 bg-transparent hover:bg-red-400/5 cursor-pointer transition min-h-[44px]"
                   style={{ top: "29%", left: "21%", width: "57%", height: "9%" }}
-                >
-                  <span className="absolute top-1 left-2 bg-black/60 text-yellow-300 text-[7px] font-bold px-1 rounded">HAS SUFFIX</span>
-                </button>
+                  aria-label="Row 1 has suffix — do not select"
+                />
                 {/* Row 2 — blank suffix (correct) */}
                 <button
                   onClick={() => {
@@ -993,7 +996,7 @@ function Case2InteractiveBoard({
                   style={{ top: "41.5%", left: "21%", width: "57%", height: "9%" }}
                 >
                   {multiSelectSelected.includes("ky-2-suffix-blank") && (
-                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-[7px] font-bold rounded px-1">✓ BLANK</span>
+                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-sm font-bold rounded px-1">✓ BLANK</span>
                   )}
                 </button>
                 {/* Row 3 — blank suffix (correct) */}
@@ -1013,7 +1016,7 @@ function Case2InteractiveBoard({
                   style={{ top: "54%", left: "21%", width: "57%", height: "10%" }}
                 >
                   {multiSelectSelected.includes("ky-3-suffix-blank") && (
-                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-[7px] font-bold rounded px-1">✓ BLANK</span>
+                    <span className="absolute top-1 right-1 bg-emerald-500 text-white text-sm font-bold rounded px-1">✓ BLANK</span>
                   )}
                 </button>
               </>
@@ -1061,7 +1064,7 @@ function Case2InteractiveBoard({
                   {pinDroppedCardId === "ky-3" && (
                     <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1">
                       <MapPin className="w-3 h-3 text-emerald-400" />
-                      <span className="text-[7px] text-emerald-300 font-bold">PINNED</span>
+                      <span className="text-sm text-emerald-300 font-bold">PINNED</span>
                     </motion.div>
                   )}
                 </button>
@@ -1071,19 +1074,19 @@ function Case2InteractiveBoard({
 
           {/* Zoom controls */}
           <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Minus className="w-3 h-3" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Plus className="w-3 h-3" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-6 flex items-center">Reset</button>
+            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
+            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
+            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
           </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
+          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
         </div>{/* end viewport */}
         </div>{/* end LEFT col */}
 
         {/* ── RIGHT: answer panel ── */}
-        <div className="lg:w-72 xl:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827] flex flex-col">
+        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">{step.qNum}</span>
-            <span className="text-sm font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
+            <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
 
@@ -1097,7 +1100,7 @@ function Case2InteractiveBoard({
               const allChecked = records.every(r => tallyTapCount.includes(r.id));
               return (
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Check off each record found:</p>
+                  <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Check off each record found:</p>
                   <div className="flex flex-col gap-2">
                     {records.map((r, i) => {
                       const checked = tallyTapCount.includes(r.id);
@@ -1110,7 +1113,7 @@ function Case2InteractiveBoard({
                           </div>
                           <div>
                             <div className="text-xs font-bold text-white font-mono">Record {i + 1}</div>
-                            <div className="text-[11px] text-emerald-300">{r.city}</div>
+                            <div className="text-sm text-emerald-300">{r.city}</div>
                           </div>
                         </button>
                       );
@@ -1140,11 +1143,11 @@ function Case2InteractiveBoard({
               const found = hotspotTapMatches.includes("ky-3-umid");
               return (
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the UMID starting with "H":</p>
+                  <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Click the UMID starting with "H":</p>
                   <div className="flex flex-col gap-2">
                     {cards.map(c => (
                       <div key={c.id} className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
-                        <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-1">{c.label}</div>
+                        <div className="text-emerald-400/60 text-sm uppercase tracking-wider mb-1">{c.label}</div>
                         <div className="flex justify-between"><span className="text-white/40">SUFFIX (S)</span><span className="text-white">{c.suffix || "—"}</span></div>
                         <div className="flex justify-between items-center">
                           <span className="text-white/40">UMID</span>
@@ -1175,9 +1178,9 @@ function Case2InteractiveBoard({
               const found = hotspotTapMatches.includes("ky-1-suffix");
               return (
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Click the suffix value "1":</p>
+                  <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Click the suffix value "1":</p>
                   <div className="rounded-xl overflow-hidden border border-white/10">
-                    <div className="grid grid-cols-3 bg-emerald-900/60 text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
+                    <div className="grid grid-cols-3 bg-emerald-900/60 text-sm font-bold uppercase tracking-wider text-emerald-400 px-3 py-2">
                       <span>Row</span><span>Location</span><span className="text-center">S (Suffix)</span>
                     </div>
                     {rows.map(r => (
@@ -1211,7 +1214,11 @@ function Case2InteractiveBoard({
               ];
               return (
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select all rows with a blank suffix:</p>
+                  <div className="bg-black/30 border border-white/10 rounded-xl p-3 text-sm text-emerald-300 space-y-1">
+                    <p><strong className="text-yellow-300">Row 1</strong> has a suffix — do not select</p>
+                    <p>Select rows with <strong>blank suffix</strong> on the board or below</p>
+                  </div>
+                  <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select all rows with a blank suffix:</p>
                   <div className="flex flex-col gap-2">
                     {rows.map(r => {
                       const selected = multiSelectSelected.includes(r.id);
@@ -1230,7 +1237,7 @@ function Case2InteractiveBoard({
                           </div>
                           <div className="flex-1">
                             <div className="text-xs font-bold text-white">{r.label}</div>
-                            <div className="text-[11px] text-white/40 font-mono">S = {r.suffix}</div>
+                            <div className="text-sm text-white/40 font-mono">S = {r.suffix}</div>
                           </div>
                         </button>
                       );
@@ -1253,7 +1260,7 @@ function Case2InteractiveBoard({
               ];
               return (
                 <div className="flex flex-col gap-3">
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger, KY address:</p>
+                  <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger, KY address:</p>
                   <div className="flex flex-col gap-2">
                     {addresses.map(a => {
                       const picked = pinDroppedCardId === a.id;
@@ -1267,7 +1274,7 @@ function Case2InteractiveBoard({
                           <MapPin className={`w-4 h-4 mt-0.5 shrink-0 ${picked ? a.id === "ky-3" ? "text-emerald-400" : "text-red-400" : "text-white/30"}`} />
                           <div>
                             <div className="text-xs font-bold text-white font-mono">{a.street}</div>
-                            <div className="text-[11px] text-emerald-300 font-mono">{a.city}</div>
+                            <div className="text-sm text-emerald-300 font-mono">{a.city}</div>
                           </div>
                         </button>
                       );
@@ -1399,11 +1406,11 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
   );
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex h-full min-h-0 flex-col gap-3">
       {/* Phase strip */}
-      <div className="flex items-center gap-2 px-1">
+      <div className="flex shrink-0 items-center gap-2 px-1">
         {([1, 2, 3] as const).map(p => (
-          <div key={p} className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border transition-all ${
+          <div key={p} className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold border transition-all ${
             phase === p ? "bg-emerald-600 text-white border-emerald-700 shadow-md"
               : phase > p ? "bg-emerald-100 text-emerald-700 border-emerald-200"
               : "bg-white text-slate-400 border-slate-200"
@@ -1415,10 +1422,10 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
       </div>
 
       {/* Side-by-side board */}
-      <div className="flex flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
+      <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
         {/* LEFT: image */}
-        <div className="flex flex-col lg:flex-[3] min-w-0">
+        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
           <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 border-b border-emerald-800 shrink-0">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
@@ -1426,9 +1433,9 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                 ASI MAINBOARD — {phase === 1 ? "KENTUCKY RECALL" : "MR NAVIGATION"}
               </span>
             </div>
-            <span className="text-[10px] font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
+            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
-          <div ref={containerRef} className="relative w-full aspect-video bg-black overflow-hidden cursor-grab active:cursor-grabbing"
+          <div ref={containerRef} className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
             onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
             <div className="w-full h-full relative" style={{ transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`, transformOrigin: "center center", transition: isDragging ? "none" : "transform 0.15s ease-out" }}>
               <img src={currentImage} alt="Mainframe" className="w-full h-full object-contain pointer-events-none select-none" />
@@ -1450,7 +1457,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                   style={{ top: "54%", left: "21%", width: "57%", height: "10%" }}
                 >
                   {!erlRowConfirmed && (
-                    <span className="bg-black/70 text-yellow-300 text-[8px] font-bold px-2 py-0.5 rounded border border-yellow-400/40 uppercase tracking-wider">
+                    <span className="bg-black/70 text-yellow-300 text-sm font-bold px-2 py-0.5 rounded border border-yellow-400/40 uppercase tracking-wider">
                       Tap to re-confirm Erlanger record
                     </span>
                   )}
@@ -1458,7 +1465,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="bg-emerald-500/90 text-white text-[9px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5"
+                      className="bg-emerald-500/90 text-white text-sm font-bold px-3 py-1 rounded-full flex items-center gap-1.5"
                     >
                       <Check className="w-3 h-3" /> ERLANGER — H43303654 confirmed!
                     </motion.span>
@@ -1467,7 +1474,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
 
                 {/* UMID callout — Row 3 line 3 */}
                 <div
-                  className="absolute border border-emerald-500/50 bg-[#0d1f12]/80 rounded px-1.5 py-0.5 font-mono text-[8px] text-emerald-300 pointer-events-none"
+                  className="absolute border border-emerald-500/50 bg-[#0d1f12]/80 rounded px-1.5 py-0.5 font-mono text-sm text-emerald-300 pointer-events-none"
                   style={{ top: "62%", left: "57%", width: "11%" }}
                 >
                   H43303654
@@ -1478,7 +1485,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
             {/* Phase 2: Sequence builder — IMAGE 3 visible, no overlays needed */}
             {phase === 2 && (
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
-                <span className="bg-emerald-900/90 border border-emerald-500 text-emerald-200 text-[9px] font-bold px-3 py-1.5 rounded-lg tracking-wider">
+                <span className="bg-emerald-900/90 border border-emerald-500 text-emerald-200 text-sm font-bold px-3 py-1.5 rounded-lg tracking-wider">
                   ORDER THE STEPS BELOW ↓ THEN CLICK CONFIRM
                 </span>
               </div>
@@ -1500,7 +1507,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                   style={{ top: "53%", left: "2.5%", width: "5.5%", height: "4.5%" }}
                 >
                   {!selectTapped && (
-                    <span className="text-yellow-300 font-mono text-[9px] font-extrabold">MR</span>
+                    <span className="text-yellow-300 font-mono text-sm font-extrabold">MR</span>
                   )}
                   {selectTapped && (
                     <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}>
@@ -1515,7 +1522,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                     className="absolute z-10 pointer-events-none"
                     style={{ top: "44%", left: "3%", width: "12%" }}
                   >
-                    <div className="bg-black/80 border border-yellow-400/60 text-yellow-300 text-[8px] font-bold px-2 py-1 rounded text-center leading-tight">
+                    <div className="bg-black/80 border border-yellow-400/60 text-yellow-300 text-sm font-bold px-2 py-1 rounded text-center leading-tight">
                       SELECT = MR<br />Tap to confirm!
                     </div>
                     <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-yellow-400/60 mx-auto mt-0" />
@@ -1527,19 +1534,19 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
 
           {/* Zoom controls */}
           <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Minus className="w-3 h-3" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1 transition cursor-pointer flex items-center justify-center w-6 h-6"><Plus className="w-3 h-3" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-2 text-[10px] font-bold transition cursor-pointer h-6 flex items-center">Reset</button>
+            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
+            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
+            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
           </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[9px] font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
+          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
         </div>{/* end viewport */}
         </div>{/* end LEFT */}
 
         {/* RIGHT: answer panel */}
-        <div className="lg:w-72 xl:w-80 shrink-0 border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827] flex flex-col">
+        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">{step.qNum}</span>
-            <span className="text-sm font-bold text-emerald-200 uppercase tracking-wide">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
+            <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">
               {phase === 1 ? "Confirm Record" : phase === 2 ? "Order Steps" : "Select Navigation"}
             </span>
           </div>
@@ -1548,7 +1555,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
             {/* Phase 1 — record confirm cards */}
             {phase === 1 && (
               <div className="flex flex-col gap-3">
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger record to re-confirm:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Select the Erlanger record to re-confirm:</p>
                 {[
                   { id: "ky-1", city: "Mount Sterling, KY", umid: null },
                   { id: "ky-2", city: "Winchester, KY",     umid: null },
@@ -1576,7 +1583,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
             {/* Phase 2 — drag-to-order (keep existing) */}
             {phase === 2 && (
               <div className="flex flex-col gap-4">
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Drag steps into the correct order:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Drag steps into the correct order:</p>
                 <div className="flex flex-col gap-2">
                   {[0, 1].map(slotIdx => (
                     <div key={slotIdx} onDragOver={e => e.preventDefault()} onDrop={() => handleSlotDrop(slotIdx)}
@@ -1609,9 +1616,9 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
             {/* Phase 3 — SELECT option picker */}
             {phase === 3 && (
               <div className="flex flex-col gap-3">
-                <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold">Choose the correct SELECT value:</p>
+                <p className="text-base text-emerald-400 uppercase tracking-wider font-bold">Choose the correct SELECT value:</p>
                 <div className="bg-black/40 border border-white/10 rounded-xl p-3 font-mono text-xs space-y-1">
-                  <div className="text-emerald-400/60 text-[10px] uppercase tracking-wider mb-2">Navigation Screen — Row 3</div>
+                  <div className="text-emerald-400/60 text-sm uppercase tracking-wider mb-2">Navigation Screen — Row 3</div>
                   <div className="flex justify-between"><span className="text-white/40">UMID</span><span className="text-emerald-300">H43303654</span></div>
                   <div className="flex justify-between"><span className="text-white/40">CITY</span><span className="text-white">ERLANGER, KY</span></div>
                   <div className="flex justify-between items-center border-t border-white/10 pt-2 mt-2">
@@ -1627,7 +1634,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                       <button key={opt} onClick={() => { if (opt === "MR") { setSelectTapped(true); setTimeout(() => dispatch({ type: "RECORD_SUCCESS" }), 800); } else { dispatch({ type: "RECORD_ERROR" }); } }}
                         className={`rounded-xl border py-3.5 text-lg font-black font-mono transition cursor-pointer ${opt === "MR" ? "bg-white/10 hover:bg-emerald-600/40 border-white/20 hover:border-emerald-400 text-white" : "bg-white/5 border-white/10 hover:bg-red-500/10 hover:border-red-400/30 text-white/50"}`}>
                         {opt}
-                        <div className="text-[9px] font-normal text-white/40 mt-0.5">
+                        <div className="text-sm font-normal text-white/40 mt-0.5">
                           {opt === "MR" ? "Member Referral" : opt === "CL" ? "Claims List" : opt === "PR" ? "Provider" : "Pharmacy"}
                         </div>
                       </button>
@@ -1904,48 +1911,48 @@ export function Gameplay() {
       {/* ── Zone 1: Top HUD bar ─────────────────────────────────────────── */}
       <header className="shrink-0 border-b border-emerald-100 bg-white/95 shadow-sm z-10">
         {/* Row 1: nav + stats */}
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => dispatch({ type: "GOTO", screen: "journey" })}
               className="rounded-full p-1.5 text-slate-500 hover:bg-emerald-50 hover:text-emerald-800 transition"
               aria-label="Back"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-5 w-5" />
             </button>
-            <div>
-              <h2 className="font-display text-sm font-extrabold text-slate-800 leading-none">
+            <div className="min-w-0">
+              <h2 className="font-display text-lg xl:text-xl font-extrabold text-slate-800 leading-tight truncate max-w-[50vw] lg:max-w-none" title={`Case ${caseDef.number}: ${caseDef.name}`}>
                 Case {caseDef.number}: {caseDef.name}
               </h2>
-              <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+              <div className="text-sm text-slate-400 font-bold uppercase tracking-wider mt-0.5">
                 Step {state.currentStepIndex + 1} of {caseDef.steps.length} · {step.qNum}
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {state.streak > 0 && (
-              <div className="flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-orange-600 text-xs font-bold border border-orange-100">
-                <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500 animate-bounce" />
+              <div className="flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1.5 text-orange-600 text-sm font-bold border border-orange-100">
+                <Flame className="h-4 w-4 fill-orange-500 text-orange-500 animate-bounce" />
                 <span>{state.streak}</span>
               </div>
             )}
-            <div className="flex items-center gap-1 rounded-full bg-yellow-50 px-2.5 py-1 text-yellow-800 text-xs font-bold border border-yellow-200">
-              <Sparkles className="h-3.5 w-3.5 fill-yellow-400 text-yellow-600" />
+            <div className="flex items-center gap-1 rounded-full bg-yellow-50 px-2.5 py-1.5 text-yellow-800 text-sm font-bold border border-yellow-200">
+              <Sparkles className="h-4 w-4 fill-yellow-400 text-yellow-600" />
               <span>{state.totalXP} XP</span>
             </div>
           </div>
         </div>
 
         {/* Row 2: step checklist as a horizontal pill strip */}
-        <div className="flex items-center gap-1.5 px-4 pb-2.5 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-1.5 px-4 pb-3 overflow-x-auto scrollbar-none">
           {caseDef.steps.map((s, idx) => {
             const done = idx < state.currentStepIndex;
             const active = idx === state.currentStepIndex;
             return (
               <div
                 key={s.id}
-                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold whitespace-nowrap shrink-0 border transition-all ${
+                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap shrink-0 border transition-all ${
                   done
                     ? "bg-emerald-500 border-emerald-600 text-white"
                     : active
@@ -1954,7 +1961,7 @@ export function Gameplay() {
                 }`}
               >
                 {done ? (
-                  <Check className="h-3 w-3 shrink-0" />
+                  <Check className="h-4 w-4 shrink-0" />
                 ) : (
                   <span
                     className={`h-2 w-2 rounded-full shrink-0 ${
@@ -1967,23 +1974,23 @@ export function Gameplay() {
             );
           })}
           {/* End goal indicator */}
-          <div className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold whitespace-nowrap shrink-0 border border-yellow-200 bg-yellow-50 text-yellow-700 ml-1">
-            <Sparkles className="h-3 w-3 fill-yellow-400 text-yellow-500" />
+          <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap shrink-0 border border-yellow-200 bg-yellow-50 text-yellow-700 ml-1">
+            <Sparkles className="h-4 w-4 fill-yellow-400 text-yellow-500" />
             +{caseDef.xpValue} XP
           </div>
         </div>
       </header>
 
       {/* ── Zone 2: Main workspace ──────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-h-0 overflow-hidden md:flex-row">
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden lg:flex-row">
 
         {/* Mobile-only prompt bar (shown below md) */}
-        <div className={`md:hidden shrink-0 px-3 py-2 border-b border-emerald-100 bg-white/80 ${state.showHint ? "bg-amber-50/80 border-amber-200" : ""}`}>
+        <div className={`lg:hidden shrink-0 px-3 py-2 border-b border-emerald-100 bg-white/80 ${state.showHint ? "bg-amber-50/80 border-amber-200" : ""}`}>
           <div className="flex items-start gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-mono font-bold shrink-0 mt-0.5">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-mono font-bold shrink-0 mt-0.5">
               {step.qNum}
             </span>
-            <p className={`text-xs font-medium leading-relaxed ${state.showHint ? "text-amber-900" : "text-slate-800"}`}>
+            <p className={`text-base font-medium leading-relaxed ${state.showHint ? "text-amber-900" : "text-slate-800"}`}>
               {state.showHint ? (
                 <><span className="font-bold text-amber-800">Hint: </span>{step.scoutHint}</>
               ) : (
@@ -1996,13 +2003,13 @@ export function Gameplay() {
                 className="ml-auto shrink-0 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-emerald-700 p-1.5 transition cursor-pointer"
                 aria-label="Need a hint?"
               >
-                <HelpCircle className="h-3.5 w-3.5" />
+                <HelpCircle className="h-5 w-5" />
               </button>
             )}
             {state.showHint && (
               <button
                 onClick={() => dispatch({ type: "CLOSE_HINT" })}
-                className="ml-auto shrink-0 rounded-full bg-slate-800 text-white font-bold px-2 py-1 text-[10px] uppercase tracking-wider transition cursor-pointer whitespace-nowrap"
+                className="ml-auto shrink-0 rounded-full bg-slate-800 text-white font-bold px-3 py-1.5 text-sm uppercase tracking-wider transition cursor-pointer whitespace-nowrap"
               >
                 Got It
               </button>
@@ -2011,7 +2018,7 @@ export function Gameplay() {
         </div>
 
         {/* Left panel: Scout + prompt */}
-        <div className="hidden md:flex w-64 lg:w-72 shrink-0 flex-col gap-3 p-4 border-r border-emerald-100 bg-white/60 overflow-y-auto">
+        <div className="hidden lg:flex lg:w-72 xl:w-80 shrink-0 flex-col gap-3 p-4 border-r border-emerald-100 bg-white/60 overflow-y-auto">
 
           {/* Scout card */}
           <div
@@ -2019,9 +2026,9 @@ export function Gameplay() {
               state.showHint ? "border-amber-200 bg-amber-50/50" : "border-slate-100"
             }`}
           >
-            <img src={scoutImg} alt="Scout" className="w-36 h-36 mx-auto" />
+            <img src={scoutImg} alt="Scout" className="w-40 h-40 mx-auto" />
             <div
-              className={`mt-3 rounded-xl p-3 text-xs leading-relaxed text-left border relative transition-colors ${
+              className={`mt-3 rounded-xl p-3 text-base leading-relaxed text-left border relative transition-colors ${
                 state.showHint
                   ? "bg-amber-100/50 border-amber-200 text-amber-900"
                   : "bg-emerald-50/40 border-emerald-100 text-emerald-950"
@@ -2032,7 +2039,7 @@ export function Gameplay() {
                   state.showHint ? "bg-[#FEF3C7] border-amber-200" : "bg-[#F3FAF6] border-emerald-100"
                 }`}
               />
-              <p className="relative z-10 text-xs leading-relaxed">
+              <p className="relative z-10 text-base leading-relaxed">
                 {state.showHint ? (
                   <>
                     <span className="font-bold text-amber-800">Hint: </span>
@@ -2049,7 +2056,7 @@ export function Gameplay() {
             {state.showHint && (
               <button
                 onClick={() => dispatch({ type: "CLOSE_HINT" })}
-                className="mt-2 w-full rounded-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 text-xs uppercase tracking-wider transition cursor-pointer"
+                className="mt-2 w-full rounded-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 text-sm uppercase tracking-wider transition cursor-pointer"
               >
                 Got It, Retry
               </button>
@@ -2059,12 +2066,12 @@ export function Gameplay() {
           {/* Prompt box */}
           <div className="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs font-mono font-bold shrink-0">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-mono font-bold shrink-0">
                 {step.qNum}
               </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Your Task</span>
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-400">Your Task</span>
             </div>
-            <p className="text-sm text-slate-800 font-medium leading-relaxed">
+            <p className="text-base text-slate-800 font-medium leading-relaxed">
               {step.prompt}
             </p>
           </div>
@@ -2073,7 +2080,7 @@ export function Gameplay() {
           {!state.showHint && (
             <button
               onClick={() => dispatch({ type: "RECORD_ERROR" })}
-              className="flex items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-emerald-700 hover:border-emerald-200 py-2 text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+              className="flex items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-emerald-700 hover:border-emerald-200 py-2.5 text-sm font-bold uppercase tracking-wider transition cursor-pointer"
             >
               <HelpCircle className="h-3.5 w-3.5" />
               Need a Hint?
@@ -2082,10 +2089,10 @@ export function Gameplay() {
         </div>
 
         {/* Right panel: the interactive mainframe board */}
-        <div className="flex-1 overflow-y-auto p-3 md:p-4">
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden p-3 md:p-4">
 
           {/* The board — no duplicate prompt here */}
-          <div key={stepKey} className="flex flex-col gap-3 h-full">
+          <div key={stepKey} className="flex flex-1 min-h-0 flex-col gap-3">
 
             {/* Reference Image Panel (only for non-case boards that use it) */}
             {step.imageUrl && !isCase1 && !isCase2 && !isCase3 && (
@@ -2093,7 +2100,7 @@ export function Gameplay() {
             )}
 
             {/* Mainframe Interactive Terminal */}
-            <div className="relative flex-1">
+            <div className="relative flex flex-1 min-h-0 flex-col">
               {isCase1 ? (
                 <Case1InteractiveBoard
                   step={step}
@@ -2140,7 +2147,7 @@ export function Gameplay() {
                   dispatch={dispatch}
                 />
               ) : (
-                <>
+                <div className="relative flex h-full min-h-0 flex-col">
                   {/* Zoom overlay wrapper for zoom mechanics */}
                   <AnimatePresence>
                     {zoomOpen && (
@@ -2154,7 +2161,7 @@ export function Gameplay() {
                       initial={{ scale: 0.9, y: 10 }}
                       animate={{ scale: 1, y: 0 }}
                       exit={{ scale: 0.9, y: 10 }}
-                      className="bg-white rounded-2xl border border-emerald-100 max-w-sm w-full p-6 shadow-2xl text-center relative"
+                      className="bg-white rounded-2xl border border-emerald-100 max-w-md w-full p-6 shadow-2xl text-center relative"
                     >
                       <button
                         onClick={() => setZoomOpen(false)}
@@ -2206,7 +2213,7 @@ export function Gameplay() {
               {step.mechanic === "command-builder" && (
                 <MainframeTerminal headerTitle="ASI QUERY SCREEN" commandValue={getCommandBuilderLine()}>
                   <div className="flex flex-col items-center justify-center flex-grow p-4 gap-6 text-center select-none">
-                    <div className="font-mono text-emerald-800/80 max-w-sm text-xs leading-normal">
+                    <div className="font-mono text-emerald-800/80 max-w-md text-xs leading-normal">
                       &gt; BUILD A VALID CONTROL LINE TO ENTER TEXAS CLAIMS ARCHIVES.<br />
                       &gt; SYNTAX: CMD, LASTNAME, FIRSTNAME, STATE
                     </div>
@@ -2229,7 +2236,7 @@ export function Gameplay() {
                                 : "bg-emerald-500/5 border-emerald-500/20 text-emerald-800/40"
                             }`}
                           >
-                            <span className="text-[9px] uppercase tracking-wider opacity-60 mb-0.5">
+                            <span className="text-sm uppercase tracking-wider opacity-60 mb-0.5">
                               {slotName}
                             </span>
                             <span className="font-mono text-xs truncate max-w-full">
@@ -2273,7 +2280,7 @@ export function Gameplay() {
 
               {step.mechanic === "spot-tag" && (
                 <MainframeTerminal headerTitle="QUERY ARCHIVE RESPONSE" commandValue="ASI,JONES,MARKUS,TX">
-                  <div className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-6 flex-grow">
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_200px] gap-6 flex-grow">
                     {/* Viewport lines */}
                     <div className="bg-emerald-950/5 border border-emerald-600/10 rounded-xl p-3 flex flex-col font-mono text-xs leading-normal select-none overflow-y-auto max-h-[220px]">
                       {step.data.mainframeLines.map((line: string, idx: number) => {
@@ -2300,10 +2307,10 @@ export function Gameplay() {
 
                     {/* Stepper Widget Column */}
                     <div className="flex flex-col justify-center items-center gap-4 bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-center">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
                         Page Discernment
                       </span>
-                      <p className="text-[11px] text-slate-500 leading-normal">
+                      <p className="text-sm text-slate-500 leading-normal">
                         Verify and enter the total pages returned by this query:
                       </p>
 
@@ -2340,14 +2347,14 @@ export function Gameplay() {
               {step.mechanic === "hotspot-tally" && (
                 <MainframeTerminal headerTitle="GROUP ARCHIVE AUDIT" commandValue="ASI,JONES,MARKUS,TX">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; AUDITING SPECIAL PROCESSING FOR DENTAL GROUP (D-GRP) 56. TAP RELEVANT ROWS.
                     </div>
 
                     <div className="border border-emerald-100 rounded-xl overflow-hidden bg-white shadow-sm flex-grow">
                       <table className="w-full font-mono text-xs text-left border-collapse">
                         <thead>
-                          <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-[10px]">
+                          <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-sm">
                             {step.data.headers.map((h: string) => (
                               <th key={h} className="p-3">
                                 {h}
@@ -2398,7 +2405,7 @@ export function Gameplay() {
                     </div>
 
                     <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-emerald-800">
+                      <span className="text-sm font-bold text-emerald-800">
                         Selected Group 56 Rows: {hotspotTallyTapped.length} / 2
                       </span>
                       <button
@@ -2416,7 +2423,7 @@ export function Gameplay() {
               {step.mechanic === "field-detective" && (
                 <MainframeTerminal headerTitle="FIELD AUDIT AND RESOLUTION" commandValue="ASI,JONES,MARKUS,TX">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; RESOLVING MISCONFIGURED / BLANK VALUE IN COLUMN:{" "}
                       <span className="font-bold uppercase text-emerald-950">
                         {step.data.targetColKey}
@@ -2426,7 +2433,7 @@ export function Gameplay() {
                     <div className="border border-emerald-100 rounded-xl overflow-hidden bg-white shadow-sm flex-grow">
                       <table className="w-full font-mono text-xs text-left border-collapse">
                         <thead>
-                          <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-[10px]">
+                          <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-sm">
                             {step.data.headers.map((h: string) => (
                               <th key={h} className="p-3">
                                 {h}
@@ -2498,14 +2505,14 @@ export function Gameplay() {
               {step.mechanic === "match-code" && (
                 <MainframeTerminal headerTitle="SECURE CLIENT ADDRESS MATCH" commandValue="ASI,JONES,MARKUS,TX">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; DRAG OR MATCH THE &apos;{step.data.chipLabel}&apos; (EMPLOYEE) KEY CHIP ONTO THE TARGET ROW TO DECRYPT ENCRYPTED ADDRESS.
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-[110px_1fr] gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-[110px_1fr] gap-4">
                       {/* Chip area */}
                       <div className="flex flex-col justify-center items-center bg-[#E9F8F0] border border-emerald-200 rounded-xl p-3 shadow-sm text-center">
-                        <span className="text-[9px] uppercase font-bold text-slate-400">
+                        <span className="text-sm uppercase font-bold text-slate-400">
                           Match Key
                         </span>
                         <motion.div
@@ -2519,7 +2526,7 @@ export function Gameplay() {
                         >
                           {step.data.chipLabel}
                         </motion.div>
-                        <span className="text-[9px] text-slate-400 mt-2">
+                        <span className="text-sm text-slate-400 mt-2">
                           Tap target row REL cell
                         </span>
                       </div>
@@ -2528,7 +2535,7 @@ export function Gameplay() {
                       <div className="border border-emerald-100 rounded-xl overflow-hidden bg-white shadow-sm">
                         <table className="w-full font-mono text-xs text-left border-collapse">
                           <thead>
-                            <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-[10px]">
+                            <tr className="bg-emerald-50 text-emerald-800 border-b border-emerald-100 font-bold uppercase text-sm">
                               {step.data.headers.map((h: string) => (
                                 <th key={h} className="p-3">
                                   {h}
@@ -2575,7 +2582,7 @@ export function Gameplay() {
                                       <span className="font-bold text-slate-400">{row.rel}</span>
                                     )}
                                   </td>
-                                  <td className="p-3 text-[11px] font-bold">
+                                  <td className="p-3 text-sm font-bold">
                                     {isTarget ? (
                                       codeChipMatched ? (
                                         <motion.span
@@ -2608,11 +2615,11 @@ export function Gameplay() {
               {step.mechanic === "decision-swipe" && (
                 <MainframeTerminal headerTitle="DUPLICATE FILE RECONCILIATION" commandValue="ASI,JONES,MARKUS,TX">
                   <div className="flex flex-col items-center justify-center flex-grow py-3 select-none">
-                    <div className="text-center max-w-sm mb-4">
-                      <span className="text-[10px] uppercase font-bold text-emerald-850 tracking-wider">
+                    <div className="text-center max-w-md mb-4">
+                      <span className="text-sm uppercase font-bold text-emerald-850 tracking-wider">
                         Reconciliation Queue
                       </span>
-                      <p className="text-[11px] text-slate-500 mt-1 leading-normal">
+                      <p className="text-sm text-slate-500 mt-1 leading-normal">
                         Identify correct record with DOB 12/30/1996. Approve or Reject candidates.
                       </p>
                     </div>
@@ -2636,7 +2643,7 @@ export function Gameplay() {
                             >
                               <div>
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
-                                  <span className="text-[10px] font-bold text-slate-400 uppercase">
+                                  <span className="text-sm font-bold text-slate-400 uppercase">
                                     {card.title}
                                   </span>
                                   <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
@@ -2644,7 +2651,7 @@ export function Gameplay() {
                                 <h4 className="font-mono text-sm font-extrabold text-slate-800 mt-2 truncate">
                                   {card.name}
                                 </h4>
-                                <div className="mt-2 space-y-1 font-mono text-[10px] text-slate-650">
+                                <div className="mt-2 space-y-1 font-mono text-sm text-slate-650">
                                   <div>DOB: <strong className="text-slate-800">{card.dob}</strong></div>
                                   <div>UMID: <strong className="text-slate-800">{card.umid}</strong></div>
                                   <div className="truncate">ADDR: <strong className="text-slate-800">{card.address}</strong></div>
@@ -2677,14 +2684,14 @@ export function Gameplay() {
               {step.mechanic === "tally-tap" && (
                 <MainframeTerminal headerTitle="KENTUCKY REGIONAL MEMBERS" commandValue="ASI,ADAMS,BRENDA,KY">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2 flex items-center justify-between">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2 flex items-center justify-between">
                       <span>&gt; CONFIRM SYSTEM COUNT: TAP ALL DISPLAYED KENTUCKY RECORD CARDS once.</span>
                       <span className="font-bold text-emerald-950 font-mono">
                         TALLY: {tallyTapCount.length} / 3
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-grow">
                       {step.data.cards.map((card: any) => {
                         const tapped = tallyTapCount.includes(card.id);
                         return (
@@ -2699,17 +2706,17 @@ export function Gameplay() {
                             whileHover={{ y: tapped ? 0 : -2 }}
                           >
                             <div className="flex items-center justify-between border-b border-slate-50 pb-1.5">
-                              <span className="text-[9px] uppercase font-bold text-slate-450">
+                              <span className="text-sm uppercase font-bold text-slate-450">
                                 KY Member Record
                               </span>
                               {tapped && <Check className="w-3.5 h-3.5 text-[#25BB64] fill-emerald-50" />}
                             </div>
 
                             <div className="mt-2">
-                              <h4 className="font-mono text-[11px] font-extrabold text-slate-800 truncate">
+                              <h4 className="font-mono text-sm font-extrabold text-slate-800 truncate">
                                 {card.name}
                               </h4>
-                              <div className="space-y-0.5 mt-1.5 font-mono text-[9px] text-slate-500">
+                              <div className="space-y-0.5 mt-1.5 font-mono text-sm text-slate-500">
                                 <div>DOB: <strong className="text-slate-800">{card.dob}</strong></div>
                                 <div>UMID: <strong className="text-slate-800">{card.umid}</strong></div>
                                 <div>S: <strong className="text-slate-800">{card.suffix || "BLANK"}</strong></div>
@@ -2726,11 +2733,11 @@ export function Gameplay() {
               {step.mechanic === "hotspot-tap" && (
                 <MainframeTerminal headerTitle="RECORD FIELD SCRUB" commandValue="ASI,ADAMS,BRENDA,KY">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; FIELD MATCHING TASK: TAP THE CORRECT CELL FIELD BASED ON INSTRUCTION PROMPT.
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-grow">
                       {step.data.cards.map((card: any) => {
                         const umidId = `${card.id}-umid`;
                         const suffixId = `${card.id}-suffix`;
@@ -2742,14 +2749,14 @@ export function Gameplay() {
                             key={card.id}
                             className="p-3.5 bg-white border border-slate-100 rounded-xl shadow-sm flex flex-col justify-between font-mono"
                           >
-                            <div className="border-b border-slate-50 pb-1 text-[9px] uppercase font-bold text-slate-400">
+                            <div className="border-b border-slate-50 pb-1 text-sm uppercase font-bold text-slate-400">
                               RECORD: {card.id.toUpperCase()}
                             </div>
-                            <div className="mt-2 text-[10px]">
+                            <div className="mt-2 text-sm">
                               <div className="font-extrabold text-slate-800 mb-1 leading-tight">
                                 {card.name}
                               </div>
-                              <div className="space-y-1.5 mt-2 text-[9px]">
+                              <div className="space-y-1.5 mt-2 text-sm">
                                 <div>DOB: <strong>{card.dob}</strong></div>
 
                                 {/* UMID Hotspot */}
@@ -2794,11 +2801,11 @@ export function Gameplay() {
               {step.mechanic === "multi-select" && (
                 <MainframeTerminal headerTitle="SUFFIX EXCLUSION QUERY" commandValue="ASI,ADAMS,BRENDA,KY">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; AUDIT BLANK SUFFIXES: SELECT ALL KY CARDS WHICH HAVE NO SUFFIX IN THE &apos;S&apos; COLUMN.
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-grow">
                       {step.data.cards.map((card: any) => {
                         const selected = multiSelectSelected.includes(card.id);
                         return (
@@ -2812,13 +2819,13 @@ export function Gameplay() {
                             }`}
                           >
                             <div className="flex items-center justify-between border-b border-slate-50 pb-1">
-                              <span className="text-[9px] uppercase font-bold text-slate-400">
+                              <span className="text-sm uppercase font-bold text-slate-400">
                                 KY Record Card
                               </span>
                               <div
                                 className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
                                   selected
-                                    ? "bg-[#25BB64] border-emerald-600 text-white text-[8px] font-bold"
+                                    ? "bg-[#25BB64] border-emerald-600 text-white text-sm font-bold"
                                     : "border-slate-350"
                                 }`}
                               >
@@ -2826,9 +2833,9 @@ export function Gameplay() {
                               </div>
                             </div>
 
-                            <div className="mt-2 text-[10px] font-mono">
+                            <div className="mt-2 text-sm font-mono">
                               <h4 className="font-extrabold text-slate-800 truncate">{card.name}</h4>
-                              <div className="space-y-0.5 mt-1.5 text-[9px] text-slate-500">
+                              <div className="space-y-0.5 mt-1.5 text-sm text-slate-500">
                                 <div>UMID: <strong className="text-slate-800">{card.umid}</strong></div>
                                 <div>
                                   SUFFIX:{" "}
@@ -2865,14 +2872,14 @@ export function Gameplay() {
               {step.mechanic === "map-pin" && (
                 <MainframeTerminal headerTitle="REGIONAL CLAIMS DESPATCH" commandValue="ASI,ADAMS,BRENDA,KY">
                   <div className="flex flex-col flex-grow select-none">
-                    <div className="text-[11px] text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
+                    <div className="text-sm text-emerald-800 mb-3 border-b border-emerald-150 pb-2">
                       &gt; GEOGRAPHY AUDIT: TAP AND PLACE THE LOCATION DISPATCH PIN ONTO THE ERLANGER, KY RECORD CARD.
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-[120px_1fr] gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-[120px_1fr] gap-4">
                       {/* Pin container */}
                       <div className="flex flex-col justify-center items-center bg-[#E9F8F0] border border-emerald-200 rounded-xl p-3 shadow-sm text-center">
-                        <span className="text-[9px] uppercase font-bold text-slate-400">
+                        <span className="text-sm uppercase font-bold text-slate-400">
                           Dispatch Pin
                         </span>
                         <motion.div
@@ -2882,13 +2889,13 @@ export function Gameplay() {
                         >
                           <MapPin className="w-6 h-6 fill-white/10" />
                         </motion.div>
-                        <span className="text-[9px] text-slate-450 mt-3 leading-normal">
+                        <span className="text-sm text-slate-450 mt-3 leading-normal">
                           Tap card address below to drop pin
                         </span>
                       </div>
 
                       {/* Cards Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
                         {step.data.cards.map((card: any) => {
                           const hasPin = pinDroppedCardId === card.id;
                           return (
@@ -2901,15 +2908,15 @@ export function Gameplay() {
                                   : "border-slate-100 hover:border-emerald-300"
                               }`}
                             >
-                              <div className="border-b border-slate-50 pb-1 flex justify-between items-center text-[9px] uppercase font-bold text-slate-400">
+                              <div className="border-b border-slate-50 pb-1 flex justify-between items-center text-sm uppercase font-bold text-slate-400">
                                 <span>CARD: {card.id}</span>
                                 {hasPin && <MapPin className="w-3.5 h-3.5 text-orange-500 fill-orange-100" />}
                               </div>
-                              <div className="mt-2 text-[10px]">
+                              <div className="mt-2 text-sm">
                                 <div className="font-extrabold text-slate-800 truncate">
                                   {card.name}
                                 </div>
-                                <div className="mt-2 p-1.5 rounded text-[9px] bg-slate-50 text-slate-650 leading-normal border border-slate-100/50">
+                                <div className="mt-2 p-1.5 rounded text-sm bg-slate-50 text-slate-650 leading-normal border border-slate-100/50">
                                   {card.address}
                                 </div>
                               </div>
@@ -2924,10 +2931,10 @@ export function Gameplay() {
 
               {step.mechanic === "sequence-builder" && (
                 <MainframeTerminal headerTitle="MEMBER REFERRAL GATEWAY" commandValue={seqCommand}>
-                  <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-6 flex-grow select-none">
+                  <div className="grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-6 flex-grow select-none">
                     {/* Sequence list */}
                     <div className="flex flex-col gap-3">
-                      <div className="text-[10px] uppercase font-bold text-emerald-800">
+                      <div className="text-sm uppercase font-bold text-emerald-800">
                         Select and Order Steps:
                       </div>
 
@@ -2947,11 +2954,11 @@ export function Gameplay() {
                             >
                               <span>{st.text}</span>
                               {isOrdered ? (
-                                <span className="h-5 w-5 rounded-full bg-[#25BB64] text-white flex items-center justify-center font-sans font-bold text-[10px] shadow-sm">
+                                <span className="h-5 w-5 rounded-full bg-[#25BB64] text-white flex items-center justify-center font-sans font-bold text-sm shadow-sm">
                                   {idx + 1}
                                 </span>
                               ) : (
-                                <span className="h-5 w-5 rounded-full border border-slate-200 flex items-center justify-center text-[10px] text-slate-400 font-bold">
+                                <span className="h-5 w-5 rounded-full border border-slate-200 flex items-center justify-center text-sm text-slate-400 font-bold">
                                   +
                                 </span>
                               )}
@@ -2963,10 +2970,10 @@ export function Gameplay() {
 
                     {/* Command Prompt Box */}
                     <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm flex flex-col justify-between text-center gap-3">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
                         Shortcut Command
                       </span>
-                      <p className="text-[10px] text-slate-500 leading-normal">
+                      <p className="text-sm text-slate-500 leading-normal">
                         Type the 2-letter terminal command to navigate to member referrals:
                       </p>
 
@@ -2992,12 +2999,12 @@ export function Gameplay() {
                   </div>
                 </MainframeTerminal>
               )}
-                </>
+                </div>
               )}
-            </div>{/* end key={stepKey} board div */}
-          </div>{/* end right panel overflow-y-auto */}
-        </div>{/* end flex-1 flex row */}
-      </div>{/* end outer flex col */}
+            </div>{/* end Mainframe Interactive Terminal */}
+          </div>{/* end key={stepKey} board div */}
+        </div>{/* end right panel */}
+      </div>{/* end flex-1 flex row */}
     </div>
   );
 }

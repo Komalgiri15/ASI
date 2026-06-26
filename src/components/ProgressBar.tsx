@@ -30,7 +30,7 @@ export function ProgressBar({
         />
       </div>
       {showLabel && (
-        <div className="mt-1 text-[11px] text-muted-foreground tabular-nums">
+        <div className="mt-1 text-sm text-muted-foreground tabular-nums">
           {value} / {max}
         </div>
       )}

@@ -22,7 +22,7 @@ export function Journey() {
             <ArrowLeft className="h-4 w-4" />
           </button>
           <HumanaWordmark className="text-xl text-emerald-850" />
-          <span className="hidden text-xs font-semibold uppercase tracking-wider text-slate-400 border-l border-slate-200 pl-4 sm:inline">
+          <span className="hidden text-sm font-semibold uppercase tracking-wider text-slate-400 border-l border-slate-200 pl-4 sm:inline">
             Search Specialist Training
           </span>
         </div>
@@ -30,21 +30,21 @@ export function Journey() {
           {/* Progress Bar (Large screens) */}
           <div className="hidden md:block w-36 mr-2">
             <ProgressBar value={completedCount} max={CASES.length} />
-            <div className="mt-1 text-[10px] text-slate-500 font-semibold">
+            <div className="mt-1 text-sm text-slate-500 font-semibold">
               {completedCount} / {CASES.length} Cases Solved
             </div>
           </div>
 
           {/* Streak Counter */}
           {state.streak > 0 && (
-            <div className="flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-200 px-3 py-1.5 text-orange-600 text-xs font-bold shadow-sm">
+            <div className="flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-200 px-3 py-1.5 text-orange-600 text-sm font-bold shadow-sm">
               <Flame className="h-4 w-4 fill-orange-500 text-orange-500 animate-bounce" />
               <span>{state.streak} STREAK</span>
             </div>
           )}
 
           {/* XP Badge */}
-          <div className="flex items-center gap-1.5 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/40 px-3.5 py-1.5 font-display text-xs font-bold text-yellow-800 shadow-sm">
+          <div className="flex items-center gap-1.5 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/40 px-3.5 py-1.5 font-display text-sm font-bold text-yellow-800 shadow-sm">
             <Sparkles className="h-3.5 w-3.5 fill-[#FFD700] text-[#D97706]" />
             <span>{state.totalXP} XP</span>
           </div>
@@ -53,16 +53,16 @@ export function Journey() {
 
       {/* Main Path Area */}
       <div className="flex-1 overflow-y-auto px-6 py-8">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-5xl w-full">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center md:text-left mb-8"
           >
-            <h2 className="font-display text-3xl font-extrabold text-slate-800 tracking-tight">
+            <h2 className="font-display text-4xl font-extrabold text-slate-800 tracking-tight">
               Case Dashboard
             </h2>
-            <p className="mt-2 text-sm text-slate-500 max-w-xl">
+            <p className="mt-2 text-base text-slate-500 max-w-xl">
               Solve the cases in sequence by reading stylized 3270 mainframe screens. No multiple-choice questions—interact directly with the terminal.
             </p>
           </motion.div>
@@ -126,30 +126,30 @@ export function Journey() {
                     {/* Case Info Description */}
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
                           CASE 0{caseDef.number}
                         </span>
                         {isCompleted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-sm font-bold text-emerald-700">
                             <Trophy className="h-3 w-3 fill-emerald-100" />
                             CLOSED
                           </span>
                         )}
                       </div>
-                      <h3 className="font-display text-lg font-bold text-slate-800 truncate mt-0.5">
+                      <h3 className="font-display text-xl font-bold text-slate-800 truncate mt-0.5">
                         {caseDef.name}
                       </h3>
-                      <p className="mt-1 text-xs text-slate-500 leading-normal">
+                      <p className="mt-1 text-sm text-slate-500 leading-normal">
                         {caseDef.description}
                       </p>
 
                       {/* Outcomes Bullet Points */}
                       {!isLocked && (
                         <div className="mt-3 p-3 bg-emerald-50/45 border border-emerald-500/10 rounded-xl">
-                          <span className="text-[10px] uppercase font-bold text-emerald-850 tracking-wider">
+                          <span className="text-sm uppercase font-bold text-emerald-850 tracking-wider">
                             Case Objectives:
                           </span>
-                          <ul className="mt-1.5 space-y-1 text-[11px] text-slate-600 list-disc list-inside">
+                          <ul className="mt-1.5 space-y-1 text-sm text-slate-600 list-disc list-inside">
                             {caseDef.outcomes.map((outcome, idx) => (
                               <li key={idx} className="truncate">
                                 {outcome}
@@ -161,7 +161,7 @@ export function Journey() {
 
                       {/* Reward Info & CTA Actions */}
                       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                        <div className="flex items-center gap-3 text-[11px] font-semibold text-slate-500">
+                        <div className="flex items-center gap-3 text-sm font-semibold text-slate-500">
                           <span>Reward: <strong className="text-yellow-600">+{caseDef.xpValue} XP</strong></span>
                           <span>•</span>
                           <span className="flex items-center gap-1 text-slate-600">
@@ -173,7 +173,7 @@ export function Journey() {
                           <button
                             disabled={isLocked}
                             onClick={() => dispatch({ type: "START_CASE", index: i })}
-                            className={`rounded-full px-5 py-1.5 text-xs font-bold text-white transition-all shadow-sm ${
+                            className={`rounded-full px-5 py-2 text-sm font-bold text-white transition-all shadow-sm ${
                               isLocked
                                 ? "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300"
                                 : isCompleted
@@ -203,12 +203,12 @@ export function Journey() {
               <h3 className="font-display text-lg font-bold text-amber-900">
                 Mainframe Certification Unlocked!
               </h3>
-              <p className="text-xs text-amber-800/80 mt-1 max-w-md">
+              <p className="text-sm text-amber-800/80 mt-1 max-w-md">
                 You have successfully resolved all regional searches and navigated to the MR referral terminal. Claim your official navigator completion certificate!
               </p>
               <button
                 onClick={() => dispatch({ type: "GOTO", screen: "finalResults" })}
-                className="mt-4 rounded-full bg-amber-500 hover:bg-amber-600 border border-amber-600 px-6 py-2 text-xs font-bold text-white shadow-sm cursor-pointer transition"
+                className="mt-4 rounded-full bg-amber-500 hover:bg-amber-600 border border-amber-600 px-6 py-2.5 text-sm font-bold text-white shadow-sm cursor-pointer transition"
               >
                 View Certificate
               </button>

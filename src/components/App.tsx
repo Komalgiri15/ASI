@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GameProvider, useGame } from "@/state/gameContext";
 import { Landing } from "@/components/screens/Landing";
@@ -15,7 +14,7 @@ function Router() {
   const screen = state.currentScreen;
 
   return (
-    <div className="fixed inset-0 overflow-auto bg-[#E9F8F0]">
+    <div className="fixed inset-0 h-dvh w-full overflow-hidden bg-[#E9F8F0]">
       <AnimatePresence mode="wait">
         <motion.div
           key={screen}

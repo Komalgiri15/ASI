@@ -71,7 +71,7 @@ export function LevelSelect() {
                   <motion.li
                     key={caseDef.id}
                     whileHover={{ scale: 1.02, boxShadow: "0px 4px 12px rgba(0,0,0,0.15)" }}
-                    className="flex items-center justify-between p-4 border rounded-lg bg-gradient-to-r from-[#E9F8F0] to-white shadow-sm"
+                    className="flex flex-wrap items-center justify-between gap-3 p-4 border rounded-lg bg-gradient-to-r from-[#E9F8F0] to-white shadow-sm"
                   >
                     <div>
                       <p className="font-bold text-emerald-800 text-lg">
@@ -80,7 +80,7 @@ export function LevelSelect() {
                       <p className="text-sm text-slate-600 mb-1">
                         {caseDef.description}
                       </p>
-                      <p className="text-xs text-emerald-600">
+                      <p className="text-base text-emerald-600">
                         Badge: {caseDef.badge}
                       </p>
                     </div>
@@ -89,7 +89,7 @@ export function LevelSelect() {
                       data-start
                       disabled={isLocked}
                       onClick={() => handleStart(i)}
-                      className={`px-5 py-2 rounded-full text-sm font-semibold transition-all 
+                      className={`px-5 py-2.5 rounded-full text-base font-semibold transition-all shrink-0
                         ${isLocked ? "bg-slate-200 text-slate-400 cursor-not-allowed" : isCompleted ? "bg-emerald-800 hover:bg-emerald-900 text-white" : "bg-emerald-600 hover:bg-emerald-700 text-white"}`}
                     >
                       {isCompleted ? "Replay" : isLocked ? "Locked" : "Start"}

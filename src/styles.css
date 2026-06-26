@@ -52,6 +52,12 @@
 
   --gradient-hero: radial-gradient(ellipse at top, #0d4a2e 0%, #1a1a2e 60%, #0a0a18 100%);
   --gradient-brand: linear-gradient(135deg, oklch(0.72 0.18 150) 0%, oklch(0.62 0.18 152) 100%);
+
+  /* Game typography — readable floor for training UI */
+  --text-game-caption: 0.875rem;
+  --text-game-body: 1rem;
+  --text-game-body-lg: 1.125rem;
+  --text-game-heading: clamp(1.5625rem, 2.5vw, 2.1875rem);
 }
 
 :root {
@@ -114,6 +120,14 @@
 }
 
 @layer base {
+  html {
+    font-size: 20px;
+  }
+  @media (min-width: 1280px) {
+    html {
+      font-size: 22.5px;
+    }
+  }
   * {
     border-color: var(--color-border);
   }
@@ -122,6 +136,7 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
   }
   h1, h2, h3, h4, h5 {
     font-family: var(--font-display);
@@ -132,6 +147,22 @@
 @utility text-mono {
   font-family: var(--font-mono);
   font-feature-settings: "ss01", "tnum";
+}
+
+@utility text-game-caption {
+  font-size: var(--text-game-caption);
+}
+
+@utility text-game-body {
+  font-size: var(--text-game-body);
+}
+
+@utility text-game-body-lg {
+  font-size: var(--text-game-body-lg);
+}
+
+@utility text-game-heading {
+  font-size: var(--text-game-heading);
 }
 
 @utility hero-bg {

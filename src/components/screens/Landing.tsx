@@ -28,7 +28,7 @@ export function Landing() {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", duration: 0.6 }}
-        className="w-full max-w-lg mt-12 bg-white/95 rounded-3xl border border-emerald-100 p-8 text-center shadow-card backdrop-blur-sm flex flex-col items-center"
+        className="w-full max-w-2xl mt-12 bg-white/95 rounded-3xl border border-emerald-100 p-8 text-center shadow-card backdrop-blur-sm flex flex-col items-center"
       >
         {/* Animated Scout Mascot */}
         <motion.div
@@ -38,7 +38,7 @@ export function Landing() {
           className="relative mb-6"
         >
           <div className="absolute inset-0 bg-emerald-100 rounded-full blur-xl opacity-60 animate-pulse" />
-          <Scout mood="idle" size={140} className="relative z-10" />
+          <Scout mood="idle" size={180} className="relative z-10" />
         </motion.div>
 
         {/* Mascot Speech Bubble */}
@@ -46,7 +46,7 @@ export function Landing() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-sm text-emerald-900 leading-relaxed text-left max-w-md shadow-sm"
+          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-base text-emerald-900 leading-relaxed text-left max-w-md shadow-sm"
         >
           {/* Speech Bubble Arrow */}
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-50 border-t border-l border-emerald-100 rotate-45" />
@@ -61,13 +61,13 @@ export function Landing() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
         >
-          <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-emerald-600">
+          <span className="text-sm uppercase font-bold tracking-[0.25em] text-emerald-600">
             Interactive Mainframe Training
           </span>
           <h1 className="mt-1 font-display text-4xl font-extrabold tracking-tight text-slate-800 leading-tight">
             ASI <span className="text-[#25BB64]">Quest</span>
           </h1>
-          <p className="mt-2 text-xs text-slate-500 font-semibold tracking-wide">
+          <p className="mt-2 text-sm text-slate-500 font-semibold tracking-wide">
             &quot;Master the Mainframe. Search Like a Pro.&quot;
           </p>
         </motion.div>
@@ -80,20 +80,20 @@ export function Landing() {
           className="w-full mt-6 grid grid-cols-2 gap-3 text-left"
         >
           <div className="p-3 bg-[#E9F8F0]/40 border border-emerald-100 rounded-xl">
-            <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-xs">
-              <Terminal className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-sm">
+              <Terminal className="w-4 h-4" />
               <span>ASI-3270</span>
             </div>
-            <p className="mt-1 text-[11px] text-slate-600 leading-normal">
+            <p className="mt-1 text-sm text-slate-600 leading-normal">
               Learn search commands, screen reading, and group structures.
             </p>
           </div>
           <div className="p-3 bg-[#E9F8F0]/40 border border-emerald-100 rounded-xl">
-            <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-xs">
-              <FolderOpen className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-sm">
+              <FolderOpen className="w-4 h-4" />
               <span>3 Cases</span>
             </div>
-            <p className="mt-1 text-[11px] text-slate-600 leading-normal">
+            <p className="mt-1 text-sm text-slate-600 leading-normal">
               Solve detective cases directly on stylized mainframe cards.
             </p>
           </div>
