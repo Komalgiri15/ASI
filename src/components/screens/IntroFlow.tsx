@@ -432,21 +432,32 @@ export function IntroFlow() {
   const handleLevelsEnd = () => dispatch({ type: "GOTO", screen: "levelSelect" });
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden bg-black">
       <AnimatePresence mode="wait">
         {phase === "video" && (
-          <motion.video
-            key="intro"
-            src={introVideo}
-            autoPlay
-            playsInline
-            onEnded={handleIntroEnd}
-            className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+          <motion.div
+            key="intro-container"
+            className="absolute inset-0 h-full w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-          />
+          >
+            <video
+              src={introVideo}
+              autoPlay
+              playsInline
+              muted
+              onEnded={handleIntroEnd}
+              className="h-full w-full object-cover"
+            />
+            <button
+              onClick={handleIntroEnd}
+              className="absolute top-6 right-6 z-50 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 px-5 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-lg backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              Skip Intro
+            </button>
+          </motion.div>
         )}
 
         {phase === "register" && (
@@ -463,18 +474,29 @@ export function IntroFlow() {
         )}
 
         {phase === "levels" && (
-          <motion.video
-            key="levels"
-            src={levelsVideo}
-            autoPlay
-            playsInline
-            onEnded={handleLevelsEnd}
-            className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+          <motion.div
+            key="levels-container"
+            className="absolute inset-0 h-full w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-          />
+          >
+            <video
+              src={levelsVideo}
+              autoPlay
+              playsInline
+              muted
+              onEnded={handleLevelsEnd}
+              className="h-full w-full object-cover"
+            />
+            <button
+              onClick={handleLevelsEnd}
+              className="absolute top-6 right-6 z-50 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 px-5 py-2 text-xs font-bold uppercase tracking-wider text-white shadow-lg backdrop-blur-sm transition-all hover:scale-105 active:scale-95 cursor-pointer"
+            >
+              Skip Video
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
