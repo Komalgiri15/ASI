@@ -427,7 +427,37 @@ function AgentRegistration({ onSubmit }: { onSubmit: (name: string) => void }) {
 // ─── Root component ──────────────────────────────────────────────────────────
 export function IntroFlow() {
   const { dispatch } = useGame();
+  const speak = useTTS();
   const [phase, setPhase] = useState<"video" | "register" | "levels">("video");
+
+  // Track video and TTS status to synchronize transitions
+  const [introVideoEnded, setIntroVideoEnded] = useState(false);
+  const [introTtsEnded, setIntroTtsEnded] = useState(false);
+  const [levelsVideoEnded, setLevelsVideoEnded] = useState(false);
+  const [levelsTtsEnded, setLevelsTtsEnded] = useState(false);
+
+  // Speak video narrations when the phase changes
+  useEffect(() => {
+    if (phase === "video") {
+      setIntroVideoEnded(false);
+      setIntroTtsEnded(false);
+      speak(
+        "Welcome to A S I Quest, the interactive training simulation for Humana claims specialists. In this quest, you will master the mainframe terminal, audit member records, and navigate regional databases. Let's start by registering your agent file!",
+        {
+          onEnd: () => setIntroTtsEnded(true)
+        }
+      );
+    } else if (phase === "levels") {
+      setLevelsVideoEnded(false);
+      setLevelsTtsEnded(false);
+      speak(
+        "Excellent! Your agent credentials have been deployed. Now, let's explore your investigation map. You have three critical cases to solve: Case 1, the Texas Trail; Case 2, Kentucky Keys; and Case 3, the MRI Mission. Complete them all to earn your navigator certification!",
+        {
+          onEnd: () => setLevelsTtsEnded(true)
+        }
+      );
+    }
+  }, [phase, speak]);
 
   const handleIntroEnd = () => setPhase("register");
 
@@ -437,6 +467,19 @@ export function IntroFlow() {
   };
 
   const handleLevelsEnd = () => dispatch({ type: "GOTO", screen: "levelSelect" });
+
+  // Auto-transition handlers when both video and TTS are complete
+  useEffect(() => {
+    if (phase === "video" && introVideoEnded && introTtsEnded) {
+      handleIntroEnd();
+    }
+  }, [phase, introVideoEnded, introTtsEnded]);
+
+  useEffect(() => {
+    if (phase === "levels" && levelsVideoEnded && levelsTtsEnded) {
+      handleLevelsEnd();
+    }
+  }, [phase, levelsVideoEnded, levelsTtsEnded]);
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-black">
@@ -455,7 +498,7 @@ export function IntroFlow() {
               autoPlay
               playsInline
               muted
-              onEnded={handleIntroEnd}
+              onEnded={() => setIntroVideoEnded(true)}
               className="h-full w-full object-cover"
             />
             <button
@@ -494,7 +537,7 @@ export function IntroFlow() {
               autoPlay
               playsInline
               muted
-              onEnded={handleLevelsEnd}
+              onEnded={() => setLevelsVideoEnded(true)}
               className="h-full w-full object-cover"
             />
             <button
