@@ -12,10 +12,37 @@ export default function useTTS() {
       return;
     }
     const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Retrieve all available voices
+    const voices = speechSynthesis.getVoices();
+    let targetVoice = null;
+    
     if (voiceName) {
-      const voice = speechSynthesis.getVoices().find(v => v.name === voiceName);
-      if (voice) utterance.voice = voice;
+      targetVoice = voices.find(v => v.name === voiceName);
     }
+    
+    // Try to find a female voice if no specific voice was found
+    if (!targetVoice && voices.length > 0) {
+      const femaleKeywords = ['zira', 'samantha', 'aria', 'victoria', 'hazel', 'jenny', 'karen', 'emma', 'susan', 'female', 'woman', 'google us english'];
+      targetVoice = voices.find(v => {
+        const nameLower = v.name.toLowerCase();
+        return femaleKeywords.some(keyword => nameLower.includes(keyword)) && v.lang.startsWith('en');
+      });
+      
+      // Fallback: English voice that is likely not male
+      if (!targetVoice) {
+        const maleKeywords = ['david', 'mark', 'george', 'ravi', 'male', 'guy', 'man'];
+        targetVoice = voices.find(v => {
+          const nameLower = v.name.toLowerCase();
+          return v.lang.startsWith('en') && !maleKeywords.some(keyword => nameLower.includes(keyword));
+        });
+      }
+    }
+    
+    if (targetVoice) {
+      utterance.voice = targetVoice;
+    }
+    
     // Cancel any ongoing speech to avoid overlap
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);

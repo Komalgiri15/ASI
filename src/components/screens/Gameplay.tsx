@@ -18,6 +18,8 @@ import {
   ChevronDown,
   ChevronUp,
   ImageIcon,
+  Terminal,
+  Search,
 } from "lucide-react";
 import { useGame } from "@/state/gameContext";
 import { CASES } from "@/data/levels";
@@ -1682,6 +1684,7 @@ export function Gameplay() {
   const [seqCommand, setSeqCommand] = useState("");
 
   const [stepKey, setStepKey] = useState(0);
+  const [showPopupIntro, setShowPopupIntro] = useState(true);
 
   // Reset local state on step change
   useEffect(() => {
@@ -1700,6 +1703,7 @@ export function Gameplay() {
     setPinDroppedCardId(null);
     setSeqSelected([]);
     setSeqCommand("");
+    setShowPopupIntro(true);
     setStepKey((prev) => prev + 1);
   }, [state.currentStepIndex, state.currentCaseIndex]);
 
@@ -1905,8 +1909,145 @@ export function Gameplay() {
     return "idle";
   };
 
+  const MECHANIC_DETAILS: Record<string, { title: string; description: string }> = {
+    "command-builder": {
+      title: "Command Builder",
+      description: "Assemble the correct mainframe command by clicking or dragging the green tiles in the order specified on the search control line of the mainframe image."
+    },
+    "spot-tag": {
+      title: "Spot Tag",
+      description: "Find the required text label (like '*** END OF DATA ***') on the mainframe viewport and click directly on it."
+    },
+    "hotspot-tally": {
+      title: "Row Tally",
+      description: "Scan the mainframe table columns to find the specific record matching the criteria, then tap its row."
+    },
+    "field-detective": {
+      title: "Field Detective",
+      description: "Find the required data field (like the M-GRP code) on the active mainframe image and click directly on it."
+    },
+    "match-code": {
+      title: "Match Code",
+      description: "Select the correct match code or relationship code from the listed options that corresponds to the description."
+    },
+    "decision-swipe": {
+      title: "Decision Swipe",
+      description: "Swipe the member card to the right to approve, or to the left to reject based on the card criteria."
+    },
+    "tally-tap": {
+      title: "Tally Checker",
+      description: "Tap all rows or items matching the criteria on the interactive board, then click the confirm button."
+    },
+    "hotspot-tap": {
+      title: "Hotspot Tap",
+      description: "Locate and click on the specified value (like the UMID or suffix) directly on the interactive board."
+    },
+    "multi-select": {
+      title: "Multi-Select",
+      description: "Select all items or rows that match the condition (like having a blank suffix), then tap the confirm button."
+    },
+    "map-pin": {
+      title: "Map Pin Drop",
+      description: "Drag or drop the map pin on the correct address card shown in the mainframe viewport."
+    },
+    "sequence-builder": {
+      title: "Sequence Builder",
+      description: "Select the correct sequence of actions or fields, then type the 2-letter terminal command and submit."
+    }
+  };
+
+  const getMechanicIcon = (mechanic: string) => {
+    switch (mechanic) {
+      case "command-builder":
+        return <Terminal className="h-5 w-5" />;
+      case "spot-tag":
+        return <Search className="h-5 w-5" />;
+      case "hotspot-tally":
+        return <ListRestart className="h-5 w-5" />;
+      case "field-detective":
+        return <Maximize2 className="h-5 w-5" />;
+      case "match-code":
+        return <Check className="h-5 w-5" />;
+      case "decision-swipe":
+        return <Sparkles className="h-5 w-5" />;
+      case "tally-tap":
+      case "hotspot-tap":
+      case "multi-select":
+        return <Check className="h-5 w-5" />;
+      case "map-pin":
+        return <MapPin className="h-5 w-5" />;
+      case "sequence-builder":
+        return <ListRestart className="h-5 w-5" />;
+      default:
+        return <HelpCircle className="h-5 w-5" />;
+    }
+  };
+
   return (
     <div className="flex h-full w-full flex-col bg-[#E9F8F0] overflow-hidden">
+      {/* Mechanic Instructions Popup */}
+      <AnimatePresence>
+        {showPopupIntro && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: -15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="w-full max-w-md bg-white rounded-3xl p-6 border border-emerald-100 shadow-2xl flex flex-col items-center text-center gap-4"
+            >
+              {/* Cute Mascot Header */}
+              <div className="relative mb-1">
+                <div className="absolute inset-0 bg-emerald-100 rounded-full blur-xl opacity-60 animate-pulse" />
+                <Scout mood="think" size={120} className="relative z-10" />
+              </div>
+
+              {/* Title & Badge */}
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100/50">
+                  {MECHANIC_DETAILS[step.mechanic]?.title || "Challenge Mechanic"}
+                </span>
+                <h3 className="mt-2.5 font-display text-xl font-extrabold text-slate-800 tracking-tight leading-tight">
+                  Mission Instructions
+                </h3>
+              </div>
+
+              {/* Description box */}
+              <div className="w-full p-4 bg-emerald-50/40 border border-emerald-100/60 rounded-2xl text-left text-xs leading-relaxed text-emerald-950 flex gap-3">
+                <div className="p-1.5 bg-white border border-emerald-100 rounded-xl h-fit shrink-0 text-[#25BB64]">
+                  {getMechanicIcon(step.mechanic)}
+                </div>
+                <p className="font-medium font-sans">
+                  {MECHANIC_DETAILS[step.mechanic]?.description || "Follow the prompt to interact with the mainframe screen."}
+                </p>
+              </div>
+
+              {/* Prompt box */}
+              <div className="w-full border-t border-slate-100 pt-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                  Active Objective
+                </span>
+                <p className="text-xs text-slate-600 leading-normal font-semibold">
+                  {step.prompt}
+                </p>
+              </div>
+
+              {/* Let's Go! CTA button */}
+              <button
+                onClick={() => setShowPopupIntro(false)}
+                className="w-full rounded-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm cursor-pointer shadow-md transition-all active:scale-[0.98]"
+              >
+                Start Mission
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Zone 1: Top HUD bar ─────────────────────────────────────────── */}
       <header className="shrink-0 border-b border-emerald-100 bg-white/95 shadow-sm z-10">
@@ -2026,7 +2167,7 @@ export function Gameplay() {
               state.showHint ? "border-amber-200 bg-amber-50/50" : "border-slate-100"
             }`}
           >
-            <img src={scoutImg} alt="Scout" className="w-40 h-40 mx-auto" />
+            <img src={scoutImg} alt="Scout" className="w-44 h-56 object-contain mx-auto" />
             <div
               className={`mt-3 rounded-xl p-3 text-base leading-relaxed text-left border relative transition-colors ${
                 state.showHint

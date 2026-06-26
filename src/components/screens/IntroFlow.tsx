@@ -439,7 +439,6 @@ export function IntroFlow() {
             key="intro"
             src={introVideo}
             autoPlay
-            muted
             playsInline
             onEnded={handleIntroEnd}
             className="absolute inset-0 h-full w-full object-cover pointer-events-none"
@@ -468,7 +467,6 @@ export function IntroFlow() {
             key="levels"
             src={levelsVideo}
             autoPlay
-            muted
             playsInline
             onEnded={handleLevelsEnd}
             className="absolute inset-0 h-full w-full object-cover pointer-events-none"
