@@ -5,7 +5,6 @@ export type Screen =
   | "intro"
   | "levelSelect"
   | "landing"
-  | "journey"
   | "levelIntro"
   | "gameplay"
   | "levelComplete"
@@ -28,6 +27,7 @@ export type GameState = {
   errors: number; // Errors in the current step
   showHint: boolean;
   playerName: string;
+  soundMuted: boolean;
 };
 
 const initialCases: CaseState[] = CASES.map((c, i) => ({
@@ -47,6 +47,7 @@ const initialState: GameState = {
   errors: 0,
   showHint: false,
   playerName: "",
+  soundMuted: typeof window !== "undefined" ? localStorage.getItem("soundMuted") === "true" : false,
 };
 
 type Action =
@@ -59,6 +60,7 @@ type Action =
   | { type: "CLOSE_HINT" }
   | { type: "RETRY_CASE" }
   | { type: "SET_PLAYER_NAME"; name: string }
+  | { type: "TOGGLE_SOUND" }
   | { type: "RESET" };
 
 function reducer(state: GameState, action: Action): GameState {
@@ -143,6 +145,16 @@ function reducer(state: GameState, action: Action): GameState {
         errors: 0,
         showHint: false,
       };
+    case "TOGGLE_SOUND": {
+      const newMuted = !state.soundMuted;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("soundMuted", String(newMuted));
+        if (newMuted && window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      }
+      return { ...state, soundMuted: newMuted };
+    }
     case "RESET":
       return initialState;
     default:

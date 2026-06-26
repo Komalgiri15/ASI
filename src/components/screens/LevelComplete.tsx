@@ -124,12 +124,12 @@ export function LevelComplete() {
           <button
             onClick={() => {
               if (isLast) dispatch({ type: "GOTO", screen: "finalResults" });
-              else dispatch({ type: "GOTO", screen: "journey" });
+              else dispatch({ type: "GOTO", screen: "levelSelect" });
             }}
             className="inline-flex flex-1 items-center justify-center gap-2 rounded-full text-white py-3.5 text-sm font-bold transition shadow-md cursor-pointer"
             style={{ backgroundColor: "var(--brand)" }}
           >
-            <span>{isLast ? "View Certificate" : "Continue Journey"}</span>
+            <span>{isLast ? "View Certificate" : "Continue to Map"}</span>
             <ArrowRight className="h-4 w-4 text-white" />
           </button>
         </div>

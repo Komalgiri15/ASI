@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useGame } from '@/state/gameContext';
 
 /**
  * Simple Text‑to‑Speech hook using the Web Speech API.
@@ -6,7 +7,11 @@ import { useCallback } from 'react';
  * The hook gracefully degrades when the API is unavailable.
  */
 export default function useTTS() {
+  const { state } = useGame();
+
   const speak = useCallback((text: string, voiceName?: string) => {
+    if (state.soundMuted) return;
+
     if (!('speechSynthesis' in window)) {
       console.warn('TTS not supported in this browser');
       return;

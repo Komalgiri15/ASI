@@ -18,10 +18,10 @@ export function LevelIntro() {
       >
         {/* Back Button */}
         <button
-          onClick={() => dispatch({ type: "GOTO", screen: "journey" })}
+          onClick={() => dispatch({ type: "GOTO", screen: "levelSelect" })}
           className="self-start inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-emerald-700 transition"
         >
-          <ArrowLeft className="h-4 w-4" /> BACK TO JOURNEY
+          <ArrowLeft className="h-4 w-4" /> BACK TO MAP
         </button>
 
         {/* Scout Introduction Row */}

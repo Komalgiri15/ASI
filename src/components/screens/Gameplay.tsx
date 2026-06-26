@@ -2055,7 +2055,7 @@ export function Gameplay() {
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3">
           <div className="flex items-center gap-3 min-w-0">
             <button
-              onClick={() => dispatch({ type: "GOTO", screen: "journey" })}
+              onClick={() => dispatch({ type: "GOTO", screen: "levelSelect" })}
               className="rounded-full p-1.5 text-slate-500 hover:bg-emerald-50 hover:text-emerald-800 transition"
               aria-label="Back"
             >

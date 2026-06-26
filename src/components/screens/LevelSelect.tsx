@@ -4,7 +4,7 @@ import { useGame } from "@/state/gameContext";
 import { CASES } from "@/data/levels";
 import scoutImg from "@/assets/ava.png";
 import useTTS from "@/hooks/useTTS";
-import { ShieldCheck, HeartPulse, Activity, Lock, Trophy, ArrowLeft, Play, RotateCcw } from "lucide-react";
+import { ShieldCheck, HeartPulse, Activity, Lock, Trophy, ArrowLeft, Play, RotateCcw, Volume2, VolumeX, Flame, Sparkles } from "lucide-react";
 
 export function LevelSelect() {
   const { state, dispatch } = useGame();
@@ -20,6 +20,8 @@ export function LevelSelect() {
   
   const isLocked = !selectedState.unlocked;
   const isCompleted = selectedState.completed;
+
+  const completedCount = state.cases.filter((c) => c.completed).length;
 
   const CASE_INFOS = [
     {
@@ -132,6 +134,14 @@ export function LevelSelect() {
 
             {/* Launch Action Button */}
             <div className="pt-6">
+              {completedCount === CASES.length && (
+                <button
+                  onClick={() => dispatch({ type: "GOTO", screen: "finalResults" })}
+                  className="w-full mb-3 rounded-full py-3 font-bold text-xs bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 border border-amber-600 text-white shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all animate-bounce"
+                >
+                  <Trophy className="h-4 w-4 fill-amber-200" /> CLAIM CERTIFICATE
+                </button>
+              )}
               <button
                 disabled={isLocked}
                 onClick={() => handleStart(selectedIdx)}
@@ -163,13 +173,45 @@ export function LevelSelect() {
 
           {/* RIGHT: Winding Map Trail Area */}
           <div className="flex-1 p-6 relative flex flex-col justify-between min-h-[460px]">
-            <div>
-              <h2 className="text-2xl font-display font-extrabold text-slate-800 tracking-tight">
-                Investigation Map
-              </h2>
-              <p className="text-xs text-slate-500">
-                Click a health-themed stop along the trail to view details and launch the case.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-display font-extrabold text-slate-800 tracking-tight">
+                  Investigation Map
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Click a health-themed stop along the trail to view details and launch the case.
+                </p>
+              </div>
+
+              {/* Status HUD (XP, Streak, Sound Toggle) */}
+              <div className="flex items-center gap-2.5 self-start sm:self-center shrink-0">
+                {/* Sound Toggle */}
+                <button
+                  onClick={() => dispatch({ type: "TOGGLE_SOUND" })}
+                  className="p-2 rounded-full border border-emerald-100 hover:bg-emerald-50 text-slate-500 hover:text-emerald-800 transition cursor-pointer shadow-sm bg-white flex items-center justify-center"
+                  title={state.soundMuted ? "Unmute Voiceover" : "Mute Voiceover"}
+                >
+                  {state.soundMuted ? (
+                    <VolumeX className="h-4.5 w-4.5 text-slate-450" />
+                  ) : (
+                    <Volume2 className="h-4.5 w-4.5 text-emerald-600" />
+                  )}
+                </button>
+
+                {/* Streak Counter */}
+                {state.streak > 0 && (
+                  <div className="flex items-center gap-1 rounded-full bg-orange-50 border border-orange-200 px-2.5 py-1 text-orange-600 text-[11px] font-bold shadow-sm">
+                    <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500 animate-bounce" />
+                    <span>{state.streak} STREAK</span>
+                  </div>
+                )}
+
+                {/* XP Badge */}
+                <div className="flex items-center gap-1 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/40 px-2.5 py-1 font-display text-[11px] font-bold text-yellow-800 shadow-sm">
+                  <Sparkles className="h-3.5 w-3.5 fill-[#FFD700] text-[#D97706]" />
+                  <span>{state.totalXP} XP</span>
+                </div>
+              </div>
             </div>
 
             {/* Map Canvas viewport */}

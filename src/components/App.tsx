@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { GameProvider, useGame } from "@/state/gameContext";
 import { Landing } from "@/components/screens/Landing";
-import { Journey } from "@/components/screens/Journey";
 import { LevelIntro } from "@/components/screens/LevelIntro";
 import { Gameplay } from "@/components/screens/Gameplay";
 import { LevelComplete } from "@/components/screens/LevelComplete";
@@ -28,7 +27,6 @@ function Router() {
             {screen === "intro" && <IntroFlow />}
             {screen === "levelSelect" && <LevelSelect />}
             {screen === "landing" && <Landing />}
-            {screen === "journey" && <Journey />}
             {screen === "levelIntro" && <LevelIntro />}
             {screen === "gameplay" && <Gameplay />}
             {screen === "levelComplete" && <LevelComplete />}

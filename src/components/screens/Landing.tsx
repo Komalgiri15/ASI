@@ -8,7 +8,7 @@ export function Landing() {
   const { dispatch } = useGame();
 
   const handleStart = () => {
-    dispatch({ type: "GOTO", screen: "journey" });
+    dispatch({ type: "GOTO", screen: "levelSelect" });
   };
 
   return (
