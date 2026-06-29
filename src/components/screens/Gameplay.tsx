@@ -26,6 +26,7 @@ import { CASES } from "@/data/levels";
 import { Scout } from "@/components/Scout";
 import scoutImg from "@/assets/ava.png";
 import { MainframeTerminal } from "@/components/MainframeTerminal";
+import { MainframeImagePanel } from "@/components/MainframeImagePanel";
 import useTTS from "@/hooks/useTTS";
 
 
@@ -244,8 +245,9 @@ function Case1InteractiveBoard({
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
-    const width = containerRef.current?.clientWidth || 800;
-    const height = containerRef.current?.clientHeight || 450;
+    const el = e.currentTarget as HTMLDivElement;
+    const width = el.clientWidth;
+    const height = el.clientHeight;
     
     const newX = e.clientX - dragStart.x;
     const newY = e.clientY - dragStart.y;
@@ -297,42 +299,20 @@ function Case1InteractiveBoard({
       {/* Side-by-side: Image LEFT, Controls RIGHT */}
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
-        {/* ── LEFT: Mainframe image viewport ── */}
-        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
-          {/* Title bar */}
-          <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-              <span className="text-sm font-bold font-mono tracking-wider">ASI MAINBOARD — TEXAS PORTAL</span>
-            </div>
-            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
-          </div>
-
-          {/* Viewport */}
-          <div
-            ref={containerRef}
-            className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-          >
-          {/* Zoomable wrapper */}
-          <div
-            className="w-full h-full relative"
-            style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              transformOrigin: "center center",
-              transition: isDragging ? "none" : "transform 0.15s ease-out",
-            }}
-          >
-            {/* Real Mainframe Image */}
-            <img
-              src={step.imageUrl}
-              alt="Mainframe Board"
-              className="w-full h-full object-contain pointer-events-none select-none"
-            />
-
-            {/* Overlays */}
+        <MainframeImagePanel
+          title="ASI MAINBOARD — TEXAS PORTAL"
+          imageUrl={step.imageUrl}
+          zoom={zoom}
+          pan={pan}
+          isDragging={isDragging}
+          containerRef={containerRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onResetZoom={resetZoom}
+        >
 
             {/* Q1: Highlight query line */}
             {step.id === "c1-s1" && (
@@ -462,17 +442,7 @@ function Case1InteractiveBoard({
                 )}
               </>
             )}
-          </div>
-
-          {/* Zoom controls */}
-          <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
-          </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
-        </div>{/* end viewport */}
-        </div>{/* end LEFT col */}
+        </MainframeImagePanel>
 
         {/* ── RIGHT: Answer panel ── */}
         <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
@@ -782,8 +752,9 @@ function Case2InteractiveBoard({
   };
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
-    const w = containerRef.current?.clientWidth || 800;
-    const h = containerRef.current?.clientHeight || 450;
+    const el = e.currentTarget as HTMLDivElement;
+    const w = el.clientWidth;
+    const h = el.clientHeight;
     const lx = w * (zoom - 0.5), ly = h * (zoom - 0.5);
     setPan({
       x: Math.max(-lx, Math.min(lx, e.clientX - dragStart.x)),
@@ -814,36 +785,21 @@ function Case2InteractiveBoard({
     <div className="flex h-full min-h-0 flex-col">
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
-        {/* ── LEFT: image viewport ── */}
-        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
-          <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-              <span className="text-sm font-bold font-mono tracking-wider">ASI MAINBOARD — KENTUCKY PORTAL</span>
-            </div>
-            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
-          </div>
-           <div
-            ref={containerRef}
-            className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-          >
-          {/* Zoomable wrapper */}
-          <div
-            className="w-full h-full relative"
-            style={{
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              transformOrigin: "center center",
-              transition: isDragging ? "none" : "transform 0.15s ease-out",
-            }}
-          >
-            <img
-              src={step.imageUrl}
-              alt="Kentucky Mainframe"
-              className="w-full h-full object-contain pointer-events-none select-none"
-            />
+        <MainframeImagePanel
+          title="ASI MAINBOARD — KENTUCKY PORTAL"
+          imageUrl={step.imageUrl}
+          imageAlt="Kentucky Mainframe"
+          zoom={zoom}
+          pan={pan}
+          isDragging={isDragging}
+          containerRef={containerRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onResetZoom={resetZoom}
+        >
 
             {/* ── Q8: Row tap targets + END OF DATA hotspot ── */}
             {step.id === "c2-s1" && (
@@ -1073,17 +1029,7 @@ function Case2InteractiveBoard({
                 </button>
               </>
             )}
-          </div>
-
-          {/* Zoom controls */}
-          <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
-          </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
-        </div>{/* end viewport */}
-        </div>{/* end LEFT col */}
+        </MainframeImagePanel>
 
         {/* ── RIGHT: answer panel ── */}
         <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
@@ -1341,8 +1287,9 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
   };
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
-    const w = containerRef.current?.clientWidth || 800;
-    const h = containerRef.current?.clientHeight || 450;
+    const el = e.currentTarget as HTMLDivElement;
+    const w = el.clientWidth;
+    const h = el.clientHeight;
     const lx = w * (zoom - 0.5), ly = h * (zoom - 0.5);
     setPan({
       x: Math.max(-lx, Math.min(lx, e.clientX - dragStart.x)),
@@ -1353,6 +1300,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
 
   // Active image depends on phase
   const currentImage = phase === 1 ? step.data.img2 : step.data.img3;
+  const boardTitle = `ASI MAINBOARD — ${phase === 1 ? "KENTUCKY RECALL" : "MR NAVIGATION"}`;
 
   // Phase 1: tap Erlanger row
   const handleErlRow = () => {
@@ -1427,21 +1375,20 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
       {/* Side-by-side board */}
       <div className="flex flex-1 min-h-0 flex-col lg:flex-row bg-[#1a1a2e] border-2 border-emerald-600/30 rounded-2xl overflow-hidden shadow-lg select-none">
 
-        {/* LEFT: image */}
-        <div className="flex flex-1 min-h-0 flex-col lg:flex-[3] min-w-0">
-          <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 border-b border-emerald-800 shrink-0">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-              <span className="text-xs font-bold font-mono tracking-wider">
-                ASI MAINBOARD — {phase === 1 ? "KENTUCKY RECALL" : "MR NAVIGATION"}
-              </span>
-            </div>
-            <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
-          </div>
-          <div ref={containerRef} className="relative flex-1 min-h-[200px] w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing"
-            onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
-            <div className="w-full h-full relative" style={{ transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`, transformOrigin: "center center", transition: isDragging ? "none" : "transform 0.15s ease-out" }}>
-              <img src={currentImage} alt="Mainframe" className="w-full h-full object-contain pointer-events-none select-none" />
+        <MainframeImagePanel
+          title={boardTitle}
+          imageUrl={currentImage}
+          zoom={zoom}
+          pan={pan}
+          isDragging={isDragging}
+          containerRef={containerRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+          onResetZoom={resetZoom}
+        >
 
             {/* Phase 1: Erlanger (Row 3) highlight on Image 2 */}
             {phase === 1 && (
@@ -1533,17 +1480,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
                 )}
               </>
             )}
-          </div>
-
-          {/* Zoom controls */}
-          <div className="absolute top-2 right-2 flex items-center gap-1">
-            <button onClick={zoomOut} disabled={zoom <= 1} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Minus className="w-4 h-4" /></button>
-            <button onClick={zoomIn} disabled={zoom >= 3.5} className="bg-black/70 disabled:opacity-30 border border-white/10 text-white rounded p-1.5 transition cursor-pointer flex items-center justify-center w-8 h-8"><Plus className="w-4 h-4" /></button>
-            <button onClick={resetZoom} className="bg-black/70 border border-white/10 text-white rounded px-3 text-sm font-bold transition cursor-pointer h-8 flex items-center">Reset</button>
-          </div>
-          <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-sm font-mono text-emerald-300 border border-white/10">Drag · +/− zoom</div>
-        </div>{/* end viewport */}
-        </div>{/* end LEFT */}
+        </MainframeImagePanel>
 
         {/* RIGHT: answer panel */}
         <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
