@@ -303,7 +303,7 @@ function Case1InteractiveBoard({
           <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-              <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD — TEXAS PORTAL</span>
+              <span className="text-sm font-bold font-mono tracking-wider">ASI MAINBOARD — TEXAS PORTAL</span>
             </div>
             <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
@@ -475,33 +475,33 @@ function Case1InteractiveBoard({
         </div>{/* end LEFT col */}
 
         {/* ── RIGHT: Answer panel ── */}
-        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
+        <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
-            <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
+            <span className="text-lg font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
             {/* Q1 */}
             {step.id === "c1-s1" && (
               <div className="flex flex-col gap-3">
-                <p className="text-sm text-emerald-300 leading-relaxed">Select tiles in order to build the search command:</p>
+                <p className="text-base text-emerald-300 leading-relaxed">Select tiles in order to build the search command:</p>
                 <div className="bg-black/40 border border-emerald-500/20 rounded-xl p-3 font-mono text-center">
-                  <span className="text-emerald-400 text-xs block mb-1 uppercase tracking-wider">Preview</span>
-                  <span className="text-white font-bold text-sm">{commandBuilderSlots.join(", ") || "_ _ _ _"}</span>
+                  <span className="text-emerald-400 text-sm block mb-1 uppercase tracking-wider">Preview</span>
+                  <span className="text-white font-bold text-base">{commandBuilderSlots.join(", ") || "_ _ _ _"}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {step.data.tiles.map((tile: string) => {
                     const selected = commandBuilderSlots.includes(tile);
                     return (
                       <button key={tile} onClick={() => handleCommandBuilderTileClick(tile)}
-                        className={`px-3 py-2.5 rounded-xl font-mono text-sm font-bold border transition cursor-pointer ${selected ? "bg-emerald-600/30 text-emerald-400 border-emerald-500/40 line-through opacity-60" : "bg-white/10 hover:bg-white/20 border-white/20 text-white hover:border-emerald-400"}`}>
+                        className={`px-3 py-2.5 rounded-xl font-mono text-base font-bold border transition cursor-pointer ${selected ? "bg-emerald-600/30 text-emerald-400 border-emerald-500/40 line-through opacity-60" : "bg-white/10 hover:bg-white/20 border-white/20 text-white hover:border-emerald-400"}`}>
                         {tile}
                       </button>
                     );
                   })}
                 </div>
                 <button disabled={commandBuilderSlots.length < 4} onClick={handleCommandBuilderSubmit}
-                  className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition">
+                  className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 text-base cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition">
                   Execute Search
                 </button>
               </div>
@@ -819,7 +819,7 @@ function Case2InteractiveBoard({
           <div className="flex items-center justify-between bg-emerald-700 text-[#E9F8F0] px-4 py-2 font-sans border-b border-emerald-800 shrink-0">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#25BB64] animate-pulse" />
-              <span className="text-xs font-bold font-mono tracking-wider">ASI MAINBOARD — KENTUCKY PORTAL</span>
+              <span className="text-sm font-bold font-mono tracking-wider">ASI MAINBOARD — KENTUCKY PORTAL</span>
             </div>
             <span className="text-sm font-mono text-emerald-300">ZOOM: {Math.round(zoom * 100)}%</span>
           </div>
@@ -1086,10 +1086,10 @@ function Case2InteractiveBoard({
         </div>{/* end LEFT col */}
 
         {/* ── RIGHT: answer panel ── */}
-        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
+        <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
-            <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
+            <span className="text-lg font-bold text-emerald-200 uppercase tracking-wide">Your Answer</span>
           </div>
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
 
@@ -1546,7 +1546,7 @@ function Case3InteractiveBoard({ step, dispatch }: { step: any; dispatch: any })
         </div>{/* end LEFT */}
 
         {/* RIGHT: answer panel */}
-        <div className="lg:w-80 xl:w-96 shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
+        <div className="lg:w-[22rem] xl:w-[26rem] shrink-0 min-w-0 w-full min-h-0 flex flex-col border-t lg:border-t-0 lg:border-l border-emerald-600/20 bg-[#111827]">
           <div className="px-4 py-3 border-b border-emerald-600/20 bg-emerald-800/20 shrink-0 flex items-center gap-2">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500 text-white text-sm font-bold shrink-0">{step.qNum}</span>
             <span className="text-base font-bold text-emerald-200 uppercase tracking-wide">
@@ -2003,7 +2003,7 @@ export function Gameplay() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#E9F8F0] overflow-hidden">
+    <div className="gameplay-screen flex flex-col bg-[#E9F8F0]">
       {/* Mechanic Instructions Popup */}
       <AnimatePresence>
         {showPopupIntro && (
@@ -2081,10 +2081,10 @@ export function Gameplay() {
               <ArrowLeft className="h-5 w-5" />
             </button>
             <div className="min-w-0">
-              <h2 className="font-display text-lg xl:text-xl font-extrabold text-slate-800 leading-tight truncate max-w-[50vw] lg:max-w-none" title={`Case ${caseDef.number}: ${caseDef.name}`}>
+              <h2 className="truncate max-w-[50vw] font-display text-xl font-extrabold leading-tight text-slate-800 xl:text-2xl lg:max-w-none" title={`Case ${caseDef.number}: ${caseDef.name}`}>
                 Case {caseDef.number}: {caseDef.name}
               </h2>
-              <div className="text-sm text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+              <div className="mt-0.5 text-base font-bold uppercase tracking-wider text-slate-400">
                 Step {state.currentStepIndex + 1} of {caseDef.steps.length} · {step.qNum}
               </div>
             </div>
@@ -2112,7 +2112,7 @@ export function Gameplay() {
             return (
               <div
                 key={s.id}
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap shrink-0 border transition-all ${
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-bold transition-all ${
                   done
                     ? "bg-emerald-500 border-emerald-600 text-white"
                     : active
@@ -2134,7 +2134,7 @@ export function Gameplay() {
             );
           })}
           {/* End goal indicator */}
-          <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold whitespace-nowrap shrink-0 border border-yellow-200 bg-yellow-50 text-yellow-700 ml-1">
+          <div className="ml-1 flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-yellow-200 bg-yellow-50 px-3 py-1.5 text-base font-bold text-yellow-700">
             <Sparkles className="h-4 w-4 fill-yellow-400 text-yellow-500" />
             +{caseDef.xpValue} XP
           </div>
@@ -2178,7 +2178,7 @@ export function Gameplay() {
         </div>
 
         {/* Left panel: Scout + prompt */}
-        <div className="hidden lg:flex lg:w-72 xl:w-80 shrink-0 flex-col gap-3 p-4 border-r border-emerald-100 bg-white/60 overflow-y-auto">
+        <div className="hidden lg:flex lg:w-80 xl:w-[22rem] shrink-0 flex-col gap-3 overflow-y-auto border-r border-emerald-100 bg-white/60 p-4">
 
           {/* Scout card */}
           <div
@@ -2199,7 +2199,7 @@ export function Gameplay() {
                   state.showHint ? "bg-[#FEF3C7] border-amber-200" : "bg-[#F3FAF6] border-emerald-100"
                 }`}
               />
-              <p className="relative z-10 text-base leading-relaxed">
+              <p className="relative z-10 text-lg leading-relaxed">
                 {state.showHint ? (
                   <>
                     <span className="font-bold text-amber-800">Hint: </span>
@@ -2231,7 +2231,7 @@ export function Gameplay() {
               </span>
               <span className="text-sm font-bold uppercase tracking-wider text-slate-400">Your Task</span>
             </div>
-            <p className="text-base text-slate-800 font-medium leading-relaxed">
+            <p className="text-lg font-medium leading-relaxed text-slate-800">
               {step.prompt}
             </p>
           </div>

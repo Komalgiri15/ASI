@@ -192,6 +192,26 @@
   font-size: var(--text-game-heading);
 }
 
+/* Welcome / landing — full viewport, no zoom (prevents clipping) */
+@utility welcome-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Gameplay — full viewport */
+@utility gameplay-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 @utility hero-bg {
   background: var(--gradient-hero);
 }

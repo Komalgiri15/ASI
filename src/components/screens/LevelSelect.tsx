@@ -54,43 +54,43 @@ export function LevelSelect() {
 
   // Coordinates for the SVG winding path and nodes
   const nodes = [
-    { x: 25, y: 22, icon: <ShieldCheck className="h-7 w-7" />, label: "01. Texas Trail" },
-    { x: 75, y: 50, icon: <HeartPulse className="h-7 w-7" />, label: "02. Kentucky Keys" },
-    { x: 35, y: 78, icon: <Activity className="h-7 w-7" />, label: "03. MRI Mission" },
+    { x: 25, y: 22, icon: <ShieldCheck className="h-10 w-10" />, label: "01. Texas Trail" },
+    { x: 75, y: 50, icon: <HeartPulse className="h-10 w-10" />, label: "02. Kentucky Keys" },
+    { x: 35, y: 78, icon: <Activity className="h-10 w-10" />, label: "03. MRI Mission" },
   ];
 
   return (
-    <div className="h-full w-full bg-black/30 flex items-center justify-center p-4 overflow-y-auto">
+    <div className="h-full w-full overflow-hidden bg-[#E9F8F0]">
       <AnimatePresence>
         <motion.div
-          className="relative w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row my-auto border border-emerald-100"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.3 }}
+          className="relative flex h-full w-full flex-col overflow-hidden bg-white md:flex-row"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
         >
           {/* LEFT: Case Details Sidebar */}
-          <div className="md:w-80 bg-gradient-to-b from-[#E9F8F0] to-emerald-50/20 p-6 flex flex-col justify-between border-b md:border-b-0 md:border-r border-emerald-100">
-            <div className="space-y-4">
+          <div className="flex h-full min-h-0 flex-col justify-between border-b border-emerald-100 bg-gradient-to-b from-[#E9F8F0] to-emerald-50/20 p-5 md:w-96 md:shrink-0 md:border-b-0 md:border-r xl:w-[28rem]">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto">
               {/* Back to landing */}
               <button
                 onClick={() => dispatch({ type: "GOTO", screen: "landing" })}
-                className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-emerald-800 transition cursor-pointer"
+                className="flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-emerald-800 cursor-pointer"
               >
-                <ArrowLeft className="h-3.5 w-3.5" /> BACK TO LANDING
+                <ArrowLeft className="h-4 w-4" /> BACK TO LANDING
               </button>
 
               {/* Scout Avatar & Speech Bubble */}
-              <div className="flex flex-col items-center gap-2 pt-2">
+              <div className="flex flex-col items-center gap-3 pt-1">
                 <img
                   src={scoutImg}
                   alt="Scout"
-                  className="w-36 h-auto max-h-[160px] object-contain"
+                  className="h-auto w-44 max-h-[200px] object-contain"
                 />
                 
                 {/* Speech Bubble */}
-                <div className="relative w-full bg-white border border-emerald-100 rounded-2xl p-4 text-xs text-emerald-950 leading-relaxed text-left shadow-sm">
-                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-t border-l border-emerald-100 rotate-45" />
+                <div className="relative w-full rounded-2xl border border-emerald-100 bg-white p-4 text-left text-base leading-relaxed text-emerald-950 shadow-sm">
+                  <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-t border-l border-emerald-100 bg-white" />
                   <p className="relative z-10">
                     <strong>Scout:</strong> &quot;{CASE_INFOS[selectedIdx].introText}&quot;
                   </p>
@@ -98,32 +98,32 @@ export function LevelSelect() {
               </div>
 
               {/* Selected Case Info Details */}
-              <div className="pt-2">
+              <div className="pt-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <span className="text-sm font-bold uppercase tracking-wider text-slate-400">
                     CASE 0{selectedCase.number}
                   </span>
                   {selectedState.completed && (
-                    <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-100 text-emerald-800 px-2 py-0.5 text-[9px] font-bold">
-                      <Trophy className="h-2.5 w-2.5 fill-emerald-200" /> CLOSED
+                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
+                      <Trophy className="h-3.5 w-3.5 fill-emerald-200" /> CLOSED
                     </span>
                   )}
                 </div>
-                <h3 className="font-display text-lg font-bold text-slate-800 leading-tight mt-0.5">
+                <h3 className="mt-0.5 font-display text-2xl font-bold leading-tight text-slate-800">
                   {selectedCase.name}
                 </h3>
-                <p className="text-xs text-slate-500 leading-relaxed mt-1">
+                <p className="mt-1.5 text-base leading-relaxed text-slate-500">
                   {selectedCase.description}
                 </p>
 
                 {/* Objectives outcomes list */}
-                <div className="mt-3 p-3 bg-white/70 border border-emerald-500/10 rounded-xl">
-                  <span className="text-[10px] font-bold text-emerald-850 uppercase tracking-wider block mb-1">
+                <div className="mt-3 rounded-xl border border-emerald-500/10 bg-white/70 p-4">
+                  <span className="mb-1.5 block text-sm font-bold uppercase tracking-wider text-emerald-850">
                     Objectives:
                   </span>
-                  <ul className="text-[11px] text-slate-600 list-disc list-inside space-y-0.5 leading-snug">
+                  <ul className="list-inside list-disc space-y-1 text-base leading-snug text-slate-600">
                     {selectedCase.outcomes.map((outcome, idx) => (
-                      <li key={idx} className="truncate">
+                      <li key={idx}>
                         {outcome}
                       </li>
                     ))}
@@ -133,38 +133,38 @@ export function LevelSelect() {
             </div>
 
             {/* Launch Action Button */}
-            <div className="pt-6">
+            <div className="shrink-0 pt-3">
               {completedCount === CASES.length && (
                 <button
                   onClick={() => dispatch({ type: "GOTO", screen: "finalResults" })}
-                  className="w-full mb-3 rounded-full py-3 font-bold text-xs bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 border border-amber-600 text-white shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all animate-bounce"
+                  className="mb-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-amber-600 bg-gradient-to-r from-amber-500 to-yellow-500 py-3.5 text-base font-bold text-white shadow-md transition-all animate-bounce hover:from-amber-600 hover:to-yellow-600"
                 >
-                  <Trophy className="h-4 w-4 fill-amber-200" /> CLAIM CERTIFICATE
+                  <Trophy className="h-5 w-5 fill-amber-200" /> CLAIM CERTIFICATE
                 </button>
               )}
               <button
                 disabled={isLocked}
                 onClick={() => handleStart(selectedIdx)}
-                className={`w-full rounded-full py-3 font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer
+                className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-full py-4 text-lg font-bold shadow-md transition-all
                   ${
                     isLocked
-                      ? "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300"
+                      ? "cursor-not-allowed border border-slate-300 bg-slate-200 text-slate-400"
                       : isCompleted
-                        ? "bg-slate-800 hover:bg-slate-900 border border-slate-950 text-white"
-                        : "bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 text-white"
+                        ? "border border-slate-950 bg-slate-800 text-white hover:bg-slate-900"
+                        : "border border-emerald-700 bg-emerald-600 text-white hover:bg-emerald-700"
                   }`}
               >
                 {isCompleted ? (
                   <>
-                    <RotateCcw className="h-4 w-4" /> Replay Case (+{selectedCase.xpValue} XP)
+                    <RotateCcw className="h-5 w-5" /> Replay Case (+{selectedCase.xpValue} XP)
                   </>
                 ) : isLocked ? (
                   <>
-                    <Lock className="h-4 w-4" /> Locked
+                    <Lock className="h-5 w-5" /> Locked
                   </>
                 ) : (
                   <>
-                    <Play className="h-4 w-4" /> Launch Case (+{selectedCase.xpValue} XP)
+                    <Play className="h-5 w-5" /> Launch Case (+{selectedCase.xpValue} XP)
                   </>
                 )}
               </button>
@@ -172,50 +172,50 @@ export function LevelSelect() {
           </div>
 
           {/* RIGHT: Winding Map Trail Area */}
-          <div className="flex-1 p-6 relative flex flex-col justify-between min-h-[460px]">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="relative flex min-h-0 flex-1 flex-col p-4 md:p-5">
+            <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-2xl font-display font-extrabold text-slate-800 tracking-tight">
+                <h2 className="font-display text-3xl font-extrabold tracking-tight text-slate-800 md:text-4xl">
                   Investigation Map
                 </h2>
-                <p className="text-xs text-slate-500">
+                <p className="mt-1 text-base text-slate-500">
                   Click a health-themed stop along the trail to view details and launch the case.
                 </p>
               </div>
 
               {/* Status HUD (XP, Streak, Sound Toggle) */}
-              <div className="flex items-center gap-2.5 self-start sm:self-center shrink-0">
+              <div className="flex shrink-0 items-center gap-3 self-start sm:self-center">
                 {/* Sound Toggle */}
                 <button
                   onClick={() => dispatch({ type: "TOGGLE_SOUND" })}
-                  className="p-2 rounded-full border border-emerald-100 hover:bg-emerald-50 text-slate-500 hover:text-emerald-800 transition cursor-pointer shadow-sm bg-white flex items-center justify-center"
+                  className="flex cursor-pointer items-center justify-center rounded-full border border-emerald-100 bg-white p-2.5 text-slate-500 shadow-sm transition hover:bg-emerald-50 hover:text-emerald-800"
                   title={state.soundMuted ? "Unmute Voiceover" : "Mute Voiceover"}
                 >
                   {state.soundMuted ? (
-                    <VolumeX className="h-4.5 w-4.5 text-slate-450" />
+                    <VolumeX className="h-5 w-5 text-slate-450" />
                   ) : (
-                    <Volume2 className="h-4.5 w-4.5 text-emerald-600" />
+                    <Volume2 className="h-5 w-5 text-emerald-600" />
                   )}
                 </button>
 
                 {/* Streak Counter */}
                 {state.streak > 0 && (
-                  <div className="flex items-center gap-1 rounded-full bg-orange-50 border border-orange-200 px-2.5 py-1 text-orange-600 text-[11px] font-bold shadow-sm">
-                    <Flame className="h-3.5 w-3.5 fill-orange-500 text-orange-500 animate-bounce" />
+                  <div className="flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 text-sm font-bold text-orange-600 shadow-sm">
+                    <Flame className="h-4 w-4 fill-orange-500 text-orange-500 animate-bounce" />
                     <span>{state.streak} STREAK</span>
                   </div>
                 )}
 
                 {/* XP Badge */}
-                <div className="flex items-center gap-1 rounded-full bg-[#FFD700]/10 border border-[#FFD700]/40 px-2.5 py-1 font-display text-[11px] font-bold text-yellow-800 shadow-sm">
-                  <Sparkles className="h-3.5 w-3.5 fill-[#FFD700] text-[#D97706]" />
+                <div className="flex items-center gap-1.5 rounded-full border border-[#FFD700]/40 bg-[#FFD700]/10 px-3 py-1.5 font-display text-sm font-bold text-yellow-800 shadow-sm">
+                  <Sparkles className="h-4 w-4 fill-[#FFD700] text-[#D97706]" />
                   <span>{state.totalXP} XP</span>
                 </div>
               </div>
             </div>
 
             {/* Map Canvas viewport */}
-            <div className="relative flex-1 w-full min-h-[340px] mt-4 border border-emerald-100/50 bg-[#F9FDFB] rounded-2xl overflow-hidden shadow-inner">
+            <div className="relative mt-3 min-h-0 w-full flex-1 overflow-hidden rounded-2xl border border-emerald-100/50 bg-[#F9FDFB] shadow-inner">
               {/* Grid Background Pattern */}
               <div 
                 className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -236,7 +236,7 @@ export function LevelSelect() {
                   d="M 25 22 C 60 22, 85 32, 75 50 C 65 68, 30 63, 35 78"
                   fill="none"
                   stroke="#E9F8F0"
-                  strokeWidth="8"
+                  strokeWidth="10"
                   strokeLinecap="round"
                 />
                 {/* Winding active road */}
@@ -244,7 +244,7 @@ export function LevelSelect() {
                   d="M 25 22 C 60 22, 85 32, 75 50 C 65 68, 30 63, 35 78"
                   fill="none"
                   stroke="#25BB64"
-                  strokeWidth="3"
+                  strokeWidth="5"
                   strokeDasharray="5 5"
                   strokeLinecap="round"
                   className="opacity-70"
@@ -274,23 +274,23 @@ export function LevelSelect() {
                       onClick={() => handleNodeClick(i)}
                       whileHover={{ scale: locked ? 1 : 1.1 }}
                       whileTap={{ scale: locked ? 1 : 0.95 }}
-                      className={`relative h-16 w-16 rounded-full border-2 flex items-center justify-center transition-all cursor-pointer shadow-md select-none
+                      className={`relative flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-md transition-all select-none cursor-pointer md:h-24 md:w-24
                         ${
                           locked
-                            ? "bg-slate-100 border-slate-350 text-slate-400 cursor-not-allowed"
+                            ? "cursor-not-allowed border-slate-350 bg-slate-100 text-slate-400"
                             : completed
-                              ? "bg-emerald-600 border-emerald-700 text-white hover:bg-emerald-700"
+                              ? "border-emerald-700 bg-emerald-600 text-white hover:bg-emerald-700"
                               : active
-                                ? "bg-emerald-50 border-emerald-500 text-emerald-800 ring-4 ring-emerald-100/80 shadow-[0_0_20px_rgba(37,187,100,0.5)]"
-                                : "bg-white border-emerald-300 text-emerald-700 hover:bg-emerald-50/60"
+                                ? "border-emerald-500 bg-emerald-50 text-emerald-800 shadow-[0_0_20px_rgba(37,187,100,0.5)] ring-4 ring-emerald-100/80"
+                                : "border-emerald-300 bg-white text-emerald-700 hover:bg-emerald-50/60"
                         }`}
                     >
                       {/* Icon inside Node */}
-                      {locked ? <Lock className="h-6 w-6 text-slate-400" /> : node.icon}
+                      {locked ? <Lock className="h-8 w-8 text-slate-400" /> : node.icon}
 
                       {/* Small Indicator Overlays */}
                       {completed && (
-                        <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-yellow-400 border border-yellow-500 text-slate-900 flex items-center justify-center font-bold text-[9px] shadow-sm">
+                        <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border border-yellow-500 bg-yellow-400 text-xs font-bold text-slate-900 shadow-sm">
                           ✓
                         </span>
                       )}
@@ -303,13 +303,13 @@ export function LevelSelect() {
 
                     {/* Node Text Label */}
                     <div 
-                      className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-center px-2 py-0.5 rounded text-[10px] font-bold border transition shadow-sm
+                      className={`absolute top-full left-1/2 mt-2.5 -translate-x-1/2 whitespace-nowrap rounded-md border px-3 py-1 text-center text-sm font-bold shadow-sm transition md:text-base
                         ${
                           active
-                            ? "bg-emerald-600 border-emerald-700 text-white font-black"
+                            ? "border-emerald-700 bg-emerald-600 font-black text-white"
                             : locked
-                              ? "bg-slate-50 border-slate-200 text-slate-400 font-semibold"
-                              : "bg-white border-emerald-100 text-slate-700 font-bold"
+                              ? "border-slate-200 bg-slate-50 font-semibold text-slate-400"
+                              : "border-emerald-100 bg-white font-bold text-slate-700"
                         }`}
                     >
                       {node.label}

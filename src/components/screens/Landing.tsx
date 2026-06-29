@@ -12,13 +12,13 @@ export function Landing() {
   };
 
   return (
-    <div className="relative h-full w-full flex flex-col items-center justify-center bg-gradient-to-b from-[#E9F8F0] to-white px-6 py-12 overflow-y-auto">
+    <div className="welcome-screen bg-gradient-to-b from-[#E9F8F0] to-white px-4 py-4">
       {/* Humana Branding Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center justify-center flex-col gap-1 z-10"
+        className="absolute top-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center justify-center gap-1"
       >
         <HumanaWordmark className="text-3xl text-emerald-800" />
       </motion.div>
@@ -28,7 +28,7 @@ export function Landing() {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: "spring", duration: 0.6 }}
-        className="w-full max-w-2xl mt-12 bg-white/95 rounded-3xl border border-emerald-100 p-8 text-center shadow-card backdrop-blur-sm flex flex-col items-center"
+        className="mt-6 flex w-full max-w-2xl flex-col items-center rounded-3xl border border-emerald-100 bg-white/95 p-6 text-center shadow-card backdrop-blur-sm"
       >
         {/* Animated Scout Mascot */}
         <motion.div
@@ -38,7 +38,7 @@ export function Landing() {
           className="relative mb-6"
         >
           <div className="absolute inset-0 bg-emerald-100 rounded-full blur-xl opacity-60 animate-pulse" />
-          <Scout mood="idle" size={180} className="relative z-10" />
+          <Scout mood="idle" size={140} className="relative z-10" />
         </motion.div>
 
         {/* Mascot Speech Bubble */}
@@ -46,7 +46,7 @@ export function Landing() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="relative bg-emerald-50 border border-emerald-100 rounded-2xl p-4 mb-6 text-base text-emerald-900 leading-relaxed text-left max-w-md shadow-sm"
+          className="relative mb-4 max-w-md rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-left text-lg leading-snug text-emerald-900 shadow-sm"
         >
           {/* Speech Bubble Arrow */}
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-50 border-t border-l border-emerald-100 rotate-45" />
@@ -77,9 +77,9 @@ export function Landing() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="w-full mt-6 grid grid-cols-2 gap-3 text-left"
+          className="mt-6 grid w-full grid-cols-2 gap-3 text-left"
         >
-          <div className="p-3 bg-[#E9F8F0]/40 border border-emerald-100 rounded-xl">
+          <div className="rounded-xl border border-emerald-100 bg-[#E9F8F0]/40 p-3">
             <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-sm">
               <Terminal className="w-4 h-4" />
               <span>ASI-3270</span>
@@ -88,7 +88,7 @@ export function Landing() {
               Learn search commands, screen reading, and group structures.
             </p>
           </div>
-          <div className="p-3 bg-[#E9F8F0]/40 border border-emerald-100 rounded-xl">
+          <div className="rounded-xl border border-emerald-100 bg-[#E9F8F0]/40 p-3">
             <div className="flex items-center gap-1.5 text-[#25BB64] font-bold text-sm">
               <FolderOpen className="w-4 h-4" />
               <span>3 Cases</span>
@@ -107,7 +107,7 @@ export function Landing() {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleStart}
-          className="pulse-glow mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full py-4 text-white font-bold text-lg cursor-pointer select-none transition-all shadow-md"
+          className="pulse-glow mt-8 inline-flex w-full cursor-pointer select-none items-center justify-center gap-2 rounded-full py-4 text-lg font-bold text-white shadow-md transition-all"
           style={{ backgroundColor: "var(--brand)" }}
         >
           <FolderOpen className="h-5 w-5" />
